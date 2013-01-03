@@ -43,7 +43,19 @@ var CommandSchema = new mongoose.Schema({
 var Commands = mongoose.model('Commands', CommandSchema);
 
 app.get('/', function (req, res) {
-    res.render('index.hbs', {title: 'home page'})
+    res.render('index.hbs');
+});
+
+app.get('/download', function (req, res) {
+    Commands.find({}, function (err, docs) {
+        res.render('download.hbs');
+    });
+});
+
+app.get('/getting-started', function (req, res) {
+    Commands.find({}, function (err, docs) {
+        res.render('getting-started.hbs');
+    });
 });
 
 app.get('/reference', function (req, res) {
@@ -53,8 +65,16 @@ app.get('/reference', function (req, res) {
 });
 
 app.get('/reference/:command', function (req, res) {
-    res.send('Hi ' + req.params.command)
+    Commands.find({title: req.params.command}, function (err, docs) {
+        res.render('reference.hbs', {commands: docs});
+    });
 })
+
+app.get('/examples', function (req, res) {
+    Commands.find({}, function (err, docs) {
+        res.render('examples.hbs');
+    });
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

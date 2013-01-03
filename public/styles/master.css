@@ -71,7 +71,7 @@ h1 {
 h2 {
   font-size: 2em;
   font-family: "myriad-pro", arial, sans-serif;
-  margin: 0.2em 0;
+  margin: 0.5em 0;
 }
 
 h3 {
@@ -112,9 +112,9 @@ header img {
   padding: 0 1.5em 1em 0;
 }
 
-.example {
+.main {
   background-color: #ffffc8;
-  padding: 1em 2em;
+  padding: 0.2em 2em 1em;
 }
 
 nav {
@@ -126,7 +126,7 @@ nav {
 
 nav li {
   display: inline-block;
-  padding: 1em 2em;
+  padding: 1em 1.8em;
 }
 
 nav li a, nav li a:visited {
@@ -157,6 +157,7 @@ pre, code, blockquote {
     padding: 1em;
     color: white;
     line-height: 1.2em;
+    margin-bottom: 1em;
 }
 
 .pln {
