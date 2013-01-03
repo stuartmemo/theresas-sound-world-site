@@ -1,0 +1,2 @@
+{"title": "play", "description": "Play a sound file directly.", "example": "context.play('/blah/blah.mp3');"}
+{"title": "stop", "description": "Stop a sound playing.", "example": "context.stop();"}

@@ -1,0 +1,37 @@
+{{> header }}
+<header>
+    <a href="/"><img src="/images/theresas-sound-world.png"/></a>
+    <h1>Theresa's Sound World is a way of processing audio and making music using JavaScript</h1>
+    {{> menu }}
+</header>
+
+<div role="main" class="example">
+    <h2>Hello there</h2>
+    <hr/>
+    <p>Theresa's Sound World is powerful way of manipulating audio in the browser in a quick and friendly manner. Built on top of the Web Audio API, it uses a modular routing system allowing you to make sophisticated audio applications and instruments. It also provides a great way of making music using JavaScript. Check out the examples below!</p>
+
+    <h2>Try it out</h2>
+
+    <hr/>
+    <h3>Create your Sound World</h3>
+    <p>After you include <a href="/download">theresas-sound-world.js</a> in your HTML document, create your own sound world by doing this:</p>
+    <pre class="prettyprint">var context = new webkitAudioContext(),
+mySoundWorld = new SoundWorld(context);</pre>
+
+    <hr/>
+    <h3>Play an audio file</h3>
+    <p>Easy! Now let's play an audio file.
+    <pre class="prettyprint">mySoundWorld.load('/audio/my-audio-file.mp3', function (myFile) {
+        // file has loaded
+        myFile.play();
+    });
+</pre>
+    <p>Let's hear it - <button>Play</button></p>
+
+    <hr/>
+    <h3>Flip it and reverse it</h3>
+    <p>Something something...</p>
+    <pre class="prettyprint">myFile = myFile.reverse();
+myFile.play();</pre>
+</div>
+{{> footer }}
