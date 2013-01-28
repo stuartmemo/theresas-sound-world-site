@@ -161,7 +161,7 @@ pre, code, blockquote {
 }
 
 .pln {
-  color: white !important;
+    color: white !important;
 }
 
 img.mini-logo {
@@ -181,4 +181,24 @@ img.mini-logo {
 
 .download a {
     color: white;
+}
+
+.effect {
+    width: 33%;
+    float: left;
+    height: 130px;
+}
+
+.effect label {
+    width: 40%;
+    display: inline-block;
+    line-height: 1.7em;
+}
+
+.effect input[type="range"] {
+    width: 40%;
+}
+
+.clearer {
+    clear: both;
 }

@@ -6,10 +6,15 @@
 </header>
 
 <div role="main" class="main">
-    <h2>Hello there</h2>
+    <h2>Getting Started</h2>
     <p>Theresa's Sound World is powerful way of manipulating audio in the browser in a quick and friendly manner. Built on top of the Web Audio API, it uses a modular routing system allowing you to make sophisticated audio applications and instruments. It also provides a great way of making music using JavaScript. Check out the examples below!</p>
 
-    <h2>Try it out</h2>
+    <h3>Download</h3>
+    <p>You'll need to download first.</p>
+    
+
+    <h3>Include</h3>
+    <p>Reference the JavaScript file</p>
 
     <h3>Create your Sound World</h3>
     <p>After you include <a href="/download">theresas-sound-world.js</a> in your HTML document, create your own sound world by doing this:</p>
@@ -17,31 +22,20 @@
     mySoundWorld = new SoundWorld(context);</pre>
 
     <h3>Play an audio file</h3>
-    <p>Easy! Now let's load a couple of audio files and play one of them once it's ready.</p>
-    <pre class="prettyprint">mySoundWorld.load(
-    {
-        talking: 'talking.mp3',
-        singing: 'singing.mp3'
-    },
-    function (files) {
-        files.talking.play();
-    }
-);
+    <p>Easy! Now let's play an audio file.
+    <pre class="prettyprint">mySoundWorld.load({oddManTalking: '/audio/odd-man-talking.mp3'}, function (files) {
+        // file has loaded
+        mySoundWorld.play(files.oddManTalking);
+    });
 </pre>
     <p>Let's hear it - <button>Play</button></p>
 
     <h3>Flip it and reverse it</h3>
     <p>Something something...</p>
-    <pre class="prettyprint">files.talking.reverse().play();</pre>
+    <pre class="prettyprint">myFile = myFile.reverse();</pre>
 
     <h3>Dr. Phaser Crane</h3>
-    <p>Add some dalek to your diet.</p>
-    <pre>files.talking.addPhaser().play();</pre>
-
-    <h3>Link to the Past</h3>
-    <pre>mySoundWorld.connect(myPhaser, myDistortion, myReverb);</pre>
-
-    <h3>And much more...</h3>
-    <p>You can use Theresa's Sound World to make much more useful things! Check out the <a href="/examples">examples</a> page to see what other people have been making.</p>
+    <p>How to add a phaser effect.</p>
+    <pre>myFile.play();</pre>
 </div>
 {{> footer }}
