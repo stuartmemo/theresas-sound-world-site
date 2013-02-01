@@ -1,2 +1,98 @@
-{"title": "play", "description": "Play a sound file directly.", "example": "context.play('/blah/blah.mp3');"}
-{"title": "stop", "description": "Stop a sound playing.", "example": "context.stop();"}
+{
+    "name": "Play",
+    "description": "Play a sound file directly.",
+    "library": "core",
+    "syntax": "context.play(file, startTime, startPosition, endPosition)",
+    "parameters": [
+        {
+            "name": "file",
+            "description": "Path to file to be played.",
+            "type": "Number"
+        },
+        {
+            "name": "startTime",
+            "description": "Number of seconds from now to start playing.",
+            "type": "Number"
+        },
+        {
+            "name": "startPosition",
+            "description": "Seconds from beginning of file to start playing.",
+            "type": "Number"
+        },
+        {
+            "name": "endPosition",
+            "description": "Seconds from beginning of file to stop playing.",
+            "type": "Number"
+        }
+    ],
+    "example": "context.play('/blah/blah.mp3');"
+}
+
+
+
+
+
+
+{
+    "name": "Stop",
+    "description": "Stop a sound playing.",
+    "library": "core",
+    "syntax": "context.stop(file, stopTime);",
+    "parameters": [
+        {
+            "name": "path",
+            "description": "Path to file to stop playing",
+            "type": "String"
+        },
+        {
+            "name": "stopTime",
+            "description": "Number of seconds from now to stop playing.",
+            "type": "Number"
+        }
+    ],
+    "example": "context.stop();"
+}
+
+
+
+{
+    "name": "Phaser",
+    "description": "Add some phase to your life.",
+    "syntax": "var phaser = new Phaser(settings)",
+    "library": "core",
+    "parameters": [
+        {
+            "settings": [
+                {
+                    "name": "Rate",
+                    "description": "Rate of phase.",
+                    "type": "Number"
+                },
+                {
+                    "name": "Depth",
+                    "description": "Depth of phase.",
+                    "type": "Number"
+                },
+                {
+                    "name": "Amount",
+                    "description": "Amount of phase",
+                    "type": "Number"
+                }
+            ],
+            "type": "Object"
+        }
+    ],
+    "example": "var phaser = new Phaser({rate: 2});"
+}
+
+{
+    "name": "Scale",
+    "description": "Get the scale of a note.",
+    "syntax": "var scale = Music.getScale(note);",
+    "parameters": [
+            {
+                "name": "note",
+                "description": "Note to get scale of.",
+                "type": "String"
+            }
+}

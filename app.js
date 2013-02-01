@@ -1,4 +1,4 @@
-/**
+/*
  * Module dependencies.
  */
 
@@ -9,9 +9,9 @@ var express = require('express'),
     path = require('path'),
     fs = require('fs'),
     hbs = require('hbs'),
-    mongoose = require('mongoose');
+    mongodb = require('mongodb'),
+    app = express();
 
-var app = express();
 hbs.registerPartial('header', fs.readFileSync(__dirname + '/views/header.hbs', 'utf8'));
 hbs.registerPartial('menu', fs.readFileSync(__dirname + '/views/menu.hbs', 'utf8'));
 hbs.registerPartial('footer', fs.readFileSync(__dirname + '/views/footer.hbs', 'utf8'));
@@ -32,22 +32,15 @@ app.configure('development', function(){
     app.use(express.errorHandler());
 });
 
-mongoose.connect('mongodb://localhost/theresaSite');
-
-var CommandSchema = new mongoose.Schema({
-    title: String,
-    description: String,
-    example: String
-});
-
-var Commands = mongoose.model('Commands', CommandSchema);
+var server = new mongodb.Server('localhost', 27017, {});
+var db = mongodb.Db('theresaSite', server, {});
 
 app.get('/', function (req, res) {
     res.render('index.hbs');
 });
 
 app.get('/download', function (req, res) {
-    Commands.find({}, function (err, docs) {
+    Reference.find({}, function (err, docs) {
         res.render('download.hbs');
     });
 });
@@ -59,8 +52,16 @@ app.get('/getting-started', function (req, res) {
 });
 
 app.get('/reference', function (req, res) {
-    Commands.find({}, function (err, docs) {
-        res.render('reference.hbs', {commands: docs});
+    db.open(function (error, client) {
+        if (error) throw error;
+
+        var collection = new mongodb.Collection(client, 'reference');
+
+        collection.find({}).toArray(function (err, docs) {
+            res.render('reference.hbs', {reference: docs});
+            db.close();
+        });
+
     });
 });
 

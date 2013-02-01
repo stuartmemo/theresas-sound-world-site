@@ -75,9 +75,14 @@ h2 {
 }
 
 h3 {
-  font-size: 1.2em;
+  font-size: 1.5em;
   font-weight: bold;
   margin: 0.5em 0;
+}
+
+h4 {
+    font-weight: bold;
+    font-size: 1.2em;
 }
 
 p {
@@ -99,6 +104,36 @@ hr {
     border: 0;
     box-shadow: #ccc 1px 0;
     border-bottom: 1px solid #000;
+}
+
+th {
+    font-weight: bold;
+    width: 120px;
+    line-height: 2em;
+}
+
+tr:nth-child(even) {
+    background: #FFFFC8;
+}
+
+table {
+    background: #F6FFB3;
+    width: 100%;
+}
+
+.heading-row td {
+    background: #6F1717;
+    color: white;
+    font-size: 1.2em;
+    text-transform: capitalize;
+}
+
+th, td {
+    padding: 0.5em;
+}
+
+table {
+    margin: 1em 0 0.5em;
 }
 
 .container {
@@ -181,6 +216,10 @@ img.mini-logo {
 
 .download a {
     color: white;
+}
+
+p a {
+    font-weight: bold;
 }
 
 .effect {

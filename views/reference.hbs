@@ -7,11 +7,42 @@
 
 <div role="main" class="main">
     <h2>Reference</h2>
-    <p>Please note that Theresa's Sound World relies on the Web Audio API and therefore only works with <a href="http://google.com/chrome">Chrome</a> and <a href="http://apple.com/safari">Safari</a>.</p>
-    {{#each commands}}
-        <h3>{{ title }}</h3>
-        <p>{{ description }}</p>
-        <p>{{ example }}</p>
+    <p>Please note that Theresa's Sound World relies on the <a href="http://www.w3.org/TR/webaudio/">Web Audio API</a> and therefore only works with <a href="http://google.com/chrome">Chrome</a> and <a href="http://apple.com/safari">Safari</a>.</p>
+    {{#each reference}}
+        <table>
+            <tbody>
+                <tr class="heading-row">
+                    <td colspan="2">{{friendlyName}}
+                </tr>
+                <tr>
+                    <th>Name
+                    <td>{{name}}
+                </tr>
+                <tr>
+                    <th>Description
+                    <td>{{description}}
+                </tr>
+                <tr>
+                    <th>Syntax
+                    <td>{{syntax}}
+                </tr>
+                <tr>
+                    <th>Parameters
+                    <td>
+                        <ul>
+                        {{#each parameters}}
+                            <li>{{name}}
+                            <li>{{description}}
+                        {{/each}}
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Example
+                    <td>{{example}}
+                </tr>
+            </tbody>
+        </table>
     {{/each}}
 </div>
 {{> footer }}
