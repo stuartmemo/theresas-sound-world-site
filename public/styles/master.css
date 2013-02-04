@@ -142,9 +142,13 @@ table {
 }
 
 header img {
-  width: 150px;
-  float: left;
-  padding: 0 1.5em 1em 0;
+    float: left;
+    padding: 0 1.5em 1em 0;
+}
+
+header p a, header p a:visited {
+    color: white;
+    font-weight: normal;
 }
 
 .main {
@@ -241,3 +245,4 @@ p a {
 .clearer {
     clear: both;
 }
+

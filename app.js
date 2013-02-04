@@ -13,6 +13,8 @@ var express = require('express'),
     app = express();
 
 hbs.registerPartial('header', fs.readFileSync(__dirname + '/views/header.hbs', 'utf8'));
+hbs.registerPartial('title-home', fs.readFileSync(__dirname + '/views/title-home.hbs', 'utf8'));
+hbs.registerPartial('title-mini', fs.readFileSync(__dirname + '/views/title-mini.hbs', 'utf8'));
 hbs.registerPartial('menu', fs.readFileSync(__dirname + '/views/menu.hbs', 'utf8'));
 hbs.registerPartial('footer', fs.readFileSync(__dirname + '/views/footer.hbs', 'utf8'));
 
@@ -40,15 +42,17 @@ app.get('/', function (req, res) {
 });
 
 app.get('/download', function (req, res) {
-    Reference.find({}, function (err, docs) {
-        res.render('download.hbs');
-    });
+    res.render('download.hbs', {quote:
+                {link: 'http://www.youtube.com/watch?v=T5jHO4jMPxA',
+                 words:'Position yourself on another man\'s cruise. One to share, the other to choose.'}
+               });
 });
 
 app.get('/getting-started', function (req, res) {
-    Commands.find({}, function (err, docs) {
-        res.render('getting-started.hbs');
-    });
+    res.render('getting-started.hbs', {quote:
+                {link: 'http://www.youtube.com/watch?v=__VQX2Xn7tI',
+                words: 'A kiss for luck and we\'re on our way. We\'ve only begun.'}
+                });
 });
 
 app.get('/reference', function (req, res) {
@@ -72,9 +76,10 @@ app.get('/reference/:command', function (req, res) {
 })
 
 app.get('/examples', function (req, res) {
-    Commands.find({}, function (err, docs) {
-        res.render('examples.hbs');
-    });
+    res.render('examples.hbs',{quote:
+                {link: 'http://www.youtube.com/watch?v=96GCfykZ0qE',
+                 words: 'They say they don\'t need money. They\'re setting a bad example.'}
+             });
 });
 
 app.get('/examples/effects', function (req, res) {
