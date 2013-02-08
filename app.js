@@ -61,7 +61,7 @@ app.get('/reference', function (req, res) {
 
         var collection = new mongodb.Collection(client, 'reference');
 
-        collection.find({}).toArray(function (err, docs) {
+        collection.find({}).sort({friendlyName: 1}).toArray(function (err, docs) {
             res.render('reference.hbs', {reference: docs});
             db.close();
         });
