@@ -1,0 +1,34 @@
+<table>
+    <tbody>
+        <tr class="heading-row">
+            <td colspan="2">{{friendlyName}}
+        </tr>
+        <tr>
+            <th>Name
+            <td>{{name}}
+        </tr>
+        <tr>
+            <th>Description
+            <td><p>{{description}}</p>
+        </tr>
+        <tr>
+            <th>Syntax
+            <td>{{syntax}}
+        </tr>
+        <tr>
+            <th>Parameters
+            <td>
+                <ul>
+                {{#each parameters}}
+                    <li>{{name}}
+                    <li>{{description}}
+                {{/each}}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>Example
+            <td><pre>{{example}}</pre>
+        </tr>
+    </tbody>
+</table>

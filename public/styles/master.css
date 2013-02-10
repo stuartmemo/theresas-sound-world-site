@@ -192,6 +192,12 @@ pre {
   margin: 0;
 }
 
+table pre {
+    background: none;
+    color: inherit;
+    padding: 0;
+}
+
 pre, code, blockquote {
     padding: 1em;
     color: white;
@@ -246,3 +252,6 @@ p a {
     clear: both;
 }
 
+table th {
+    vertical-align: top;
+}

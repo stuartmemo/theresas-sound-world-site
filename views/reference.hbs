@@ -3,41 +3,19 @@
 <div role="main" class="main">
     <h2>Reference</h2>
     <p>Please note that Theresa's Sound World relies on the <a href="http://www.w3.org/TR/webaudio/">Web Audio API</a> and therefore only works with <a href="http://google.com/chrome">Chrome</a> and <a href="http://apple.com/safari">Safari</a>.</p>
-    {{#each reference}}
-        <table>
-            <tbody>
-                <tr class="heading-row">
-                    <td colspan="2">{{friendlyName}}
-                </tr>
-                <tr>
-                    <th>Name
-                    <td>{{name}}
-                </tr>
-                <tr>
-                    <th>Description
-                    <td>{{description}}
-                </tr>
-                <tr>
-                    <th>Syntax
-                    <td>{{syntax}}
-                </tr>
-                <tr>
-                    <th>Parameters
-                    <td>
-                        <ul>
-                        {{#each parameters}}
-                            <li>{{name}}
-                            <li>{{description}}
-                        {{/each}}
-                        </ul>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Example
-                    <td>{{example}}
-                </tr>
-            </tbody>
-        </table>
+    <h2>Core</h2>
+    {{#each referenceCore}}
+        {{> reference-item}}
+    {{/each}}
+
+    <h2>Effects</h2>
+    {{#each referenceFx}}
+        {{> reference-item}}
+    {{/each}}
+
+    <h2>Music</h2>
+    {{#each referenceMusic}}
+        {{> reference-item}}
     {{/each}}
 </div>
 {{> footer }}

@@ -9,12 +9,11 @@
 
     <h3>Create your Sound World</h3>
     <p>After you include <a href="/download">theresas-sound-world.js</a> in your HTML document, create your own sound world by doing this:</p>
-    <pre class="prettyprint">var context = new webkitAudioContext(),
-    mySoundWorld = new SoundWorld(context);</pre>
+    <pre class="prettyprint">var tsw = new SoundWorld();</pre>
 
     <h3>Play an audio file</h3>
     <p>Easy! Now let's load a couple of audio files and play one of them once it's ready.</p>
-    <pre class="prettyprint">mySoundWorld.load(
+    <pre class="prettyprint">tsw.load(
     {
         talking: 'talking.mp3',
         singing: 'singing.mp3'

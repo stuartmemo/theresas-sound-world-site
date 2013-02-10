@@ -16,6 +16,7 @@ hbs.registerPartial('header', fs.readFileSync(__dirname + '/views/header.hbs', '
 hbs.registerPartial('title-home', fs.readFileSync(__dirname + '/views/title-home.hbs', 'utf8'));
 hbs.registerPartial('title-mini', fs.readFileSync(__dirname + '/views/title-mini.hbs', 'utf8'));
 hbs.registerPartial('menu', fs.readFileSync(__dirname + '/views/menu.hbs', 'utf8'));
+hbs.registerPartial('reference-item', fs.readFileSync(__dirname + '/views/reference-item.hbs', 'utf8'));
 hbs.registerPartial('footer', fs.readFileSync(__dirname + '/views/footer.hbs', 'utf8'));
 
 app.configure(function(){
@@ -62,7 +63,27 @@ app.get('/reference', function (req, res) {
         var collection = new mongodb.Collection(client, 'reference');
 
         collection.find({}).sort({friendlyName: 1}).toArray(function (err, docs) {
-            res.render('reference.hbs', {reference: docs});
+            var core = [],
+                fx = [],
+                music = [];
+
+            docs.forEach(function (record) {
+                switch (record.lib) {
+                    case 'core':
+                        core.push(record);
+                        break;
+                    case 'fx':
+                        fx.push(record);
+                        break;
+                    case 'music':
+                        music.push(record);
+                        break;
+                    default:
+                        break;
+                };
+            });
+
+            res.render('reference.hbs', {reference: docs, referenceCore: core, referenceFx: fx, referenceMusic: music});
             db.close();
         });
 
@@ -76,10 +97,12 @@ app.get('/reference/:command', function (req, res) {
 })
 
 app.get('/examples', function (req, res) {
-    res.render('examples.hbs',{quote:
-                {link: 'http://www.youtube.com/watch?v=96GCfykZ0qE',
-                 words: 'They say they don\'t need money. They\'re setting a bad example.'}
-             });
+    res.render('examples.hbs',{
+                quote: {
+                    link: 'http://www.youtube.com/watch?v=96GCfykZ0qE',
+                    words: 'They say they don\'t need money. They\'re setting a bad example.'}
+                }
+              );
 });
 
 app.get('/examples/effects', function (req, res) {
