@@ -1,8 +1,9 @@
 {
-    "name": "Play",
+    "title": "Play",
+    "name": "play()",
     "description": "Play a sound file directly.",
     "library": "core",
-    "syntax": "context.play(file, startTime, startPosition, endPosition)",
+    "syntax": "tsw.play(file, startTime, startPosition, endPosition)",
     "parameters": [
         {
             "name": "file",
@@ -25,19 +26,20 @@
             "type": "Number"
         }
     ],
-    "example": "context.play('/blah/blah.mp3');"
+    "example": {
+        "code": "tsw.play('/blah/blah.mp3');",
+        "script":
+            "var tsw = new AudioWorld();
+             tsw.play('wat');"
+    }
 }
 
-
-
-
-
-
 {
-    "name": "Stop",
+    "title" "Stop",
+    "name": "stop()",
     "description": "Stop a sound playing.",
     "library": "core",
-    "syntax": "context.stop(file, stopTime);",
+    "syntax": "tsw.stop(file, stopTime);",
     "parameters": [
         {
             "name": "path",
@@ -53,13 +55,12 @@
     "example": "context.stop();"
 }
 
-
-
 {
-    "name": "Phaser",
+    "title": "Phaser",
+    "name": "createPhaser()",
     "description": "Add some phase to your life.",
     "syntax": "var phaser = new Phaser(settings)",
-    "library": "core",
+    "library": "fx",
     "parameters": [
         {
             "settings": [
@@ -86,9 +87,11 @@
 }
 
 {
-    "name": "Scale",
+    "title": "Scale",
+    "name": "getScale()",
     "description": "Get the scale of a note.",
     "syntax": "var scale = Music.getScale(note);",
+    "library": "music",
     "parameters": [
             {
                 "name": "note",

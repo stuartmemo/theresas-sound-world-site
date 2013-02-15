@@ -1,0 +1,23 @@
+<h1>Hello admin!</h1>
+<form action="/create" method="post" accept-charset="utf-8">
+    <label for="title">Title</label>
+    <input type="text" name="title"/>
+
+    <label for="name">Name</label>
+    <input type="text" name="name"/>
+    
+    <label for="description">Description</label>
+    <textarea name="description"></textarea>
+
+    <label for="syntax">Syntax</label>
+    <input type="text" name="syntax"/>
+
+    <label for="library">Library</label>
+    <select name="library">
+        <option value="core">Core</option>
+        <option value="effects">Effects</option>
+        <option value="music">Music</option>
+    </select>
+
+    <input type="submit" value="Create"/>
+</form>

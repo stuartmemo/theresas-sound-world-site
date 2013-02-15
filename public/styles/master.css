@@ -152,8 +152,17 @@ header p a, header p a:visited {
 }
 
 .main {
-  background-color: #ffffc8;
-  padding: 0.2em 2em 1em;
+    background-color: #ffffc8;
+    padding: 0.2em 2em 1em;
+}
+
+label {
+    display: block;
+}
+
+.admin input, .admin select {
+    margin-bottom: 1em;
+    width: 30%;
 }
 
 nav {
@@ -228,7 +237,7 @@ img.mini-logo {
     color: white;
 }
 
-p a {
+p a, label {
     font-weight: bold;
 }
 

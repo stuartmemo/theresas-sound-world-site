@@ -4,13 +4,13 @@
 
 var express = require('express'),
     routes = require('./routes'),
-    user = require('./routes/user'),
     http = require('http'),
     path = require('path'),
     fs = require('fs'),
     hbs = require('hbs'),
     mongodb = require('mongodb'),
-    app = express();
+    app = express(),
+    isDev = false;
 
 hbs.registerPartial('header', fs.readFileSync(__dirname + '/views/header.hbs', 'utf8'));
 hbs.registerPartial('title-home', fs.readFileSync(__dirname + '/views/title-home.hbs', 'utf8'));
@@ -18,6 +18,7 @@ hbs.registerPartial('title-mini', fs.readFileSync(__dirname + '/views/title-mini
 hbs.registerPartial('menu', fs.readFileSync(__dirname + '/views/menu.hbs', 'utf8'));
 hbs.registerPartial('reference-item', fs.readFileSync(__dirname + '/views/reference-item.hbs', 'utf8'));
 hbs.registerPartial('footer', fs.readFileSync(__dirname + '/views/footer.hbs', 'utf8'));
+hbs.registerPartial('admin', fs.readFileSync(__dirname + '/views/admin.hbs', 'utf8'));
 
 app.configure(function(){
     app.set('port', process.env.PORT || 3000);
@@ -33,77 +34,31 @@ app.configure(function(){
 
 app.configure('development', function(){
     app.use(express.errorHandler());
+    isDev = true;
 });
 
-var server = new mongodb.Server('localhost', 27017, {});
-var db = mongodb.Db('theresaSite', server, {});
+app.get('/', routes.index);
+app.get('/download', routes.download);
+app.get('/getting-started', routes.gettingStarted);
+app.get('/examples', routes.examples);
+app.get('/reference', routes.reference);
 
-app.get('/', function (req, res) {
-    res.render('index.hbs');
-});
+if (isDev) {
+    // Get
+    app.get('/admin', routes.admin);
+    app.get('/admin/create', routes.formCreate);
+    app.get('/admin/delete', routes.formDelete);
 
-app.get('/download', function (req, res) {
-    res.render('download.hbs', {quote:
-                {link: 'http://www.youtube.com/watch?v=T5jHO4jMPxA',
-                 words:'Position yourself on another man\'s cruise. One to share, the other to choose.'}
-               });
-});
-
-app.get('/getting-started', function (req, res) {
-    res.render('getting-started.hbs', {quote:
-                {link: 'http://www.youtube.com/watch?v=__VQX2Xn7tI',
-                words: 'A kiss for luck and we\'re on our way. We\'ve only begun.'}
-                });
-});
-
-app.get('/reference', function (req, res) {
-    db.open(function (error, client) {
-        if (error) throw error;
-
-        var collection = new mongodb.Collection(client, 'reference');
-
-        collection.find({}).sort({friendlyName: 1}).toArray(function (err, docs) {
-            var core = [],
-                fx = [],
-                music = [];
-
-            docs.forEach(function (record) {
-                switch (record.lib) {
-                    case 'core':
-                        core.push(record);
-                        break;
-                    case 'fx':
-                        fx.push(record);
-                        break;
-                    case 'music':
-                        music.push(record);
-                        break;
-                    default:
-                        break;
-                };
-            });
-
-            res.render('reference.hbs', {reference: docs, referenceCore: core, referenceFx: fx, referenceMusic: music});
-            db.close();
-        });
-
-    });
-});
+    // Post
+    app.post('/admin/create', routes.createRecord);
+    app.post('/admin/delete', routes.deleteRecord);
+}
 
 app.get('/reference/:command', function (req, res) {
     Commands.find({title: req.params.command}, function (err, docs) {
         res.render('reference.hbs', {commands: docs});
     });
 })
-
-app.get('/examples', function (req, res) {
-    res.render('examples.hbs',{
-                quote: {
-                    link: 'http://www.youtube.com/watch?v=96GCfykZ0qE',
-                    words: 'They say they don\'t need money. They\'re setting a bad example.'}
-                }
-              );
-});
 
 app.get('/examples/effects', function (req, res) {
     Commands.find({}, function (err, docs) {
@@ -112,5 +67,5 @@ app.get('/examples/effects', function (req, res) {
 });
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
+    console.log("Express server listening on port " + app.get('port'));
 });
