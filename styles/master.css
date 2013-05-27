@@ -1,0 +1,213 @@
+body {
+  background-color: #c3222e;
+  color: black;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+
+h1 {
+  color: white;
+  font-family: "myriad-pro", arial, sans-serif;
+  font-size: 3em;
+  line-height: 1.2em; }
+
+h2 {
+  font-size: 2em;
+  font-family: "myriad-pro", arial, sans-serif;
+  margin: 0.5em 0; }
+
+h3 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0.5em 0; }
+
+h4 {
+  font-weight: bold;
+  font-size: 1.2em; }
+
+p {
+  line-height: 1.5em;
+  margin: 0.5em 0; }
+
+a, a:visited {
+  color: #007aaa;
+  text-decoration: none; }
+  a:hover, a:visited:hover {
+    text-decoration: underline; }
+
+hr {
+  height: 0;
+  border: 0;
+  box-shadow: #ccc 1px 0;
+  border-bottom: 1px solid #000; }
+
+ul {
+  line-height: 1.5em;
+  list-style: none;
+  margin: 0;
+  padding: 0; }
+
+.container {
+  margin: 0em auto;
+  max-width: 800px; }
+
+header img {
+  float: left;
+  padding: 0 1.5em 1em 0; }
+
+header p a, header p a:visited {
+  color: white;
+  font-weight: normal; }
+
+.main {
+  background-color: #ffffc8;
+  padding: 0.2em 2em 1em; }
+
+label {
+  display: block; }
+
+.admin input, .admin select {
+  margin-bottom: 1em;
+  width: 30%; }
+
+header nav {
+  clear: both;
+  color: white;
+  background-color: #6f1717;
+  font-family: arial, sans-serif; }
+  header nav li {
+    display: inline-block;
+    padding: 1em 1.8em; }
+    header nav li a {
+      color: white; }
+      header nav li a:visited {
+        color: white; }
+
+pre, code, kbd, samp {
+  font-family: monospace, serif;
+  text-align: left;
+  _font-family: 'courier new', monospace;
+  font-size: 1em; }
+
+pre, .codemirror {
+  word-wrap: break-word;
+  padding-left: 8px;
+  background: #c3222e;
+  margin: 0; }
+
+pre {
+  white-space: pre;
+  white-space: pre-wrap; }
+
+table pre {
+  background: none;
+  color: inherit;
+  padding: 0; }
+
+pre, code, blockquote {
+  color: white;
+  line-height: 1.2em;
+  margin-bottom: 1em; }
+
+.pln {
+  color: white !important; }
+
+img.mini-logo {
+  width: 35px; }
+
+.download {
+  background: #6F1717;
+  display: none;
+  color: white;
+  padding-top: 2px; }
+
+.download li {
+  margin-bottom: 10px; }
+
+.download a {
+  color: white; }
+
+p a, label {
+  font-weight: bold; }
+
+.effect {
+  width: 33%;
+  float: left;
+  height: 130px; }
+
+.effect label {
+  width: 40%;
+  display: inline-block;
+  line-height: 1.7em; }
+
+.effect input[type="range"] {
+  width: 40%; }
+
+.clearer {
+  clear: both; }
+
+table th {
+  vertical-align: top; }
+
+a {
+  color: #007AAA; }
+
+span.params {
+  font-weight: normal; }
+
+section {
+  border-bottom: 1px solid #6F1717;
+  padding-bottom: 1em; }
+  section nav div {
+    float: left;
+    width: 33%; }
+  section[name="reference"] section section {
+    background: #FFFEED;
+    border-left: 8px solid #c3222e;
+    border-bottom: 0;
+    padding: 0.1em 1em;
+    margin: 1em 0; }
+    section[name="reference"] section section h1 {
+      color: black;
+      font-size: 1.5em;
+      margin-top: 0.2em; }
+    section[name="reference"] section section pre {
+      padding: 0; }
+      section[name="reference"] section section pre .CodeMirror pre {
+        padding: 0 4px; }
+  section[name="reference"] nav {
+    width: 100%; }
+  section[name="reference"] section[name="effects"] section {
+    border-left-color: #358B38; }
+  section[name="reference"] section[name="music"] section {
+    border-left-color: #007aaa; }
+
+aside {
+  background: #007aaa;
+  padding: 1em;
+  color: white; }
+  aside h1 {
+    font-size: 2em;
+    margin: 0; }
+  aside img {
+    float: right;
+    width: 160px;
+    margin-top: 0.8em; }
+  aside pre {
+    padding: 0;
+    margin: 0; }
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0; }
+
+.clearfix {
+  display: inline-block; }
+
+html[xmlns] .clearfix {
+  display: block; }
+
+* html .clearfix {
+  height: 1%; }
