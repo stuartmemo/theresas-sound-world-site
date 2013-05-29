@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="styles/normalize.css"/>
         <link rel="stylesheet" href="styles/master.css"/>
         <link rel="stylesheet" href="styles/codemirror.css"/>
-        <script src="//use.typekit.net/enw0xku.js"></script>
+        <script src="//use.typekit.net/iij2wcl.js"></script>
         <script>try{Typekit.load();}catch(e){}</script>
         <script src="scripts/codemirror.js"></script>
         <script src="scripts/xml.js"></script>
@@ -54,7 +54,7 @@
                     <h2>Getting Started</h2>
 
                     <h3>Create your Sound World</h3>
-                    <p>All you need to do to have your very own Sound World is to download and include <a href="/download">tsw.js</a> in your HTML document. From this point on all you need to do is use the variable "tsw" to make audio magic.</p>
+                    <p>All you need to do to have your very own Sound World is to download and include <a href="/download">tsw.js</a> in your HTML. From this point on all you need to do is use the variable "tsw" to make audio magic.</p>
                     <div class="codemirror">
                         <textarea><!doctype html>
 <html>
@@ -71,7 +71,7 @@
 
                     <h3>Play an audio file</h3>
                     <p>Easy! Now let's load a couple of audio files and play one of them once it's ready.</p>
-                    <pre  >tsw.load(
+                    <pre>tsw.load(
     {
         talking: 'talking.mp3',
         singing: 'singing.mp3'
@@ -168,7 +168,7 @@ files.talking.play();</pre>
 
                         <!-- tsw.connect() -->
                         <section id="connect">
-                            <h1>tsw.connect()</h1>
+                            <h1>tsw.connect(<span>node1, node2, arrayOfNodes</span>)</h1>
                             <p>Connects two or more audio nodes together.</p>
                             <pre>var osc = tsw.createOscillator(),
     volume = tsw.createGain(0.8);
@@ -200,13 +200,13 @@ tsw.context.createGain; // Use native Web Audio API function.</pre>
 
                         <!-- tsw.createFilter() -->
                         <section id="create-filter">
-                            <h1>tsw.createFilter(string)</h1>
+                            <h1>tsw.createFilter(<span>string</span>)</h1>
                             <p>Creates a filter node.</p>
                         </section>
 
                         <!-- tsw.createGain() -->
                         <section id="create-gain">
-                            <h1>tsw.createGain(float)</h1>
+                            <h1>tsw.createGain(<span>float</span>)</h1>
                             <p>Creates an gain node. The value passed in multiplies the volume of the passed input signal.<br/>
                                 Defaults to 1, which doesn't affect the signal.</p>
                             <pre>var sineWave = tsw.createOscillator();
@@ -225,7 +225,7 @@ whiteNoise.start();</pre>
 
                         <!-- tsw.createOscillator() -->
                         <section id="create-oscillator">
-                            <h1>tsw.createOscillator(<span class="params">string</span>)</h1>
+                            <h1>tsw.createOscillator(<span>string</span>)</h1>
                             <p>Creates an oscillator. Takes one of four values (<i>sine, square, triangle, sawtooth</i>).</p>
                             <pre>var sine = tsw.createOscillator(), // Creates sine wave.
     saw = tsw.createOscillator('sawtooth'); // Creates sawtooth wave.
@@ -236,7 +236,7 @@ saw.start(); // Start sawtooth wave.</pre>
 
                         <!-- tsw.disconnect() -->
                         <section id="disconnect">
-                            <h1>tsw.disconnect()</h1>
+                            <h1>tsw.disconnect(<span>node</span>)</h1>
                             <p>Disconnects a given node from all nodes attached to it.</p>
                             <pre>tsw.connect(osc, gainNode, tsw.speakers); // Connect nodes.
 tsw.disconnect(gainNode); // Disconnect gainNode.
@@ -247,18 +247,37 @@ tsw.disconnect(gainNode); // Disconnect gainNode.
                         <section id="load">
                             <h1>tsw.load()</h1>
                             <p>Loads one or more audio files into memory and executes a callback function once complete.</p>
+                    <pre>tsw.load(
+    {
+        talking: 'talking.mp3',
+        singing: 'singing.mp3'
+    },
+    function (files) {
+        files.talking.play();
+    }
+);</pre>
                         </section>
 
                         <!-- tsw.now() -->
                         <section id="now">
                             <h1>tsw.now()</h1>
                             <p>Returns the time in seconds since the audio context was activated.</p>
+                            <pre>console.log(tsw.now()); // logs 6.844081632653062 (or whatever) seconds.</pre>
                         </section>
 
                         <!-- tsw.play() -->
                         <section id="play">
-                            <h1>tsw.play()</h1>
+                            <h1>tsw.play(<span>number</span>)</h1>
                             <p>Plays an audio buffer after a specified number of seconds. If nothing is passed, audio will play immediately.</p>
+                            <pre>tsw.load(
+    {
+        talking: 'talking.mp3',
+        singing: 'singing.mp3'
+    },
+    function (files) {
+        files.talking.play(5); // Start playing after 5 seconds.
+    }
+);</pre>
                         </section>
 
                         <!-- tsw.reverse() -->
@@ -271,12 +290,17 @@ tsw.disconnect(gainNode); // Disconnect gainNode.
                         <section id="speakers">
                             <h1>tsw.speakers</h1>
                             <p>The final output node. You'll need to connect to this to hear something.</p>
+                            <pre>tsw.connect(osc, gainNode, tsw.speakers);
+osc.start();</pre>
                         </section>
 
                         <!-- tsw.stop() -->
                         <section id="stop">
-                            <h1>tsw.stop()</h1>
+                            <h1>tsw.stop(<span>number</span>)</h1>
                             <p>Stops an audio buffer or oscillator from playing after a specified number of seconds. If nothing is passed, audio will stop immediately.</p>
+                            <pre>
+sine.stop(); // Stop oscillator immediately.
+saw.stop(5); // Stop oscillator after 5 seconds.</pre>
                         </section>
                     </section>
 

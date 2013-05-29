@@ -5,13 +5,15 @@ body {
 
 h1 {
   color: white;
-  font-family: "myriad-pro", arial, sans-serif;
+  font-family: "myriad-pro-1", "myriad-pro-2", arial, sans-serif;
   font-size: 3em;
   line-height: 1.2em; }
+  h1 span {
+    font-weight: normal; }
 
 h2 {
   font-size: 2em;
-  font-family: "myriad-pro", arial, sans-serif;
+  font-family: "myriad-pro-1", "myriad-pro-2", arial, sans-serif;
   margin: 0.5em 0; }
 
 h3 {
