@@ -34,6 +34,7 @@ h3 {
 h4 {
     font-weight: bold;
     font-size: 1.2em;
+    margin: 0;
 }
 
 p {
@@ -199,6 +200,12 @@ a {
     color: #007AAA;
 }
 
+canvas {
+    position: absolute;
+    top: 5px;
+    z-index: -1;
+}
+
 span.params {
     font-weight: normal;
 }
@@ -207,9 +214,8 @@ section {
     border-bottom: 1px solid #6F1717;
     padding-bottom: 1em;
 
-    nav div {
-        float: left;
-        width: 33%;
+    section {
+        border: 0;
     }
 
     &[name="reference"] section section {
@@ -238,6 +244,11 @@ section {
     &[name="reference"] {
         nav {
             width: 100%;
+
+            li {
+                display: inline-block;
+                width: 32%;
+            }
         }
 
         section[name="effects"] section {

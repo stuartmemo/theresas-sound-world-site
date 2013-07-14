@@ -23,7 +23,8 @@ h3 {
 
 h4 {
   font-weight: bold;
-  font-size: 1.2em; }
+  font-size: 1.2em;
+  margin: 0; }
 
 p {
   line-height: 1.5em;
@@ -152,15 +153,19 @@ table th {
 a {
   color: #007AAA; }
 
+canvas {
+  position: absolute;
+  top: 5px;
+  z-index: -1; }
+
 span.params {
   font-weight: normal; }
 
 section {
   border-bottom: 1px solid #6F1717;
   padding-bottom: 1em; }
-  section nav div {
-    float: left;
-    width: 33%; }
+  section section {
+    border: 0; }
   section[name="reference"] section section {
     background: #FFFEED;
     border-left: 8px solid #c3222e;
@@ -177,6 +182,9 @@ section {
         padding: 0 4px; }
   section[name="reference"] nav {
     width: 100%; }
+    section[name="reference"] nav li {
+      display: inline-block;
+      width: 32%; }
   section[name="reference"] section[name="effects"] section {
     border-left-color: #358B38; }
   section[name="reference"] section[name="music"] section {

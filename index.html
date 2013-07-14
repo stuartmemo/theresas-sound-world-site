@@ -3,6 +3,8 @@
     <head>
         <meta charset="utf-8"/>
         <title>Theresa's Sound World</title>
+        <meta name="description" content="A way of processing audio, music and generating sound using JavaScript"/>
+        <meta name="author" content="Stuart Memo"/>
         <link rel="stylesheet" href="styles/normalize.css"/>
         <link rel="stylesheet" href="styles/master.css"/>
         <link rel="stylesheet" href="styles/codemirror.css"/>
@@ -14,8 +16,8 @@
         <script src="scripts/javascript.js"></script>
     </head>
     <body>
+        <canvas id="waves"></canvas>
         <div class="container">
-
             <header class="mini">
                 <a href="/"><img src="images/theresas-sound-world.png" height="160"/></a>
                 <h1>Theresa's Sound World is a way of processing audio and generating sound using JavaScript</h1>
@@ -85,8 +87,9 @@
 
                     <h3>Flip it and reverse it</h3>
                     <p>Something something...</p>
-                    <pre  >files.talking.reverse().play();</pre>
+                    <pre>files.talking.reverse().play();</pre>
 
+                </section>
 
                     <aside>
                         <h1>An important message from David Bowie...</h1>
@@ -135,6 +138,7 @@ files.talking.play();</pre>
                                 <li><a href="#create-filter">tsw.createFilter()</a></li>
                                 <li><a href="#create-gain">tsw.createGain()</a></li>
                                 <li><a href="#create-noise">tsw.createNoise()</a></li>
+                                <li><a href="#get-user-audio">tsw.getUserAudio()</a></li>
                                 <li><a href="#create-oscillator">tsw.createOscillator()</a></li>
                                 <li><a href="#disconnect">tsw.disconnect()</a></li>
                                 <li><a href="#load">tsw.load()</a></li>
@@ -148,8 +152,11 @@ files.talking.play();</pre>
                         <div>
                             <h3>Effects</h3>
                             <ul>
+                                <li><a href="#create-compressor">tsw.createCompressor()</a></li>
                                 <li><a href="#create-delay">tsw.createDelay()</a></li>
                                 <li><a href="#create-distortion">tsw.createDistortion()</a></li>
+                                <li><a href="#create-phaser">tsw.createPhaser()</a></li>
+                                <li><a href="#create-reverb">tsw.createReverb()</a></li>
                                 <li><a href="#create-tremolo">tsw.createTremolo()</a></li>
                             </ul>
                         </div>
@@ -163,8 +170,9 @@ files.talking.play();</pre>
                         </div>
                     </nav>
 
+                    <hr/>
                     <section name="core">
-                        <h3>Core</h3>
+                        <h2>Core</h2>
 
                         <!-- tsw.connect() -->
                         <section id="connect">
@@ -243,9 +251,18 @@ tsw.disconnect(gainNode); // Disconnect gainNode.
 // osc is no longer connected to speakers.</pre>
                         </section>
 
+                        <!-- tsw.getUserAudio() -->
+                        <section id="get-user-audio">
+                            <h1>tsw.getUserAudio(<span>callback</span>)</h1>
+                            <p>...</p>
+                            <pre>tsw.getUserAudio(function (node) {
+   console.log(node)
+});</pre>
+                        </section>
+
                         <!-- tsw.load() -->
                         <section id="load">
-                            <h1>tsw.load()</h1>
+                            <h1>tsw.load(<span>object, function</span>)</h1>
                             <p>Loads one or more audio files into memory and executes a callback function once complete.</p>
                     <pre>tsw.load(
     {
@@ -307,6 +324,12 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
                     <section name="effects">
                         <h3>Effects</h3>
 
+                        <!-- tsw.createCompressor() -->
+                        <section id="create-compressor">
+                            <h1>tsw.createCompressor()</h1>
+                            <p>Creates compressor effect.</p>
+                        </section>
+
                         <!-- tsw.createDelay() -->
                         <section id="create-delay">
                             <h1>tsw.createDelay()</h1>
@@ -317,6 +340,18 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
                         <section id="create-distortion">
                             <h1>tsw.createDistortion()</h1>
                             <p>Creates distortion node.</p>
+                        </section>
+
+                        <!-- tsw.createPhaser() -->
+                        <section id="create-phaser">
+                            <h1>tsw.createPhaser()</h1>
+                            <p>Creates phaser node.</p>
+                        </section>
+
+                        <!-- tsw.createReverb() -->
+                        <section id="create-reverb">
+                            <h1>tsw.createReverb()</h1>
+                            <p>Creates reverb node.</p>
                         </section>
 
                         <!-- tsw.createTremolo() -->
@@ -331,14 +366,21 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
 
                         <!-- tsw.getScale() -->
                         <section id="get-scale">
-                            <h1>tsw.getScale()</h1>
-                            <p>Gets major scale of given note.</p>
+                            <h1>tsw.getScale(string)</h1>
+                            <p>Gets the musical scale of given note. Returns an array of notes as strings.</p>
+                            <p>Possible values:</p>
+                            <ul>
+                                <li>major</li>
+                                <li>minor</li>
+                            </ul>
+                            <pre>tsw.getScale('minor', 'A4');</pre>
                         </section>
 
                         <!-- tsw.parseChord() -->
                         <section id="parse-chord">
-                            <h1>tsw.parseChord()</h1>
+                            <h1>tsw.parseChord(string)</h1>
                             <p>Returns array of notes in any given chord.</p>
+                            <pre>tsw.parseChord('A3maj')</pre>
                         </section>
 
                         <!-- tsw.getSemitoneDifference() -->
@@ -377,6 +419,7 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
                 tabMode: 'indent'
             });
         </script>
-        <script src="scripts/tsw.min.js"></script>
+        <script src="/theresas-sound-world/src/tsw-core.js"></script>
+        <script src="scripts/wave-machine.js"></script>
     </body>
 </html>
