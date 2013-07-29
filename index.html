@@ -135,6 +135,7 @@ files.talking.play();</pre>
                                 <li><a href="#connect">tsw.connect()</a></li>
                                 <li><a href="#context">tsw.context</a></li>
                                 <li><a href="#create-buffer">tsw.createBuffer()</a></li>
+                                <li><a href="#create-compressor">tsw.createCompressor()</a></li>
                                 <li><a href="#create-filter">tsw.createFilter()</a></li>
                                 <li><a href="#create-gain">tsw.createGain()</a></li>
                                 <li><a href="#create-noise">tsw.createNoise()</a></li>
@@ -152,7 +153,6 @@ files.talking.play();</pre>
                         <div>
                             <h3>Effects</h3>
                             <ul>
-                                <li><a href="#create-compressor">tsw.createCompressor()</a></li>
                                 <li><a href="#create-delay">tsw.createDelay()</a></li>
                                 <li><a href="#create-distortion">tsw.createDistortion()</a></li>
                                 <li><a href="#create-phaser">tsw.createPhaser()</a></li>
@@ -204,6 +204,12 @@ tsw.context.createGain; // Use native Web Audio API function.</pre>
                         <section id="create-buffer">
                             <h1>tsw.createBuffer()</h1>
                             <p>Creates an audio buffer.</p>
+                        </section>
+
+                        <!-- tsw.createCompressor() -->
+                        <section id="create-compressor">
+                            <h1>tsw.createCompressor()</h1>
+                            <p>Creates compressor nodes.</p>
                         </section>
 
                         <!-- tsw.createFilter() -->
@@ -324,12 +330,6 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
                     <section name="effects">
                         <h3>Effects</h3>
 
-                        <!-- tsw.createCompressor() -->
-                        <section id="create-compressor">
-                            <h1>tsw.createCompressor()</h1>
-                            <p>Creates compressor effect.</p>
-                        </section>
-
                         <!-- tsw.createDelay() -->
                         <section id="create-delay">
                             <h1>tsw.createDelay()</h1>
@@ -392,7 +392,7 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
 
                 </section>
 
-                <p>Copyright 2013 Stuart Memo</p>
+                <p>Copyright 2013 <a href="http://stuartmemo.com">Stuart Memo</a></p>
             </div>
         </div>
         <script>
@@ -420,6 +420,7 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
             });
         </script>
         <script src="/theresas-sound-world/src/tsw-core.js"></script>
+        <script src="/theresas-sound-world/src/tsw-music.js"></script>
         <script src="scripts/wave-machine.js"></script>
     </body>
 </html>
