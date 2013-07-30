@@ -73,8 +73,9 @@
                     <p>If you see "0.0.1" in your browser's JS console, then super. You're using the latest version and are ready to go.</p>
 
                     <h3>Play an audio file</h3>
-                    <p>Easy! Now let's load a couple of audio files and play one of them once it's ready.</p>
+                    <p>Now let's load a couple of audio files and play one of them once it's ready.</p>
                     <pre>tsw.load(
+    '/path/to/my/audio-files/',
     {
         talking: 'talking.mp3',
         singing: 'singing.mp3'
@@ -169,6 +170,12 @@ files.talking.play();</pre>
                                 <li><a href="#get-semitone-difference">tsw.getSemitoneDifference()</a></li>
                             </ul> 
                         </div>
+                        <div>
+                            <h3>MIDI</h3>
+                            <ul>
+                                <li><a href="#get-user-midi">tsw.getUserMIDI()</a></li>
+                                <li><a href="#midi-number-to-note">tsw.MIDINumberToNote()</a></li>
+                            </ul>
                     </nav>
 
                     <hr/>
@@ -251,8 +258,8 @@ saw.start(); // Start sawtooth wave.</pre>
 
                         <!-- tsw.disconnect() -->
                         <section id="disconnect">
-                            <h1>tsw.disconnect(<span>node || array</span>)</h1>
-                            <p>Disconnects a node or array of nodes from all nodes attached to it.</p>
+                            <h1>tsw.disconnect(<span>node1, node2, ...node99</span>)</h1>
+                            <p>Disconnects any number of nodes from all nodes attached to it.</p>
                             <pre>tsw.connect(osc, gainNode, tsw.speakers); // Connect nodes.
 tsw.disconnect(gainNode); // Disconnect gainNode.
 // osc is no longer connected to speakers.</pre>
@@ -358,7 +365,7 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
                         <!-- tsw.createTremolo() -->
                         <section id="create-tremolo">
                             <h1>tsw.createTremolo()</h1>
-                            <p>Creates tremelo effect.</p>
+                            <p>Creates tremolo effect.</p>
                         </section>
                     </section>
 
@@ -367,14 +374,14 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
 
                         <!-- tsw.getScale() -->
                         <section id="get-scale">
-                            <h1>tsw.getScale(string)</h1>
+                            <h1>tsw.getScale(string, string)</h1>
                             <p>Gets the musical scale of given note. Returns an array of notes as strings.</p>
                             <p>Possible values:</p>
                             <ul>
                                 <li>major</li>
                                 <li>minor</li>
                             </ul>
-                            <pre>tsw.getScale('minor', 'A4');</pre>
+                            <pre>tsw.getScale('A4', 'minor');</pre>
                         </section>
 
                         <!-- tsw.parseChord() -->
@@ -388,6 +395,30 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
                         <section id="get-semitone-difference">
                             <h1>tsw.getSemitoneDifference()</h1>
                             <p>Returns the number of semitones an interval is from a base note.</p>
+                        </section>
+
+                        <!-- tsw.noteToFrequency() -->
+                        <section id="note-to-frequency">
+                            <h1>tsw.noteToFrequency(string)</h1>
+                            <p>Returns the frequency in Hz of a musical note passed by name.</p>
+                            <pre>tsw.noteToFrequency('A4'); // Returns 440;</pre>
+                        </section>
+
+                    </section>
+
+                    <section name="midi">
+                        <h3>MIDI</h3>
+
+                        <!-- tsw.getUserMIDI() -->
+                        <section id="get-user-midi">
+                            <h1>tsw.getUserMIDI()</h1>
+                        </section>
+
+                        <!-- tsw.MIDINumberToNode() -->
+                        <section id="midi-number-to-note">
+                            <h1>tsw.MIDINumberToNote(number)</h1>
+                            <p>Returns the note name a MIDI message note number.</p>
+                            <pre>tsw.MIDINumberToNote(24) // returns 'C2'</pre>
                         </section>
                     </section>
 
@@ -425,5 +456,6 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
         <script src="scripts/wave-machine.js"></script>
         <script src="/theresas-sound-world/src/tsw-core.js"></script>
         <script src="/theresas-sound-world/src/tsw-music.js"></script>
+        <script src="/theresas-sound-world/src/tsw-midi.js"></script>
     </body>
 </html>
