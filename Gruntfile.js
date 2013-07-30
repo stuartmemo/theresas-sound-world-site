@@ -1,21 +1,34 @@
-{
-    "name": "theresas-sound-world-site",
-    "title": "Theresa's Sound World site",
-    "description": "Website and documentation for Theresa's Sound World",
-    "version": "0.0.1",
-    "homepage": "http://theresassoundworld.com",
-    "author": {
-        "name": "Stuart Memo",
-        "url": "http://stuartmemo.com"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/stuartmemo/theresas-sound-world-site"
-    },
-    "dependencies": {},
-    "devDependencies": {
-        "grunt": "0.4.1",
-        "grunt-contrib-jshint": "0.3.0",
-        "grunt-contrib-uglify": "0.1.2"
-    }
-}
+module.exports = function (grunt) {
+    'use strict';
+
+    // Project config.
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+
+        uglify: {
+            all: {
+                files: {
+                    'build/tsw.min.js': ['src/tsw-core.js', 'src/tsw-effects.js', 'src/tsw-music.js']
+                },
+                options: {
+                    banner: '/* <%= pkg.title %> <%= pkg.version %> (c) 2013 Stuart Memo */\n'
+                }
+            }
+        },
+
+        concat: {
+            options: {
+                banner: '/* <%= pkg.title %> <%= pkg.version %> (c) 2013 Stuart Memo */\n'
+            },
+            dist: {
+                src: ['']
+            }
+        }
+    });
+
+    // Load plugins.
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+
+    // Default tasks.
+    grunt.registerTask('default', ['uglify']);
+};
