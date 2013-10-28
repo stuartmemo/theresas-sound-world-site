@@ -75,13 +75,22 @@
                     <h3>Play an audio file</h3>
                     <p>Now let's load a couple of audio files and play one of them once it's ready.</p>
                     <pre>tsw.load(
-    '/path/to/my/audio-files/',
     {
-        talking: 'talking.mp3',
-        singing: 'singing.mp3'
+        talking: 'talking-sample.mp3',
+        singing: 'my-lovely-singing.mp3'
     },
-    function (files) {
-        files.talking.play();
+    {
+        path: '/path/to/files/',
+        extensions: ['wav', 'mp3']
+    },
+    function (response, status) {
+        if (status === 'success') {
+            // Files have loaded successfully
+            tsw.play(response.talking);
+        } else {
+            // There's been an error
+            
+        }
     }
 );
                     </pre>
