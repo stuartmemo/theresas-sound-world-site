@@ -83,17 +83,16 @@
         path: '/path/to/files/',
         extensions: ['wav', 'mp3']
     },
-    function (response, status) {
+    function (response, status, xhr) {
         if (status === 'success') {
             // Files have loaded successfully
             tsw.play(response.talking);
         } else {
             // There's been an error
-            
+            console.log('We have a technical: ' + xhr.statusText);
         }
     }
-);
-                    </pre>
+);</pre>
                     <p>Let's hear it - <button>Play</button></p>
 
                     <h3>Flip it and reverse it</h3>
