@@ -142,6 +142,7 @@ files.talking.play();</pre>
                         <div>
                             <h3>Core</h3>
                             <ul>
+                                <li><a href="#browser-supported">tsw.browserSupported</a></li>
                                 <li><a href="#connect">tsw.connect()</a></li>
                                 <li><a href="#context">tsw.context</a></li>
                                 <li><a href="#create-buffer">tsw.createBuffer()</a></li>
@@ -189,6 +190,17 @@ files.talking.play();</pre>
                     <hr/>
                     <section name="core">
                         <h2>Core</h2>
+
+                        <!-- tsw.browserSupported  -->
+                        <section id="browser-supported">
+                            <h1>tsw.browserSupported</h1>
+                            <p>Property to determine whether the Web Audio API is available.</p>
+                            <pre>if (tsw.browserSupported) {
+    console.log('All good! Pump up the volume, pump up the volume, pump pump pump.');
+} else {
+    console.log('Sorry, your browser doesn\'t support the Web Audio API.');
+}</pre>
+                        </section>
 
                         <!-- tsw.connect() -->
                         <section id="connect">
