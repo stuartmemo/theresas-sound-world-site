@@ -62,6 +62,7 @@
                         <textarea><!doctype html>
 <html>
     <body>
+        <h1>Hi fans!</h1>
         <script src="path/to/tsw.min.js"></script>
         <script>
             console.log(tsw.version);
@@ -222,8 +223,19 @@ tsw.context.createGain; // Use native Web Audio API function.</pre>
 
                         <!-- tsw.createFilter() -->
                         <section id="create-filter">
-                            <h1>tsw.createFilter(<span>string</span>)</h1>
-                            <p>Creates a filter node.</p>
+                            <h1>tsw.createFilter(<span>filterType [string], frequency [number], Q [number], gain [number]</span>)</h1>
+                            <p>Creates a filter node, which removes certain frequencies from any audio passed through it.</p>
+                            <p>Possible values</p>
+                            <ul>
+                                <li>lowpass</li>
+                                <li>highpass</li>
+                                <li>bandpass</li>
+                                <li>lowshelf</li>
+                                <li>highshelf</li>
+                                <li>peaking</li>
+                                <li>notch</li>
+                                <li>allpass</li>
+                            </ul>
                         </section>
 
                         <!-- tsw.createGain() -->
@@ -267,10 +279,10 @@ tsw.disconnect(gainNode); // Disconnect gainNode.
 
                         <!-- tsw.getUserAudio() -->
                         <section id="get-user-audio">
-                            <h1>tsw.getUserAudio(<span>callback</span>)</h1>
-                            <p>...</p>
-                            <pre>tsw.getUserAudio(function (node) {
-   console.log(node)
+                            <h1>tsw.getUserAudio(<span>stream</span>)</h1>
+                            <p>Gets and audio stream from the user's microphone or line-in. Connect it like you would any other node.</p>
+                            <pre>tsw.getUserAudio(function (stream) {
+    tsw.connect(stream, tsw.speakers);
 });</pre>
                         </section>
 
@@ -376,12 +388,7 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
                         <section id="get-scale">
                             <h1>tsw.getScale(string, string)</h1>
                             <p>Gets the musical scale of given note. Returns an array of notes as strings.</p>
-                            <p>Possible values:</p>
-                            <ul>
-                                <li>major</li>
-                                <li>minor</li>
-                            </ul>
-                            <pre>tsw.getScale('A4', 'minor');</pre>
+                            <pre>tsw.getScale('A', 'minor'); // Returns ["A", "B", "C", "D", "E", "F", "G", "A"]</pre>
                         </section>
 
                         <!-- tsw.parseChord() -->
@@ -422,6 +429,17 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
                         </section>
                     </section>
 
+                </section>
+
+                <section id="showcase">
+                    <h2>Showcase</h2> 
+                    <p>Here are a selection of things that have been made using Theresas's Soundworld.</p>
+
+                    <h3><a href="http://stuartmemo.com/synth/">Sympathetic Synthesizer System Mk 1</a></h3>
+                    <p>A synth with feelings.</p>
+
+                    <h3><a href="http://stuartmemo.com/beat-petite/">Beat Petite</a></h3>
+                    <p>A sample-free drum machine in the browser.</p>
                 </section>
 
                 <p>Copyright 2013 <a href="http://stuartmemo.com">Stuart Memo</a></p>
