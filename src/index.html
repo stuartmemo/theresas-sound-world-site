@@ -76,16 +76,24 @@
                     <h3>Play an audio file</h3>
                     <p>Now let's load a couple of audio files and play one of them once it's ready.</p>
                     <pre>tsw.load(
-    '/path/to/my/audio-files/',
     {
-        talking: 'talking.mp3',
-        singing: 'singing.mp3'
+        talking: 'talking-sample.mp3',
+        singing: 'my-lovely-singing.mp3'
     },
-    function (files) {
-        files.talking.play();
+    {
+        path: '/path/to/files/',
+        extensions: ['wav', 'mp3']
+    },
+    function (response, status, xhr) {
+        if (status === 'success') {
+            // Files have loaded successfully
+            tsw.play(response.talking);
+        } else {
+            // There's been an error
+            console.log('We have a technical: ' + xhr.statusText);
+        }
     }
-);
-                    </pre>
+);</pre>
                     <p>Let's hear it - <button>Play</button></p>
 
                     <h3>Flip it and reverse it</h3>
@@ -135,6 +143,7 @@ files.talking.play();</pre>
                         <div>
                             <h3>Core</h3>
                             <ul>
+                                <li><a href="#browser-supported">tsw.browserSupported</a></li>
                                 <li><a href="#connect">tsw.connect()</a></li>
                                 <li><a href="#context">tsw.context</a></li>
                                 <li><a href="#create-buffer">tsw.createBuffer()</a></li>
@@ -166,22 +175,33 @@ files.talking.play();</pre>
                         <div>
                             <h3>Music</h3>
                             <ul>
+                                <li><a href="#get-notes">tsw.getNotes()</a></li>
                                 <li><a href="#get-scale">tsw.getScale()</a></li>
-                                <li><a href="#parse-chord">tsw.parseChord()</a></li>
                                 <li><a href="#get-semitone-difference">tsw.getSemitoneDifference()</a></li>
                             </ul> 
                         </div>
                         <div>
                             <h3>MIDI</h3>
                             <ul>
-                                <li><a href="#get-user-midi">tsw.getUserMIDI()</a></li>
-                                <li><a href="#midi-number-to-note">tsw.MIDINumberToNote()</a></li>
+                                <li><a href="#get-midi">tsw.getMIDI()</a></li>
+                                <li><a href="#get-midi-note">tsw.getMIDINote()</a></li>
                             </ul>
                     </nav>
 
                     <hr/>
                     <section name="core">
                         <h2>Core</h2>
+
+                        <!-- tsw.browserSupported  -->
+                        <section id="browser-supported">
+                            <h1>tsw.browserSupported</h1>
+                            <p>Property to determine whether the Web Audio API is available.</p>
+                            <pre>if (tsw.browserSupported) {
+    console.log('All good! Pump up the volume, pump up the volume, pump pump pump.');
+} else {
+    console.log('Sorry, your browser doesn\'t support the Web Audio API.');
+}</pre>
+                        </section>
 
                         <!-- tsw.connect() -->
                         <section id="connect">
@@ -290,13 +310,23 @@ tsw.disconnect(gainNode); // Disconnect gainNode.
                         <section id="load">
                             <h1>tsw.load(<span>object, function</span>)</h1>
                             <p>Loads one or more audio files into memory and executes a callback function once complete.</p>
-                    <pre>tsw.load(
+                            <pre>tsw.load(
     {
-        talking: 'talking.mp3',
-        singing: 'singing.mp3'
+        talking: 'talking-sample.mp3',
+        singing: 'my-lovely-singing.mp3'
     },
-    function (files) {
-        files.talking.play();
+    {
+        path: '/path/to/files/',
+        extensions: ['wav', 'mp3']
+    },
+    function (response, status, xhr) {
+        if (status === 'success') {
+            // Files have loaded successfully
+            tsw.play(response.talking);
+        } else {
+            // There's been an error
+            console.log('We have a technical: ' + xhr.statusText);
+        }
     }
 );</pre>
                         </section>
@@ -391,11 +421,18 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
                             <pre>tsw.getScale('A', 'minor'); // Returns ["A", "B", "C", "D", "E", "F", "G", "A"]</pre>
                         </section>
 
-                        <!-- tsw.parseChord() -->
-                        <section id="parse-chord">
-                            <h1>tsw.parseChord(string)</h1>
+                        <!-- tsw.getNote() -->
+                        <section id="get-note">
+                            <h1>tsw.getNote(number)</h1>
+                            <p>Returns individual note from frequency.</p>
+                            <pre>tsw.getNote(440)</pre>
+                        </section>
+
+                        <!-- tsw.getNotes() -->
+                        <section id="get-notes">
+                            <h1>tsw.getNotes(string)</h1>
                             <p>Returns array of notes in any given chord.</p>
-                            <pre>tsw.parseChord('A3maj')</pre>
+                            <pre>tsw.getNotes('A3maj')</pre>
                         </section>
 
                         <!-- tsw.getSemitoneDifference() -->
@@ -405,10 +442,10 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
                         </section>
 
                         <!-- tsw.noteToFrequency() -->
-                        <section id="note-to-frequency">
-                            <h1>tsw.noteToFrequency(string)</h1>
+                        <section id="get-frequency">
+                            <h1>tsw.getFrequency(string)</h1>
                             <p>Returns the frequency in Hz of a musical note passed by name.</p>
-                            <pre>tsw.noteToFrequency('A4'); // Returns 440;</pre>
+                            <pre>tsw.getFrequency('A4'); // Returns 440;</pre>
                         </section>
 
                     </section>
@@ -416,14 +453,14 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
                     <section name="midi">
                         <h3>MIDI</h3>
 
-                        <!-- tsw.getUserMIDI() -->
+                        <!-- tsw.getMIDI() -->
                         <section id="get-user-midi">
-                            <h1>tsw.getUserMIDI()</h1>
+                            <h1>tsw.getMIDI()</h1>
                         </section>
 
-                        <!-- tsw.MIDINumberToNode() -->
+                        <!-- tsw.getMIDINote() -->
                         <section id="midi-number-to-note">
-                            <h1>tsw.MIDINumberToNote(number)</h1>
+                            <h1>tsw.getMIDINote(number)</h1>
                             <p>Returns the note name a MIDI message note number.</p>
                             <pre>tsw.MIDINumberToNote(24) // returns 'C2'</pre>
                         </section>
