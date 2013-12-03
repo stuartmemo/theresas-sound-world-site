@@ -232,7 +232,10 @@ tsw.context.createGain; // Use native Web Audio API function.</pre>
                         <!-- tsw.createBuffer() -->
                         <section id="create-buffer">
                             <h1>tsw.createBuffer()</h1>
-                            <p>Creates an audio buffer.</p>
+                            <p>
+                                Creates an audio buffer. If you want to play a sound from a file you have to load it into memory first.
+                                An audio buffer is how you store audio in memory. Create a buffer and assign your audio data to it.
+                            </p>
                         </section>
 
                         <!-- tsw.createCompressor() -->
@@ -348,7 +351,7 @@ tsw.disconnect(gainNode); // Disconnect gainNode.
         singing: 'singing.mp3'
     },
     function (files) {
-        files.talking.play(5); // Start playing after 5 seconds.
+        files.talking.play(tsw.now() + 5); // Start playing after 5 seconds.
     }
 );</pre>
                         </section>
@@ -509,8 +512,6 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
             })(window);
         </script>
         <script src="scripts/wave-machine.js"></script>
-        <script src="/theresas-sound-world/src/tsw-core.js"></script>
-        <script src="/theresas-sound-world/src/tsw-music.js"></script>
-        <script src="/theresas-sound-world/src/tsw-midi.js"></script>
+        <script src="scripts/tsw.js"></script>
     </body>
 </html>
