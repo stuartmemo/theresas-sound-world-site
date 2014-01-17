@@ -102,34 +102,39 @@
 
                 </section>
 
-                    <aside>
-                        <h1>An important message from David Bowie...</h1>
-                        <img src="images/bowie.jpg"/>
-                        <p>
-                            Hi. David here. When I first started using the Web Audio API, an important
-                            concept for me to grasp was its way of connecting audio nodes together to
-                            process audio.
-                        </p>
-                        <p>
-                            For example, if we wanted to change the volume of the audio in the file we loaded above,
-                            we could connect it to a gain node, which we set to halve the volume like so:
-                        </p>
-                        <pre>var gainNode = tsw.createGain(0.5); // 0.5 = 1/2 of input volume
+                <aside>
+                    <h1>An important message from David Bowie...</h1>
+                    <img src="images/bowie.jpg"/>
+                    <p>
+                        Hi. David here. When I first started using the Web Audio API, an important
+                        concept for me to grasp was its way of connecting audio nodes together to
+                        process audio.
+                    </p>
+                    <p>
+                        I like to think that connecting nodes is very similar to how my friend <a href="http://en.wikipedia.org/wiki/Adrian_Belew">Adrian</a> connects guitar effects pedals.
+                        He takes a lead from his guitar add connects it to a distortion pedal. He then takes another lead and connects it
+                        from his distortion pedal to his phaser pedal. He then takes yet another lead and connects it to his amplifier.
+                        Each pedal or node changes the sound and passes it on to the next pedal/node.
+                    </p>
+                    <p>
+                        For example, if we wanted to change the volume of the audio in the file we loaded above,
+                        we could connect it to a gain node, which we set to halve the volume like so:
+                    </p>
+                    <pre>var gainNode = tsw.createGain(0.5); // 0.5 = 1/2 of input volume
 // Connect the audio file to the gain node,
 // then connect the gain node to the speakers.
 tsw.connect(files.talking, gainNode, tsw.speakers);
 // Play the file.
 files.talking.play();</pre>
 
-                        <p>So remember, <strong>if you want to hear something, you have to connect it to the speakers</strong>.
-                            You can even do some fancy chaining like this...</p>
-                        <p>DIAGRAM HERE</p>
-                        <p>Theresa's Sound World makes this easy, as you can use arrays in its connect method.</p>
-                        <pre>tsw.connect(files.talking, [gainNode, distortionNode], tsw.speakers);</pre>
-                        <p>Good luck in your audio quest.</p>
-                        <p>&mdash; David</p>
-                    </aside>
-
+                    <p>So remember, <strong>if you want to hear something, you have to connect it to the speakers</strong>.
+                        You can even do some fancy chaining like this...</p>
+                    <p>DIAGRAM HERE</p>
+                    <p>Theresa's Sound World makes this easy, as you can use arrays in its connect method.</p>
+                    <pre>tsw.connect(files.talking, [gainNode, distortionNode], tsw.speakers);</pre>
+                    <p>Good luck in your audio quest.</p>
+                    <p>&mdash; David</p>
+                </aside>
 
                 <section>
                     <h2>Demos</h2>
@@ -143,7 +148,6 @@ files.talking.play();</pre>
                         <div>
                             <h3>Core</h3>
                             <ul>
-                                <li><a href="#browser-supported">tsw.browserSupported</a></li>
                                 <li><a href="#connect">tsw.connect()</a></li>
                                 <li><a href="#context">tsw.context</a></li>
                                 <li><a href="#create-buffer">tsw.createBuffer()</a></li>
@@ -152,6 +156,7 @@ files.talking.play();</pre>
                                 <li><a href="#create-gain">tsw.createGain()</a></li>
                                 <li><a href="#create-noise">tsw.createNoise()</a></li>
                                 <li><a href="#get-user-audio">tsw.getUserAudio()</a></li>
+                                <li><a href="#is-browser-supported">tsw.isBrowserSupported</a></li>
                                 <li><a href="#create-oscillator">tsw.createOscillator()</a></li>
                                 <li><a href="#disconnect">tsw.disconnect()</a></li>
                                 <li><a href="#load">tsw.load()</a></li>
@@ -192,17 +197,6 @@ files.talking.play();</pre>
                     <section name="core">
                         <h2>Core</h2>
 
-                        <!-- tsw.browserSupported  -->
-                        <section id="browser-supported">
-                            <h1>tsw.browserSupported</h1>
-                            <p>Property to determine whether the Web Audio API is available.</p>
-                            <pre>if (tsw.browserSupported) {
-    console.log('All good! Pump up the volume, pump up the volume, pump pump pump.');
-} else {
-    console.log('Sorry, your browser doesn\'t support the Web Audio API.');
-}</pre>
-                        </section>
-
                         <!-- tsw.connect() -->
                         <section id="connect">
                             <h1>tsw.connect(<span>node1, node2, arrayOfNodes</span>)</h1>
@@ -233,7 +227,7 @@ tsw.context.createGain; // Use native Web Audio API function.</pre>
                         <section id="create-buffer">
                             <h1>tsw.createBuffer()</h1>
                             <p>
-                                Creates an audio buffer. If you want to play a sound from a file you have to load it into memory first.
+                                Creates an <a href="#">audio buffer</a>. If you want to play a sound from a file you have to load it into memory first.
                                 An audio buffer is how you store audio in memory. Create a buffer and assign your audio data to it.
                             </p>
                         </section>
@@ -268,27 +262,33 @@ tsw.context.createGain; // Use native Web Audio API function.</pre>
                                 Defaults to 1, which doesn't affect the signal.</p>
                             <pre>var sineWave = tsw.createOscillator();
     gainNode = tsw.createGain(0.75);
-tsw.connect(sineWave, gainNode, tsw.speakers);</pre>
+tsw.connect(sineWave, gainNode, tsw.speakers);
+console.log(gainNode.gain()); // Outputs 0.75.
+gainNode.gain(0.5); // Changes gain to 0.5.</pre>
                         </section>
 
                         <!-- tsw.createNoise() -->
                         <section id="create-noise">
                             <h1>tsw.createNoise()</h1>
-                            <p>Creates a source node of white noise.</p>
-                            <pre>var whiteNoise = tsw.createNoise();
-tsw.connect(whiteNoise, tsw.speakers);
-whiteNoise.start();</pre>
+                            <p>Creates a source node of noise.</p>
+                            <pre>var noise = tsw.createNoise();
+tsw.connect(noise, tsw.speakers);
+noise.start();
+console.log(noise.color()); // Outputs colour of noise.
+noise.colour('pink'); // Changes noise colour to pink.</pre>
                         </section>
 
                         <!-- tsw.createOscillator() -->
                         <section id="create-oscillator">
                             <h1>tsw.createOscillator(<span>string</span>)</h1>
                             <p>Creates an oscillator. Takes one of four values (<i>sine, square, triangle, sawtooth</i>).</p>
-                            <pre>var sine = tsw.createOscillator(), // Creates sine wave.
-    saw = tsw.createOscillator('sawtooth'); // Creates sawtooth wave.
+                            <pre>var osc1 = tsw.createOscillator(), // Creates sine wave.
+    osc2 = tsw.createOscillator('sawtooth'); // Creates sawtooth wave.
 tsw.connect([sine, saw], tsw.speakers); // Connect oscillators to speakers.
-sine.start(); // Start sine wave.
-saw.start(); // Start sawtooth wave.</pre>
+osc1.start(); // Start sine wave.
+osc2.start(); // Start sawtooth wave.
+console.log(osc2.type()); // Outputs 'sawtooth'.
+osc2.type('triangle'); // Oscillator now produces a triangle wave.</pre>
                         </section>
 
                         <!-- tsw.disconnect() -->
@@ -307,6 +307,17 @@ tsw.disconnect(gainNode); // Disconnect gainNode.
                             <pre>tsw.getUserAudio(function (stream) {
     tsw.connect(stream, tsw.speakers);
 });</pre>
+                        </section>
+
+                        <!-- tsw.isBrowserSupported  -->
+                        <section id="is-browser-supported">
+                            <h1>tsw.isBrowserSupported</h1>
+                            <p>Property to determine whether the Web Audio API is available.</p>
+                            <pre>if (tsw.isBrowserSupported) {
+    console.log('All good! Pump up the volume, pump up the volume, pump pump pump.');
+} else {
+    console.log('Sorry, your browser doesn\'t support the Web Audio API.');
+}</pre>
                         </section>
 
                         <!-- tsw.load() -->
@@ -376,7 +387,7 @@ osc.start();</pre>
                             <p>Stops an audio buffer or oscillator from playing after a specified number of seconds. If nothing is passed, audio will stop immediately.</p>
                             <pre>
 sine.stop(); // Stop oscillator immediately.
-saw.stop(5); // Stop oscillator after 5 seconds.</pre>
+saw.stop(tsw.now() + 5); // Stop oscillator after 5 seconds.</pre>
                         </section>
                     </section>
 

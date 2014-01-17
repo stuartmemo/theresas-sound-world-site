@@ -53,5 +53,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     // Default tasks.
-    grunt.registerTask('default', ['watch', 'connect']);
+    grunt.registerTask('default', ['connect', 'watch']);
 };

@@ -97,5 +97,8 @@
         requestAnimationFrame(loop);
     };
 
-    requestAnimationFrame(loop);
+    // Only show animation on desktops.
+    if (window.innerWidth > 768) {
+        requestAnimationFrame(loop);
+    }
 })(window);
