@@ -296,12 +296,11 @@ gainNode.gain(0.5); // Changes gain to 0.5.</pre>
                         <!-- tsw.createNoise() -->
                         <section id="create-noise">
                             <h1>tsw.createNoise()</h1>
-                            <p>Creates a source node of noise.</p>
+                            <p>Creates a source node of white noise.</p>
                             <pre>var noise = tsw.createNoise();
 tsw.connect(noise, tsw.speakers);
 noise.start();
-console.log(noise.color()); // Outputs colour of noise.
-noise.colour('pink'); // Changes noise colour to pink.</pre>
+console.log(noise.color()); // Outputs colour of noise. Only white supported at the moment.</pre>
                         </section>
 
                         <!-- tsw.createOscillator() -->
