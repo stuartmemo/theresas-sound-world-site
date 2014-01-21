@@ -73,6 +73,28 @@
 
                     <p>If you see "0.0.1" in your browser's JS console, then super. You're using the latest version and are ready to go.</p>
 
+                    <h3>Make some noise</h3>
+                    <p>Let's create a triangle wave oscillator.</p>
+                    <pre>var osc = tsw.createOscillator('triangle'),
+    volume = tsw.createGain(0.5); // Half volume.
+tsw.connect(osc, volume, tsw.speakers);
+osc.play();</pre>
+<p>Press play to see how it sounds. <button id="make-noise-demo">Play</button></p>
+
+<p>Lovely. What if we want to control the pitch of the oscillator? Let's add a slider. Theresa's Sound World doesn't need jQuery to work, but let's use it here to make things nicer.</p>
+<pre>
+    // HTML
+    <input id="slider" type="range" min="0" max="1000"/>
+
+    // JavaScript
+    $('#slider').change(function () {
+        osc.frequency($(this).val());
+    });</pre>
+
+    <p>Press the play button above again, and use this slider to change the pitch.</p>
+    <input id="slider" type="range" min="0" max="1000"/>
+    <p>It's like an html <i>&lt;theremin&gt;</i> element.</p>
+<!--
                     <h3>Play an audio file</h3>
                     <p>Now let's load a couple of audio files and play one of them once it's ready.</p>
                     <pre>tsw.load(
@@ -99,6 +121,7 @@
                     <h3>Flip it and reverse it</h3>
                     <p>Something something...</p>
                     <pre>files.talking.reverse().play();</pre>
+                    -->
 
                 </section>
 
@@ -170,26 +193,29 @@ files.talking.play();</pre>
                         <div>
                             <h3>Effects</h3>
                             <ul>
-                                <li><a href="#create-delay">tsw.createDelay()</a></li>
-                                <li><a href="#create-distortion">tsw.createDistortion()</a></li>
-                                <li><a href="#create-phaser">tsw.createPhaser()</a></li>
-                                <li><a href="#create-reverb">tsw.createReverb()</a></li>
-                                <li><a href="#create-tremolo">tsw.createTremolo()</a></li>
+                                <li><a href="#create-delay">tsw.fx.createDelay()</a></li>
+                                <li><a href="#create-distortion">tsw.fx.createDistortion()</a></li>
+                                <li><a href="#create-phaser">tsw.fx.createPhaser()</a></li>
+                                <li><a href="#create-reverb">tsw.fx.createReverb()</a></li>
+                                <li><a href="#create-tremolo">tsw.fx.createTremolo()</a></li>
                             </ul>
                         </div>
                         <div>
                             <h3>Music</h3>
                             <ul>
-                                <li><a href="#get-notes">tsw.getNotes()</a></li>
-                                <li><a href="#get-scale">tsw.getScale()</a></li>
-                                <li><a href="#get-semitone-difference">tsw.getSemitoneDifference()</a></li>
+                                <li><a href="#get-chord">tsw.music.getChord()</a></li>
+                                <li><a href="#get-scale">tsw.music.getScale()</a></li>
+                                <li><a href="#get-sharp">tsw.music.getSharp()</a></li>
+                                <li><a href="#get-semitone-difference">tsw.music.getSemitoneDifference()</a></li>
+                                <li><a href="#get-flat">tsw.music.getFlat()</a></li>
+                                <li><a href="#get-frequency">tsw.music.getFrequency()</a></li>
                             </ul> 
                         </div>
                         <div>
                             <h3>MIDI</h3>
                             <ul>
-                                <li><a href="#get-midi">tsw.getMIDI()</a></li>
-                                <li><a href="#get-midi-note">tsw.getMIDINote()</a></li>
+                                <li><a href="#get-midi">tsw.midi.getUserMIDI()</a></li>
+                                <li><a href="#get-midi-note">tsw.midi.getNote()</a></li>
                             </ul>
                     </nav>
 
@@ -396,31 +422,31 @@ saw.stop(tsw.now() + 5); // Stop oscillator after 5 seconds.</pre>
 
                         <!-- tsw.createDelay() -->
                         <section id="create-delay">
-                            <h1>tsw.createDelay()</h1>
+                            <h1>tsw.fx.createDelay()</h1>
                             <p>Creates delay effect.</p>
                         </section>
 
                         <!-- tsw.createDistortion() -->
                         <section id="create-distortion">
-                            <h1>tsw.createDistortion()</h1>
+                            <h1>tsw.fx.createDistortion()</h1>
                             <p>Creates distortion node.</p>
                         </section>
 
                         <!-- tsw.createPhaser() -->
                         <section id="create-phaser">
-                            <h1>tsw.createPhaser()</h1>
+                            <h1>tsw.fx.createPhaser()</h1>
                             <p>Creates phaser node.</p>
                         </section>
 
                         <!-- tsw.createReverb() -->
                         <section id="create-reverb">
-                            <h1>tsw.createReverb()</h1>
+                            <h1>tsw.fx.createReverb()</h1>
                             <p>Creates reverb node.</p>
                         </section>
 
                         <!-- tsw.createTremolo() -->
                         <section id="create-tremolo">
-                            <h1>tsw.createTremolo()</h1>
+                            <h1>tsw.fx.createTremolo()</h1>
                             <p>Creates tremolo effect.</p>
                         </section>
                     </section>
@@ -428,38 +454,38 @@ saw.stop(tsw.now() + 5); // Stop oscillator after 5 seconds.</pre>
                     <section name="music">
                         <h3>Music</h3>
 
-                        <!-- tsw.getScale() -->
+                        <!-- tsw.music.getScale() -->
                         <section id="get-scale">
                             <h1>tsw.getScale(string, string)</h1>
                             <p>Gets the musical scale of given note. Returns an array of notes as strings.</p>
-                            <pre>tsw.getScale('A', 'minor'); // Returns ["A", "B", "C", "D", "E", "F", "G", "A"]</pre>
+                            <pre>tsw.music.getScale('A', 'minor'); // Returns ["A", "B", "C", "D", "E", "F", "G", "A"]</pre>
                         </section>
 
-                        <!-- tsw.getNote() -->
+                        <!-- tsw.music.getMusicNote() -->
                         <section id="get-note">
-                            <h1>tsw.getNote(number)</h1>
+                            <h1>tsw.music.getNote(number)</h1>
                             <p>Returns individual note from frequency.</p>
-                            <pre>tsw.getNote(440)</pre>
+                            <pre>tsw.music.getNote(440)</pre>
                         </section>
 
-                        <!-- tsw.getNotes() -->
-                        <section id="get-notes">
-                            <h1>tsw.getNotes(string)</h1>
+                        <!-- tsw.music.getChord() -->
+                        <section id="get-chord">
+                            <h1>tsw.music.getChord(string)</h1>
                             <p>Returns array of notes in any given chord.</p>
-                            <pre>tsw.getNotes('A3maj')</pre>
+                            <pre>tsw.music.getChord('A3', 'major')</pre>
                         </section>
 
-                        <!-- tsw.getSemitoneDifference() -->
+                        <!-- tsw.music.getSemitoneDifference() -->
                         <section id="get-semitone-difference">
-                            <h1>tsw.getSemitoneDifference()</h1>
+                            <h1>tsw.music.getSemitoneDifference()</h1>
                             <p>Returns the number of semitones an interval is from a base note.</p>
                         </section>
 
-                        <!-- tsw.noteToFrequency() -->
+                        <!-- tsw.music.getFrequency() -->
                         <section id="get-frequency">
-                            <h1>tsw.getFrequency(string)</h1>
+                            <h1>tsw.music.getFrequency(string)</h1>
                             <p>Returns the frequency in Hz of a musical note passed by name.</p>
-                            <pre>tsw.getFrequency('A4'); // Returns 440;</pre>
+                            <pre>tsw.music.getFrequency('A4'); // Returns 440;</pre>
                         </section>
 
                     </section>
@@ -467,23 +493,23 @@ saw.stop(tsw.now() + 5); // Stop oscillator after 5 seconds.</pre>
                     <section name="midi">
                         <h3>MIDI</h3>
 
-                        <!-- tsw.getMIDI() -->
+                        <!-- tsw.midi.getUserMIDI() -->
                         <section id="get-user-midi">
-                            <h1>tsw.getMIDI()</h1>
+                            <h1>tsw.midi.getUserMIDI()</h1>
                         </section>
 
-                        <!-- tsw.getMIDINote() -->
+                        <!-- tsw.midi.getNote() -->
                         <section id="midi-number-to-note">
-                            <h1>tsw.getMIDINote(number)</h1>
+                            <h1>tsw.midi.getNote(number)</h1>
                             <p>Returns the note name a MIDI message note number.</p>
-                            <pre>tsw.MIDINumberToNote(24) // returns 'C2'</pre>
+                            <pre>tsw.midi.getNote(24) // returns 'C2'</pre>
                         </section>
                     </section>
 
                 </section>
 
                 <section id="showcase">
-                    <h2>Showcase</h2> 
+                    <h2>Examples</h2> 
                     <p>Here are a selection of things that have been made using Theresas's Soundworld.</p>
 
                     <h3><a href="http://stuartmemo.com/synth/">Sympathetic Synthesizer System Mk 1</a></h3>
@@ -491,9 +517,12 @@ saw.stop(tsw.now() + 5); // Stop oscillator after 5 seconds.</pre>
 
                     <h3><a href="http://stuartmemo.com/beat-petite/">Beat Petite</a></h3>
                     <p>A sample-free drum machine in the browser.</p>
+ 
+                    <h3><a href="http://stuartmemo.com/thx-deep-note-in-javascript/">THX Deep Note</a></h3>
+                    <p>A recreation of the famous THX sound.</p>
                 </section>
 
-                <p>Copyright 2013 <a href="http://stuartmemo.com">Stuart Memo</a></p>
+                <p>Copyright 2014 <a href="http://stuartmemo.com">Stuart Memo</a></p>
             </div>
         </div>
         <script>
@@ -523,6 +552,35 @@ saw.stop(tsw.now() + 5); // Stop oscillator after 5 seconds.</pre>
             })(window);
         </script>
         <script src="scripts/wave-machine.js"></script>
-        <script src="scripts/tsw.js"></script>
+        <script src="scripts/tsw-core.js"></script>
+        <script src="scripts/tsw-effects.js"></script>
+        <script src="scripts/tsw-music.js"></script>
+        <script src="scripts/tsw-midi.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script>
+            var osc = {},
+                volume = tsw.createGain(0.25); // Quarter of normal volume.
+
+            $('#make-noise-demo').click(function () {
+                if (osc.hasOwnProperty('isPlaying')) {
+                    if (osc.isPlaying()) {
+                       osc.stop();
+                       this.innerText = 'Play';
+                       return false;
+                    }
+                }
+
+                osc = tsw.createOscillator('triangle');
+                console.log(osc.returnNode());
+                tsw.connect(osc, volume, tsw.speakers);
+                osc.start();
+
+                this.innerText = 'Stop';
+            });
+
+            $('#slider').change(function () {
+                osc.frequency($(this).val());
+            });
+        </script>
     </body>
 </html>
