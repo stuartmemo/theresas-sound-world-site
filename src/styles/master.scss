@@ -1,6 +1,7 @@
 $red: #c3222e;
 $blue: #007AAA;
 $darkred: #6F1717;
+$yellow: #ffffc8;
 
 body {
     background-color: $red;
@@ -280,6 +281,10 @@ aside {
     pre {
         padding: 0;
         margin: 0;
+    }
+
+    a {
+        color: $yellow;
     }
 }
 

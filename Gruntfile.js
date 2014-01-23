@@ -3,7 +3,6 @@ module.exports = function (grunt) {
     // Project config.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-
         uglify: {
             all: {
                 files: {
@@ -14,7 +13,11 @@ module.exports = function (grunt) {
                 }
             }
         },
-
+        sass: {
+            files: {
+                'src/styles/master.scss': 'src/styles/master.css'
+            }
+        },
         copy: {
             main: {
                 files: [
@@ -28,30 +31,43 @@ module.exports = function (grunt) {
                 ]
             }
         },
-
         watch: {
             html: {
                 files: 'src/index.html',
                 tasks: ['uglify', 'copy']
+            },
+            sass: {
+                files: ['src/styles/*.scss'],
+                tasks: ['sass']
+            },
+            livereload: {
+                options: {
+                    livereload: true
+                },
+                files: ['src/**/*']
             }
         },
-        
         connect: {
             server: {
                 options: {
                     port: 8000,
-                    keepalive: true
+                    keepalive: false
                 }
             }
         }
     });
+    grunt.event.on('watch', function(action, filepath, target) {
+        grunt.log.writeln(target + ': ' + filepath + ' has ' + action);
+    });
 
     // Load plugins.
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     // Default tasks.
     grunt.registerTask('default', ['connect', 'watch']);
+
 };
