@@ -27,7 +27,7 @@
 
     var wave1 = calculateSineWave(0.3, 40),
         wave2 = calculateSineWave(0.7, 10),
-        noDataPoints = 1;
+        noDataPoints = 5;
 
     var drawWave = function (waveType) {
 
@@ -42,7 +42,7 @@
 
             for (i = arrayToDraw.length; i > 0; i--){ 
                 if (i % noDataPoints === 0) {
-                    context.fillRect(i - currentPosition, (arrayToDraw[i]), 4, 4);
+                    context.fillRect(i - currentPosition, (arrayToDraw[i]), 5, 5);
                 }
             }
 
