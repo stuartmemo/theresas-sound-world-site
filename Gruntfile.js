@@ -69,5 +69,5 @@ module.exports = function (grunt) {
 
     // Default tasks.
     grunt.registerTask('default', ['connect', 'watch']);
-
+    grunt.registerTask('server', ['connect', 'watch']);
 };

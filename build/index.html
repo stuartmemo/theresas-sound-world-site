@@ -73,6 +73,28 @@
 
                     <p>If you see "0.0.1" in your browser's JS console, then super. You're using the latest version and are ready to go.</p>
 
+                    <h3>Make some noise</h3>
+                    <p>Let's create a triangle wave oscillator.</p>
+                    <pre>var osc = tsw.oscillator('triangle'),
+    volume = tsw.gain(0.5); // Half volume.
+tsw.connect(osc, volume, tsw.speakers);
+osc.play();</pre>
+<p>Press play to see how it sounds. <button id="make-noise-demo">Play</button></p>
+
+<p>Lovely. What if we want to control the pitch of the oscillator? Let's add a slider. Theresa's Sound World doesn't need jQuery to work, but let's use it here to make things nicer.</p>
+<pre>
+    // HTML
+    <input id="slider" type="range" min="0" max="1000"/>
+
+    // JavaScript
+    $('#slider').change(function () {
+        osc.frequency($(this).val());
+    });</pre>
+
+    <p>Press the play button above again, and use this slider to change the pitch.</p>
+    <input id="slider" type="range" min="0" max="1000"/>
+    <p>It's like an html <i>&lt;theremin&gt;</i> element.</p>
+<!--
                     <h3>Play an audio file</h3>
                     <p>Now let's load a couple of audio files and play one of them once it's ready.</p>
                     <pre>tsw.load(
@@ -99,37 +121,36 @@
                     <h3>Flip it and reverse it</h3>
                     <p>Something something...</p>
                     <pre>files.talking.reverse().play();</pre>
+                    -->
 
                 </section>
 
-                    <aside>
-                        <h1>An important message from David Bowie...</h1>
-                        <img src="images/bowie.jpg"/>
-                        <p>
-                            Hi. David here. When I first started using the Web Audio API, an important
-                            concept for me to grasp was its way of connecting audio nodes together to
-                            process audio.
-                        </p>
-                        <p>
-                            For example, if we wanted to change the volume of the audio in the file we loaded above,
-                            we could connect it to a gain node, which we set to halve the volume like so:
-                        </p>
-                        <pre>var gainNode = tsw.createGain(0.5); // 0.5 = 1/2 of input volume
-// Connect the audio file to the gain node,
-// then connect the gain node to the speakers.
-tsw.connect(files.talking, gainNode, tsw.speakers);
-// Play the file.
-files.talking.play();</pre>
+                <aside>
+                    <h1>An important message from David Bowie...</h1>
+                    <img src="images/bowie.jpg"/>
+                    <p>
+                        Hi. David here. When I first started using the Web Audio API, an important
+                        concept for me to grasp was its way of connecting audio nodes together to
+                        process audio.
+                    </p>
+                    <p>
+                        I like to think that connecting nodes is very similar to how my friend <a href="http://en.wikipedia.org/wiki/Adrian_Belew">Adrian</a> connects guitar effects pedals.
+                        He takes a lead from his guitar add connects it to a distortion pedal. He then takes another lead and connects it
+                        from his distortion pedal to his phaser pedal. He then takes yet another lead and connects it to his amplifier.
+                        Each pedal or node changes the sound and passes it on to the next pedal/node.
+                    </p>
+                    <p>
+                        For example, if we wanted to change the volume of the audio in the file we loaded above,
+                        we could connect it to a gain node, which we set to halve the volume like so:
+                    </p>
+                    <pre>// Connect the oscillator to a gain node, then connect the gain node to the speakers.
+tsw.connect(osc, gainNode, tsw.speakers);
+// Start the oscillator.
+osc.start();</pre>
 
-                        <p>So remember, <strong>if you want to hear something, you have to connect it to the speakers</strong>.
-                            You can even do some fancy chaining like this...</p>
-                        <p>DIAGRAM HERE</p>
-                        <p>Theresa's Sound World makes this easy, as you can use arrays in its connect method.</p>
-                        <pre>tsw.connect(files.talking, [gainNode, distortionNode], tsw.speakers);</pre>
-                        <p>Good luck in your audio quest.</p>
-                        <p>&mdash; David</p>
-                    </aside>
-
+                    <p>Good luck.</p>
+                    <p>&mdash; David (New York, 1978)</p>
+                </aside>
 
                 <section>
                     <h2>Demos</h2>
@@ -143,16 +164,17 @@ files.talking.play();</pre>
                         <div>
                             <h3>Core</h3>
                             <ul>
-                                <li><a href="#browser-supported">tsw.browserSupported</a></li>
                                 <li><a href="#connect">tsw.connect()</a></li>
                                 <li><a href="#context">tsw.context</a></li>
-                                <li><a href="#create-buffer">tsw.createBuffer()</a></li>
-                                <li><a href="#create-compressor">tsw.createCompressor()</a></li>
-                                <li><a href="#create-filter">tsw.createFilter()</a></li>
-                                <li><a href="#create-gain">tsw.createGain()</a></li>
-                                <li><a href="#create-noise">tsw.createNoise()</a></li>
+                                <li><a href="#create-buffer">tsw.buffer()</a></li>
+                                <li><a href="#create-compressor">tsw.compressor()</a></li>
+                                <li><a href="#create-compressor">tsw.delay()</a></li>
+                                <li><a href="#create-filter">tsw.filter()</a></li>
+                                <li><a href="#create-gain">tsw.gain()</a></li>
+                                <li><a href="#create-noise">tsw.noise()</a></li>
                                 <li><a href="#get-user-audio">tsw.getUserAudio()</a></li>
-                                <li><a href="#create-oscillator">tsw.createOscillator()</a></li>
+                                <li><a href="#is-browser-supported">tsw.isBrowserSupported</a></li>
+                                <li><a href="#create-oscillator">tsw.oscillator()</a></li>
                                 <li><a href="#disconnect">tsw.disconnect()</a></li>
                                 <li><a href="#load">tsw.load()</a></li>
                                 <li><a href="#now">tsw.now()</a></li>
@@ -166,25 +188,26 @@ files.talking.play();</pre>
                             <h3>Effects</h3>
                             <ul>
                                 <li><a href="#create-delay">tsw.createDelay()</a></li>
-                                <li><a href="#create-distortion">tsw.createDistortion()</a></li>
                                 <li><a href="#create-phaser">tsw.createPhaser()</a></li>
-                                <li><a href="#create-reverb">tsw.createReverb()</a></li>
                                 <li><a href="#create-tremolo">tsw.createTremolo()</a></li>
                             </ul>
                         </div>
                         <div>
                             <h3>Music</h3>
                             <ul>
-                                <li><a href="#get-notes">tsw.getNotes()</a></li>
-                                <li><a href="#get-scale">tsw.getScale()</a></li>
-                                <li><a href="#get-semitone-difference">tsw.getSemitoneDifference()</a></li>
+                                <li><a href="#get-chord">tsw.chord()</a></li>
+                                <li><a href="#get-semitone-difference">tsw.difference()</a></li>
+                                <li><a href="#get-scale">tsw.scale()</a></li>
+                                <li><a href="#get-sharp">tsw.sharp()</a></li>
+                                <li><a href="#get-flat">tsw.flat()</a></li>
+                                <li><a href="#get-frequency">tsw.frequency()</a></li>
                             </ul> 
                         </div>
                         <div>
                             <h3>MIDI</h3>
                             <ul>
-                                <li><a href="#get-midi">tsw.getMIDI()</a></li>
-                                <li><a href="#get-midi-note">tsw.getMIDINote()</a></li>
+                                <li><a href="#get-midi">tsw.getUserMIDI()</a></li>
+                                <li><a href="#get-midi-note">tsw.note()</a></li>
                             </ul>
                     </nav>
 
@@ -192,23 +215,12 @@ files.talking.play();</pre>
                     <section name="core">
                         <h2>Core</h2>
 
-                        <!-- tsw.browserSupported  -->
-                        <section id="browser-supported">
-                            <h1>tsw.browserSupported</h1>
-                            <p>Property to determine whether the Web Audio API is available.</p>
-                            <pre>if (tsw.browserSupported) {
-    console.log('All good! Pump up the volume, pump up the volume, pump pump pump.');
-} else {
-    console.log('Sorry, your browser doesn\'t support the Web Audio API.');
-}</pre>
-                        </section>
-
                         <!-- tsw.connect() -->
                         <section id="connect">
                             <h1>tsw.connect(<span>node1, node2, arrayOfNodes</span>)</h1>
                             <p>Connects two or more audio nodes together.</p>
-                            <pre>var osc = tsw.createOscillator(),
-    volume = tsw.createGain(0.8);
+                            <pre>var osc = tsw.oscillator(),
+    volume = tsw.gain(0.8);
 tsw.connect(osc, volume, tsw.speakers);</pre>
                             <p>Numerous nodes can connect to and from other nodes by using an array.</p>
                             <pre>// Connect 3 nodes to the speakers.
@@ -231,9 +243,9 @@ tsw.context.createGain; // Use native Web Audio API function.</pre>
 
                         <!-- tsw.createBuffer() -->
                         <section id="create-buffer">
-                            <h1>tsw.createBuffer()</h1>
+                            <h1>tsw.buffer()</h1>
                             <p>
-                                Creates an audio buffer. If you want to play a sound from a file you have to load it into memory first.
+                                Creates an <a href="#">audio buffer</a>. If you want to play a sound from a file you have to load it into memory first.
                                 An audio buffer is how you store audio in memory. Create a buffer and assign your audio data to it.
                             </p>
                         </section>
@@ -263,32 +275,37 @@ tsw.context.createGain; // Use native Web Audio API function.</pre>
 
                         <!-- tsw.createGain() -->
                         <section id="create-gain">
-                            <h1>tsw.createGain(<span>number</span>)</h1>
+                            <h1>tsw.gain(<span>number</span>)</h1>
                             <p>Creates an gain node. The value passed in multiplies the volume of the passed input signal.<br/>
                                 Defaults to 1, which doesn't affect the signal.</p>
-                            <pre>var sineWave = tsw.createOscillator();
-    gainNode = tsw.createGain(0.75);
-tsw.connect(sineWave, gainNode, tsw.speakers);</pre>
+                            <pre>var sineWave = tsw.oscillator();
+    gainNode = tsw.gain(0.75);
+tsw.connect(sineWave, gainNode, tsw.speakers);
+console.log(gainNode.gain()); // Outputs 0.75.
+gainNode.gain(0.5); // Changes gain to 0.5.</pre>
                         </section>
 
                         <!-- tsw.createNoise() -->
                         <section id="create-noise">
-                            <h1>tsw.createNoise()</h1>
+                            <h1>tsw.noise()</h1>
                             <p>Creates a source node of white noise.</p>
-                            <pre>var whiteNoise = tsw.createNoise();
-tsw.connect(whiteNoise, tsw.speakers);
-whiteNoise.start();</pre>
+                            <pre>var noise = tsw.noise();
+tsw.connect(noise, tsw.speakers);
+noise.start();
+console.log(noise.color()); // Outputs colour of noise. Only white supported at the moment.</pre>
                         </section>
 
                         <!-- tsw.createOscillator() -->
                         <section id="create-oscillator">
-                            <h1>tsw.createOscillator(<span>string</span>)</h1>
+                            <h1>tsw.oscillator(<span>string</span>)</h1>
                             <p>Creates an oscillator. Takes one of four values (<i>sine, square, triangle, sawtooth</i>).</p>
-                            <pre>var sine = tsw.createOscillator(), // Creates sine wave.
-    saw = tsw.createOscillator('sawtooth'); // Creates sawtooth wave.
+                            <pre>var osc1 = tsw.oscillator(), // Creates sine wave.
+    osc2 = tsw.oscillator('sawtooth'); // Creates sawtooth wave.
 tsw.connect([sine, saw], tsw.speakers); // Connect oscillators to speakers.
-sine.start(); // Start sine wave.
-saw.start(); // Start sawtooth wave.</pre>
+osc1.start(); // Start sine wave.
+osc2.start(); // Start sawtooth wave.
+console.log(osc2.type()); // Outputs 'sawtooth'.
+osc2.type('triangle'); // Oscillator now produces a triangle wave.</pre>
                         </section>
 
                         <!-- tsw.disconnect() -->
@@ -307,6 +324,17 @@ tsw.disconnect(gainNode); // Disconnect gainNode.
                             <pre>tsw.getUserAudio(function (stream) {
     tsw.connect(stream, tsw.speakers);
 });</pre>
+                        </section>
+
+                        <!-- tsw.isBrowserSupported  -->
+                        <section id="is-browser-supported">
+                            <h1>tsw.isBrowserSupported</h1>
+                            <p>Property to determine whether the Web Audio API is available.</p>
+                            <pre>if (tsw.isBrowserSupported) {
+    console.log('All good! Pump up the volume, pump up the volume, pump pump pump.');
+} else {
+    console.log('Sorry, your browser doesn\'t support the Web Audio API.');
+}</pre>
                         </section>
 
                         <!-- tsw.load() -->
@@ -376,7 +404,7 @@ osc.start();</pre>
                             <p>Stops an audio buffer or oscillator from playing after a specified number of seconds. If nothing is passed, audio will stop immediately.</p>
                             <pre>
 sine.stop(); // Stop oscillator immediately.
-saw.stop(5); // Stop oscillator after 5 seconds.</pre>
+saw.stop(tsw.now() + 5); // Stop oscillator after 5 seconds.</pre>
                         </section>
                     </section>
 
@@ -385,31 +413,25 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
 
                         <!-- tsw.createDelay() -->
                         <section id="create-delay">
-                            <h1>tsw.createDelay()</h1>
+                            <h1>tsw.delay()</h1>
                             <p>Creates delay effect.</p>
-                        </section>
-
-                        <!-- tsw.createDistortion() -->
-                        <section id="create-distortion">
-                            <h1>tsw.createDistortion()</h1>
-                            <p>Creates distortion node.</p>
                         </section>
 
                         <!-- tsw.createPhaser() -->
                         <section id="create-phaser">
-                            <h1>tsw.createPhaser()</h1>
+                            <h1>tsw.phaser()</h1>
                             <p>Creates phaser node.</p>
                         </section>
 
                         <!-- tsw.createReverb() -->
                         <section id="create-reverb">
-                            <h1>tsw.createReverb()</h1>
+                            <h1>tsw.reverb()</h1>
                             <p>Creates reverb node.</p>
                         </section>
 
                         <!-- tsw.createTremolo() -->
                         <section id="create-tremolo">
-                            <h1>tsw.createTremolo()</h1>
+                            <h1>tsw.tremolo()</h1>
                             <p>Creates tremolo effect.</p>
                         </section>
                     </section>
@@ -417,38 +439,38 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
                     <section name="music">
                         <h3>Music</h3>
 
-                        <!-- tsw.getScale() -->
+                        <!-- tsw.music.getScale() -->
                         <section id="get-scale">
-                            <h1>tsw.getScale(string, string)</h1>
+                            <h1>tsw.scale(string, string)</h1>
                             <p>Gets the musical scale of given note. Returns an array of notes as strings.</p>
-                            <pre>tsw.getScale('A', 'minor'); // Returns ["A", "B", "C", "D", "E", "F", "G", "A"]</pre>
+                            <pre>tsw.music.getScale('A', 'minor'); // Returns ["A", "B", "C", "D", "E", "F", "G", "A"]</pre>
                         </section>
 
-                        <!-- tsw.getNote() -->
+                        <!-- tsw.music.getMusicNote() -->
                         <section id="get-note">
-                            <h1>tsw.getNote(number)</h1>
+                            <h1>tsw.note(number)</h1>
                             <p>Returns individual note from frequency.</p>
-                            <pre>tsw.getNote(440)</pre>
+                            <pre>tsw.note(440)</pre>
                         </section>
 
-                        <!-- tsw.getNotes() -->
-                        <section id="get-notes">
-                            <h1>tsw.getNotes(string)</h1>
+                        <!-- tsw.music.getChord() -->
+                        <section id="get-chord">
+                            <h1>tsw.chord(string)</h1>
                             <p>Returns array of notes in any given chord.</p>
-                            <pre>tsw.getNotes('A3maj')</pre>
+                            <pre>tsw.chord('A3', 'major')</pre>
                         </section>
 
-                        <!-- tsw.getSemitoneDifference() -->
+                        <!-- tsw.music.getSemitoneDifference() -->
                         <section id="get-semitone-difference">
-                            <h1>tsw.getSemitoneDifference()</h1>
+                            <h1>tsw.semitoneDifference()</h1>
                             <p>Returns the number of semitones an interval is from a base note.</p>
                         </section>
 
-                        <!-- tsw.noteToFrequency() -->
+                        <!-- tsw.music.getFrequency() -->
                         <section id="get-frequency">
-                            <h1>tsw.getFrequency(string)</h1>
+                            <h1>tsw.frequency(string)</h1>
                             <p>Returns the frequency in Hz of a musical note passed by name.</p>
-                            <pre>tsw.getFrequency('A4'); // Returns 440;</pre>
+                            <pre>tsw.music.getFrequency('A4'); // Returns 440;</pre>
                         </section>
 
                     </section>
@@ -456,23 +478,23 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
                     <section name="midi">
                         <h3>MIDI</h3>
 
-                        <!-- tsw.getMIDI() -->
+                        <!-- tsw.midi.getUserMIDI() -->
                         <section id="get-user-midi">
-                            <h1>tsw.getMIDI()</h1>
+                            <h1>tsw.midi.getUserMIDI()</h1>
                         </section>
 
-                        <!-- tsw.getMIDINote() -->
+                        <!-- tsw.midi.getNote() -->
                         <section id="midi-number-to-note">
-                            <h1>tsw.getMIDINote(number)</h1>
+                            <h1>tsw.note(number)</h1>
                             <p>Returns the note name a MIDI message note number.</p>
-                            <pre>tsw.MIDINumberToNote(24) // returns 'C2'</pre>
+                            <pre>tsw.note(24) // returns 'C2'</pre>
                         </section>
                     </section>
 
                 </section>
 
                 <section id="showcase">
-                    <h2>Showcase</h2> 
+                    <h2>Examples</h2> 
                     <p>Here are a selection of things that have been made using Theresas's Soundworld.</p>
 
                     <h3><a href="http://stuartmemo.com/synth/">Sympathetic Synthesizer System Mk 1</a></h3>
@@ -480,9 +502,12 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
 
                     <h3><a href="http://stuartmemo.com/beat-petite/">Beat Petite</a></h3>
                     <p>A sample-free drum machine in the browser.</p>
+ 
+                    <h3><a href="http://stuartmemo.com/thx-deep-note-in-javascript/">THX Deep Note</a></h3>
+                    <p>A recreation of the famous THX sound.</p>
                 </section>
 
-                <p>Copyright 2013 <a href="http://stuartmemo.com">Stuart Memo</a></p>
+                <p>Copyright 2014 <a href="http://stuartmemo.com">Stuart Memo</a></p>
             </div>
         </div>
         <script>
@@ -512,6 +537,34 @@ saw.stop(5); // Stop oscillator after 5 seconds.</pre>
             })(window);
         </script>
         <script src="scripts/wave-machine.js"></script>
-        <script src="scripts/tsw.js"></script>
+        <script src="scripts/tsw-core.js"></script>
+        <script src="scripts/tsw-effects.js"></script>
+        <script src="scripts/tsw-music.js"></script>
+        <script src="scripts/tsw-midi.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script>
+            var osc = {},
+                volume = tsw.gain(0.25); // Quarter of normal volume.
+
+            $('#make-noise-demo').click(function () {
+                if (osc.hasOwnProperty('isPlaying')) {
+                    if (osc.isPlaying()) {
+                       osc.stop();
+                       this.innerText = 'Play';
+                       return false;
+                    }
+                }
+
+                osc = tsw.oscillator('triangle');
+                tsw.connect(osc, volume, tsw.speakers);
+                osc.start();
+
+                this.innerText = 'Stop';
+            });
+
+            $('#slider').change(function () {
+                osc.frequency($(this).val());
+            });
+        </script>
     </body>
 </html>
