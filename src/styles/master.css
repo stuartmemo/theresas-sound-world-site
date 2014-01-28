@@ -204,6 +204,8 @@ aside {
   aside pre {
     padding: 0;
     margin: 0; }
+  aside a, aside a:visited {
+    color: #ffffc8; }
 
 .clearfix:after {
   content: ".";

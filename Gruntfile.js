@@ -14,8 +14,14 @@ module.exports = function (grunt) {
             }
         },
         sass: {
-            files: {
-                'src/styles/master.scss': 'src/styles/master.css'
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: 'src/styles',
+                    src: ['**/*.scss'],
+                    dest: 'src/styles/',
+                    ext: '.css'
+                }]
             }
         },
         copy: {
