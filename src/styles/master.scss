@@ -40,7 +40,7 @@ h4 {
 
 p {
     line-height: 1.5em;
-    margin: 0.5em 0;
+    margin: 0.8em 0;
 }
 
 a, a:visited {
@@ -308,4 +308,16 @@ html[xmlns] .clearfix {
  
 * html .clearfix {
     height: 1%;
+}
+
+.fl {
+    float: left;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+.col-d-3 {
+    width: 35%;
 }
