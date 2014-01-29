@@ -79,7 +79,7 @@
     volume = tsw.gain(0.5); // Half volume.
 tsw.connect(osc, volume, tsw.speakers);
 osc.play();</pre>
-<p>Press play to see how it sounds. <button id="make-noise-demo">Play</button></p>
+<p>Press play to hear how it sounds. <button id="make-noise-demo">Play</button></p>
 
 <p>Lovely. What if we want to control the pitch of the oscillator? Let's add a slider. Theresa's Sound World doesn't need jQuery to work, but let's use it here to make things nicer.</p>
 <pre>
@@ -199,18 +199,20 @@ osc.start();</pre>
                         <div>
                             <h3>Music</h3>
                             <ul>
-                                <li><a href="#get-chord">tsw.chord()</a></li>
-                                <li><a href="#get-scale">tsw.scale()</a></li>
-                                <li><a href="#get-sharp">tsw.sharp()</a></li>
-                                <li><a href="#get-flat">tsw.flat()</a></li>
-                                <li><a href="#get-frequency">tsw.frequency()</a></li>
+                                <li><a href="#chord">tsw.chord()</a></li>
+                                <li><a href="#flat">tsw.flat()</a></li>
+                                <li><a href="#frequency">tsw.frequency()</a></li>
+                                <li><a href="#note">tsw.note()</a></li>
+                                <li><a href="#scale">tsw.scale()</a></li>
+                                <li><a href="#sharp">tsw.sharp()</a></li>
                             </ul> 
                         </div>
                         <div>
                             <h3>MIDI</h3>
                             <ul>
                                 <li><a href="#get-midi">tsw.getUserMIDI()</a></li>
-                                <li><a href="#get-midi-note">tsw.note()</a></li>
+                                <li><a href="#midi-note">tsw.MIDINote()</a></li>
+                                <li><a href="#midi-support">tsw.isMIDISupported()</a></li>
                             </ul>
                     </nav>
 
@@ -255,15 +257,30 @@ tsw.context.createGain; // Use native Web Audio API function.</pre>
 
                         <!-- tsw.compressor() -->
                         <section id="compressor">
-                            <h1>tsw.compressor()</h1>
-                            <p>Creates a compressor node.</p>
+                            <h1>tsw.compressor(<span>settings</span>)</h1>
+                            <p>
+                                Creates a compressor node. Takes an object with the following parameters.
+                                <i>threshold, knee, ratio, attack, release.</i>
+                            </p>
+                            <pre>var compressor = tsw.compressor({
+    threshold: -24,     // dbs (min: -100, max: 0)
+    knee: 30,           // dbs (min: 0, max: 40)
+    ratio: 12,          // ratio (min: 1, max: 20)
+    attack: 0.003,      // seconds (min: 0, max: 1)
+    release: 0.25       // seconds (min: 0, max: 1)
+});</pre>
                         </section>
 
                         <!-- tsw.filter() -->
                         <section id="filter">
-                            <h1>tsw.filter(<span>filterType [string], frequency [number], Q [number], gain [number]</span>)</h1>
+                            <h1>tsw.filter(<span>settings</span>)</h1>
                             <p>Creates a filter node, which removes certain frequencies from any audio passed through it.</p>
-                            <p>Possible values: <i>lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass.</i></p>
+                            <p>Possible filter types: <i>lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass.</i></p>
+                            <pre>var filter = tsw.filter({
+    type: 'lowpass',
+    frequency: 200,
+    Q: 1
+});</pre>
                         </section>
 
                         <!-- tsw.gain() -->
@@ -340,8 +357,7 @@ tsw.disconnect(gainNode); // Disconnect gainNode.
         singing: 'my-lovely-singing.mp3'
     },
     {
-        path: '/path/to/files/',
-        extensions: ['wav', 'mp3']
+        path: '/path/to/files/'
     },
     function (response, status, xhr) {
         if (status === 'success') {
@@ -444,14 +460,14 @@ saw.stop(tsw.now() + 5); // Stop oscillator after 5 seconds.</pre>
                         <section id="note">
                             <h1>tsw.note(number)</h1>
                             <p>Returns individual note from frequency.</p>
-                            <pre>tsw.note(440)</pre>
+                            <pre>tsw.note(440);</pre>
                         </section>
 
                         <!-- tsw.chord() -->
                         <section id="chord">
                             <h1>tsw.chord(string)</h1>
                             <p>Returns array of notes in any given chord.</p>
-                            <pre>tsw.chord('A3', 'major')</pre>
+                            <pre>tsw.chord('A3', 'major');</pre>
                         </section>
 
                         <!-- tsw.frequency() -->
@@ -467,7 +483,13 @@ saw.stop(tsw.now() + 5); // Stop oscillator after 5 seconds.</pre>
 
                         <!-- tsw.midi.getUserMIDI() -->
                         <section id="get-user-midi">
-                            <h1>tsw.getUserMIDI()</h1>
+                            <h1>tsw.getUserMIDI(success, failure)</h1>
+                            <p>Requests access from user to handle MIDI input/output. Takes a success and a failure callback.</p>
+                            <pre>tsw.getUserMIDI(function () {
+    console.log('we have midi!');
+}, function () {
+    console.log('nope, no midi for you.')
+});</pre>
                         </section>
 
                         <!-- tsw.note() -->
