@@ -48,6 +48,16 @@ ul {
   margin: 0;
   padding: 0; }
 
+dl {
+  margin: 0 0 1em; }
+
+dt {
+  float: left;
+  font-weight: bold; }
+
+dd {
+  -webkit-margin-start: 100px; }
+
 .container {
   margin: 0em auto;
   max-width: 800px; }
@@ -175,7 +185,9 @@ section {
     section[name="reference"] section section h1 {
       color: black;
       font-size: 1.5em;
-      margin-top: 0.2em; }
+      margin: 0.2em 0; }
+    section[name="reference"] section section p {
+      margin-top: 0; }
     section[name="reference"] section section pre {
       padding: 0; }
       section[name="reference"] section section pre .CodeMirror pre {
@@ -200,7 +212,9 @@ aside {
   aside img {
     float: right;
     width: 160px;
-    margin-top: 0.8em; }
+    margin: 0;
+    margin-top: 0.8em;
+    margin-left: 0.8em; }
   aside pre {
     padding: 0;
     margin: 0; }
@@ -230,5 +244,6 @@ html[xmlns] .clearfix {
 .no-margin {
   margin: 0; }
 
-.col-d-3 {
-  width: 35%; }
+.col-d-5 {
+  width: 50%;
+  margin-right: 1em; }

@@ -66,6 +66,19 @@ ul {
     padding: 0;
 }
 
+dl {
+    margin: 0 0 1em;
+}
+
+dt {
+    float: left;
+    font-weight: bold;
+}
+
+dd {
+    -webkit-margin-start: 100px;
+}
+
 .container {
     margin: 0em auto;
     max-width: 800px;
@@ -229,7 +242,11 @@ section {
         h1 {
             color: black;
             font-size: 1.5em;
-            margin-top: 0.2em;
+            margin: 0.2em 0;
+        }
+
+        p {
+            margin-top: 0;
         }
 
         pre {
@@ -275,7 +292,9 @@ aside {
     img {
         float: right;
         width: 160px;
+        margin: 0;
         margin-top: 0.8em;
+        margin-left: 0.8em;
     }
 
     pre {
@@ -318,6 +337,7 @@ html[xmlns] .clearfix {
     margin: 0;
 }
 
-.col-d-3 {
-    width: 35%;
+.col-d-5 {
+    width: 50%;
+    margin-right: 1em;
 }

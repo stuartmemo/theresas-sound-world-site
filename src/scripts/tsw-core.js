@@ -1,15 +1,18 @@
-/*****************************
+/****************************************************
  * Theresa's Sound World
  * tsw.js
  * An audio library.
+ * http://theresassoundworld.com/
+ * https://github.com/stuartmemo/theresas-sound-world 
  * Copyright 2014 Stuart Memo
- *****************************/
+ ****************************************************/
+
 
 (function (window, undefined) {
     'use strict';
 
     var tsw,
-        version = '1.0.0';
+        version = '0.0.1';
 
     tsw = (function () {
 
@@ -66,10 +69,18 @@
 
         /*
          * Is an argument a string?
-         * @param thing Argument to check if it's an string.
+         * @param thing Argument to check if it's a string.
          */
         var isString = function (thing) {
             return typeof thing === 'string';
+        };
+
+        /*
+         * Is an argument a number?
+         * @param thing Argument to check if it's a number.
+         */
+        var isNumber = function (thing) {
+            return typeof thing === 'number';
         };
 
         /*
@@ -128,7 +139,6 @@
          * Enable jQuery style getters & setters.
          * @param paramToGetSet
          */
-
         var createGetSetter = function (node, arrayOfParams) {
             var that = this;
 
@@ -175,7 +185,6 @@
             for (var i = 0; i < tsw.noise_buffer.buffer().length; i++) {
                 tsw.noise_buffer.buffer().getChannelData(0)[i] = (Math.random() * 2) - 1;
             }
-            tsw.noise_buffer
         };
 
         /*
@@ -231,7 +240,7 @@
         var fadeIn = function (thingToFadeIn) {
             thingToFadeIn.output.gain.cancelScheduledValues(tsw.now());
             thingToFadeIn.output.gain.setValueAtTime(0, tsw.now());
-            thingToFadeIn.output.gain.linearRampToValueAtTime(1, tsw.now() + 2);
+            thingToFadeIn.output.gain.exponentialRampToValueAtTime(1, tsw.now() + 2);
         };
 
         /*
@@ -241,7 +250,7 @@
         var fadeOut = function (thingToFadeOut) {
             thingToFadeOut.output.gain.cancelScheduledValues(tsw.now());
             thingToFadeOut.output.gain.setValueAtTime(1, tsw.now());
-            thingToFadeOut.output.gain.linearRampToValueAtTime(0, tsw.now() + 2);
+            thingToFadeOut.output.gain.exponentialRampToValueAtTime(0, tsw.now() + 2);
         };
 
         /*
@@ -252,7 +261,7 @@
             return this.context().currentTime;
         };
 
-        tsw.createChannelMerger = function (channels) {
+        tsw.channelMerger = function (channels) {
             return tsw.context().createChannelMerger(channels);
         };
 
@@ -316,23 +325,25 @@
                 var first_arg = arguments[i],
                     second_arg = arguments[i + 1];
 
-                // First arg is native node, second is tsw node.
+                // First argument is a native node, second is a tsw node.
                 if (isNativeNode(first_arg) && isTswNode(second_arg)) {
                     connectNativeNodeToTswNode(first_arg, second_arg);
                     continue;
                 }
 
-                // First arg is tsw node, second is native node.
+                // First argument is a tsw node, second is a native node.
                 if (isTswNode(first_arg) && isNativeNode(second_arg)) {
                     connectTswNodeToNativeNode(first_arg, second_arg);
                     continue;
                 }
 
+                // First arggument is native node, second is an array.
                 if (isNativeNode(first_arg) && isArray(second_arg)) {
                     connectNativeNodeToArray(first_arg, second_arg);
                     continue;
                 }
 
+                // First argument is an array, second is a native node.
                 if (isArray(first_arg) && isNativeNode(second_arg)) {
                     connectArrayToNativeNode(first_arg, second_arg);
                     continue;
@@ -350,13 +361,13 @@
                     continue;
                 }
 
-                // First arg is tsw node, second is array.
+                // First argument is a tsw node, second is an array.
                 if (isTswNode(first_arg) && isArray(second_arg)) {
                     connectTswNodeToArray(first_arg, second_arg);
                     continue;
                 }
 
-                // First arg is array, second is tsw node.
+                // First argument is array, second is a tsw node.
                 if (isArray(first_arg) && isTswNode(second_arg)) {
                     connectArrayToTswNode(first_arg, second_arg);
                     continue;
@@ -368,13 +379,13 @@
                     continue;
                 }
 
-                // First arg is object containing nodes, second is arrat.
+                // First argument is an object containing nodes, second is an array.
                 if (isObjectWithNode(first_arg) && isArray(second_arg)) {
                     connectObjectWithNodeToArray(first_arg, second_arg);
                     continue;
                 }
 
-                // First arg is array, second is object containing node.
+                // First argument is an array, second is an object containing nodes.
                 if (isArray(first_arg) && isObjectWithNode(second_arg)) {
                     connectArrayToObjectWithNode(first_arg, second_arg);
                     continue;
@@ -414,33 +425,47 @@
         */
         tsw.load = function () {
             var returnObj = {},
-                files = arguments[0],
-                basePath = '',
+                files = arguments[0].files,
+                basePath = arguments[0].path || '',
                 extensions = [],        
                 files_loaded = 0,
+                files_failed= 0,
                 number_of_files = 0,
-                callback,
+                successCallback,
+                failCallback,
                 that = this;
 
             // Load a single file
-            var loadFile = function (basePath, fileKey, filePath, returnObj, callback) {
+            var loadFile = function (basePath, fileKey, filePath, returnObj, successCallback, failCallback) {
                 var request = new XMLHttpRequest();
 
                 request.open('GET', basePath + filePath, true);
                 request.responseType = 'arraybuffer';
 
-                request.onload = function () {
+                var success = function () {
                     files_loaded++;
 
                     that.context().decodeAudioData(request.response, function (decodedBuffer) {
                         returnObj[fileKey] = decodedBuffer;
 
                         if (Object.keys(returnObj).length === number_of_files) {
-                            callback(returnObj);
+                            successCallback(returnObj);
                         }
                     });
-                }, function (error) {
-                    console.log('Error decoding audio data', error);
+                };
+
+                var fail = function () {
+                    if (isFunction(failCallback)) {
+                        failCallback();
+                    } else {
+                        console.log('There was an error loading your file(s)', request.status);
+                    }
+                }
+
+                request.onreadystatechange = function () {
+                    if (request.readyState === 4) {
+                        request.status === 200 ? success() : fail();
+                    }
                 };
 
                 request.send();
@@ -451,32 +476,32 @@
                 basePath = arguments[1].path || '';
                 extensions = arguments[1].extensions || [];
             } else if (typeof arguments[1] === 'function') {
-                callback = arguments[1];
+                successCallback = arguments[1];
             }
 
-            // Is 3rd argument is the callback?
+            // Is 3rd argument is the failure callback?
             if (typeof arguments[2] === 'function') {
-                callback = arguments[2];
+                failCallback = arguments[2];
             }
 
             // 1st argument is files object
             if (typeof files === 'object') {
                 number_of_files = Object.keys(files).length;
                 for (var file in files) {
-                    loadFile(basePath, file, files[file], returnObj, callback);
+                    loadFile(basePath, file, files[file], returnObj, successCallback, failCallback);
                 }
             } else if (typeof files === 'string') {
                 number_of_files = 1;
-                loadFile(basePath, file, files[file], returnObj, callback);
+                loadFile(basePath, file, files[file], returnObj, successCallback);
             } else {
                 throw new Error('Files must be an array or a valid string.');
             }
         };
 
         /*
-         * Create a delay node.
+         * Create a wait/delay node.
          */
-        tsw.createDelay = function (delayTime) {
+        tsw.wait = function (delayTime) {
             var node,
                 delayNode = this.context().createDelay();
 
@@ -487,10 +512,9 @@
             });
 
             createGetSetter.call(delayNode, node, ['delayTime']);
-
             node.delayTime(delayTime);
-
             tsw.connect(node.input, delayNode, node.output);
+
 
             return node;
         };
@@ -515,7 +539,7 @@
          * -1 is fully left. 1 is fully right.
          * @param {number} pan
          */
-        tsw.createPanner = function (pan) {
+        tsw.panner = function (pan) {
             var panner = {},
                 left_gain = tsw.createGain(1),
                 right_gain = tsw.createGain(0),
@@ -581,9 +605,16 @@
          * @param {buffer} AudioBuffer Preloaded audio buffer of sound to play.
          * @param {number} when
          */
-        tsw.play = function (buffer, when) {
+        tsw.play = function (buffers, when) {
             when = when || 0;
-            buffer.start(when);
+
+            if (isArray(buffers)) {
+                buffers.forEach(function (buffer) {
+                    buffer.start(when);
+                });
+            } else {
+                buffers.start(when);
+            }
         };
 
         /*
@@ -647,6 +678,8 @@
                 return options.nodeType || 'default';
             };
 
+            node.attributes = options.attributes;
+
             // Keep a list of nodes this node is connected to.
             node.connectedTo = [];
 
@@ -694,15 +727,10 @@
                 return this;
             };
 
-            /*
-            node.type = function (wt) {
-                if (typeof wt === 'undefined') {
-                    return osc.type;
-                } else {
-                    osc.type = wt.toLowerCase();
-                }
+            node.detune = function (amount) {
+                osc.detune.value = amount;
+                return this;
             };
-            */
 
             node.type(node.waveType.toLowerCase());
 
@@ -740,6 +768,10 @@
             node = tsw.createNode({
                 nodeType: 'gain'
             });
+
+            node.params = {
+                gain: gainNode.gain
+            };
 
             createGetSetter.call(gainNode, node, ['gain']);
 
@@ -804,10 +836,10 @@
          * Create buffer source node.
          * @return BufferSource node.
          */
-        tsw.createBufferSource = function (buff) {
+        tsw.bufferPlayer = function (buff) {
             var source = this.context().createBufferSource();
 
-            source.buffer = buff.buffer();
+            source.buffer = buff;
 
             if (typeof source.start === 'undefined') {
                 source.start = source.noteOn;
@@ -830,9 +862,9 @@
                 filter = tsw.context().createBiquadFilter();
 
             if (isObject(arguments[0])) {
-                options.type = arguments[0].type || 'lowpass';
+                options.type = arguments[0].type;
                 options.frequency = arguments[0].frequency || 1000;
-                options.Q = arguments[0].Q || 0;
+                options.Q = arguments[0].Q;
             } else if (isString(arguments[0])) {
                 options.type = arguments[0]; 
             }
@@ -888,6 +920,8 @@
             settings = applyObject(defaults, settings);
             applySettings(compressor, settings);
 
+            tsw.connect(node.input, compressor, node.output);
+
             return node;
         };
 
@@ -912,7 +946,8 @@
          * Create waveshaper.
          */
         tsw.waveShaper = function () {
-            var curve = new Float32Array(65536);
+            var waveShaper = this.context().createWaveShaper(),
+                curve = new Float32Array(65536);
 
             for (var i = 0; i < 65536 / 2; i++) {
                 if (i < 30000) {
@@ -922,7 +957,6 @@
                 }
             }
 
-            var waveShaper = this.context().createWaveShaper();
             waveShaper.curve = curve;
 
             return waveShaper;
@@ -943,25 +977,28 @@
             envelope.startLevel = settings.startLevel || 0;
             envelope.maxLevel = settings.maxLevel || 1;
             envelope.minLevel = settings.minLevel || 0;
+            envelope.param = settings.param || null;
+            envelope.nodeType = function () {
+                return 'envelope';
+            }
 
             // Envelope values
             envelope.attackTime = settings.attackTime || 0;
-            envelope.decayTime = settings.decayTime || 0;
-            envelope.sustainLevel = settings.sustainLevel || 0;
-            envelope.releaseTime = settings.releaseTime || 0;
-            
+            envelope.decayTime = settings.decayTime || 1;
+            envelope.sustainLevel = settings.sustainLevel || 1;
+            envelope.releaseTime = settings.releaseTime || 1;
+
             // Automation parameters 
-            envelope.param = settings.param || {};
-            envelope.param.value = envelope.startLevel;
+            if (isAudioParam(settings.param)) {
+                envelope.param = settings.param;
+            }
 
             // Should the release kick-in automatically
             settings.autoStop === undefined ? envelope.autoStop = true : envelope.autoStop = settings.autoStop;
 
             envelope.start = function (timeToStart) {
                 // Calculate times
-                var startTime = timeToStart || tsw.now(),
-                    attackTime = startTime + this.attackTime,
-                    decayTime = attackTime + this.decayTime,
+                var decayTime = this.attackTime + this.decayTime,
                     releaseTime = decayTime + this.releaseTime;
 
                 // Calculate levels
@@ -969,22 +1006,13 @@
                 this.sustainLevel = this.startLevel + this.sustainLevel;
 
                 // Param is actual AudioParam
-                if ('setValueAtTime' in this.param) {
-                    // Initialise
-                    this.param.cancelScheduledValues(startTime);
-                    this.param.setValueAtTime(this.startLevel, startTime);
-
+                if (isAudioParam(this.param)) {
                     // Attack
-                    this.param.linearRampToValueAtTime(this.maxLevel, attackTime);
+                    this.param.setValueAtTime(0, tsw.now());
+                    this.param.linearRampToValueAtTime(this.maxLevel, tsw.now() + this.attackTime);
 
                     // Decay
-                    this.param.linearRampToValueAtTime(this.startLevel + this.sustainLevel, decayTime);
-
-                    // Release
-                    if (this.autoStop) {
-                        this.param.linearRampToValueAtTime(this.minLevel, releaseTime);
-                        this.stop(releaseTime);
-                    }
+                    this.param.setTargetAtTime(this.sustainLevel, tsw.now(), this.decayTime);
                 }
             };
 
@@ -994,7 +1022,7 @@
 
                 // Release
                 if (!this.autoStop && isAudioParam(this.param)) {
-                    this.param.linearRampToValueAtTime(this.minLevel, timeToStop);
+                    this.param.setTargetAtTime(this.minLevel, tsw.now(), this.releaseTime / 10);
                 }
             };
 
@@ -1008,37 +1036,37 @@
          */
         tsw.noise = function (colour) {
             var node,
-                noise_source = this.createBufferSource(tsw.noise_buffer);
+                noise_source = this.bufferPlayer(tsw.noise_buffer.buffer());
 
             node = tsw.createNode({
                 nodeType: 'noise',
-                sourceNode: noise_source
+                sourceNode: noise_source,
+                attributes: {
+                    color: 'white'
+                }
             });
 
-            noise_source.buffer = tsw.noise_buffer.buffer();
-
-            node.color = colour || 'white';
             noise_source.loop = true;
 
-            noise_source.nodeType = function () {
+            createGetSetter.call(noise_source, node, ['buffer']);
+
+            node.color = node.colour = function (color) {
+                if (typeof color === 'undefined') {
+                    return node.attributes.color;
+                } else {
+                    node.attributes.color = color;
+                }
+            }
+
+            node.nodeType = function () {
                 return 'noise';
             }
 
-            noise_source.color = function (val) {
-                if (typeof val === 'undefined') {
-                    return node.color; 
-                } else {
-                    if (typeof val === 'string') {
-                        node.color = val;
-                    }
-                }
-            };
-
-            noise_source.play = function (timeToStart) {
+            node.play = function (timeToStart) {
                 noise_source.start(timeToStart);
             };
 
-            return noise_source;
+            return node;
         };
 
         /*
@@ -1058,9 +1086,10 @@
 
             *********************************/
 
-            var effectObj = {},
-                lfo = tsw.createOscillator(),
-                depth = this.createGain(),
+            var node,
+                lfo = tsw.oscillator(),
+                depth = this.gain(),
+                noise_source = this.bufferPlayer(tsw.noise_buffer.buffer()),
                 defaults = {
                     frequency: 0,
                     waveType: 'triangle',
@@ -1069,21 +1098,24 @@
                     autoStart: false
                 };
 
+            node = tsw.createNode({
+                nodeType: 'noise',
+                sourceNode: noise_source
+            });
+
             // Merge passed settings with defaults
             settings = applyObject(defaults, settings);
 
-            lfo.type = lfo[settings.waveType] || lfo['TRIANGLE'];
-
-            depth.gain.value = settings.depth;
-            lfo.frequency.value = settings.frequency;
+            lfo.type(settings.waveType || 'triangle');
+            depth.gain(settings.depth);
+            lfo.frequency(settings.frequency);
 
             if (settings.autoStart) {
                 lfo.start(tsw.now());
             }
 
             lfo.modulate = function (target) {
-                this.connect(depth);
-                depth.connect(target);
+                tsw.connect(depth, target);
             };
 
             lfo.setWaveType = function (waveType) {
@@ -1101,7 +1133,7 @@
             lfo.setDepth = function (d) {
                 depth.gain.value = d;
             };
-            
+
             lfo.modulate(settings.target);
 
             return lfo;
@@ -1134,6 +1166,10 @@
                 setTimeout(loop, 500);
             })();
         };
+
+        // Expose helper functions.
+        tsw.isString = isString;
+        tsw.isNumber = isNumber;
 
         /*
          * Kick everything off.
