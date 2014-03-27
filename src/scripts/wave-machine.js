@@ -10,7 +10,7 @@
             frequency: 20,
             waveType: 'sine'
         },
-        currentPosition = 0,
+        current_position = 0,
         arrayToDraw = [];
 
     var calculateSineWave = function (amplitude, frequency) {
@@ -27,22 +27,34 @@
 
     var wave1 = calculateSineWave(0.3, 40),
         wave2 = calculateSineWave(0.7, 10),
-        noDataPoints = 5;
+        noDataPoints = 2;
 
-    var drawWave = function (waveType) {
+    var drawWave = function () {
 
         var drawIt  = function (arrayToDraw) {
+            var i = 0,
+                size_of_array_to_draw,
+                first_part;
+
+            size_of_array_to_draw = arrayToDraw.length;
+
             context.fillStyle = '#CF313C';
 
-            currentPosition < arrayToDraw.length ? currentPosition++ : currentPosition = 0;
+            if (current_position < size_of_array_to_draw) {
+                current_position++;
+            } else {
+                console.log(current_position)
+                current_position = 0;
+            }
 
-            var firstPart = arrayToDraw.slice(0, currentPosition);
+            first_part = arrayToDraw.slice(0, current_position);
+            arrayToDraw = arrayToDraw.concat(first_part);
 
-            arrayToDraw = arrayToDraw.concat(firstPart);
+            size_of_array_to_draw = arrayToDraw.length;
 
-            for (i = arrayToDraw.length; i > 0; i--){ 
+            for (i = size_of_array_to_draw; i > 0; i--) {
                 if (i % noDataPoints === 0) {
-                    context.fillRect(i - currentPosition, (arrayToDraw[i]), 5, 5);
+                    context.fillRect(i - current_position, (arrayToDraw[i]), 5, 5);
                 }
             }
 
@@ -60,17 +72,16 @@
         canvas.height = canvasHeight;
         context.moveTo(0, canvasHeight / 2);
 
-        // drawCentreLine();
-
         drawWave(config.waveType);
     };
 
     // Request animation polyfill from
     // http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
     (function() {
-        var lastTime = 0;
-        var vendors = ['webkit', 'moz'];
-        for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        var lastTime = 0,
+            vendors = ['webkit', 'moz'];
+
+        for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
             window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
             window.cancelAnimationFrame =
               window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];

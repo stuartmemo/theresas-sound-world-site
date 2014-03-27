@@ -3,28 +3,22 @@ body {
   color: black;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
 
-h1 {
-  color: white;
-  font-family: "myriad-pro-1", "myriad-pro-2", arial, sans-serif;
-  font-size: 3em;
-  line-height: 1.2em; }
-  h1 span {
-    font-weight: normal; }
-
 h2 {
   font-size: 2em;
   font-family: "myriad-pro-1", "myriad-pro-2", arial, sans-serif;
   margin: 0.5em 0; }
 
-h3 {
+html[xmlns] .clearfix {
+  display: block; }
+
+* html .clearfix {
+  height: 1%; }
+
+.section__subtitle,
+.reference__navigation-section-title {
   font-size: 1.5em;
   font-weight: bold;
   margin: 0.5em 0; }
-
-h4 {
-  font-weight: bold;
-  font-size: 1.2em;
-  margin: 0; }
 
 p {
   line-height: 1.5em;
@@ -36,11 +30,8 @@ a, a:visited {
   a:hover, a:visited:hover {
     text-decoration: underline; }
 
-hr {
-  height: 0;
-  border: 0;
-  box-shadow: #ccc 1px 0;
-  border-bottom: 1px solid #000; }
+.section__link {
+  font-weight: bold; }
 
 ul {
   line-height: 1.5em;
@@ -48,51 +39,63 @@ ul {
   margin: 0;
   padding: 0; }
 
-dl {
+.method__settings {
   margin: 0 0 1em; }
 
-dt {
+.method__param-name {
   float: left;
   font-weight: bold; }
 
-dd {
+.method__param-definition {
   -webkit-margin-start: 100px; }
 
 .container {
   margin: 0em auto;
   max-width: 800px; }
 
-header img {
+/* Header */
+.header__about {
+  color: white;
+  font-family: "myriad-pro-1", "myriad-pro-2", arial, sans-serif;
+  font-size: 3em;
+  line-height: 1.2em; }
+
+.header__image {
   float: left;
+  height: 160px;
   padding: 0 1.5em 1em 0; }
 
-header p a, header p a:visited {
+.header__canvas {
+  position: absolute;
+  top: 5px;
+  z-index: -1; }
+
+/* Main Navigation */
+.main-navigation {
+  clear: both;
   color: white;
-  font-weight: normal; }
+  background-color: #6f1717;
+  font-family: arial, sans-serif; }
+
+.main-navigation__item {
+  display: inline-block;
+  padding: 1em 1.8em; }
+  .main-navigation__item a {
+    color: white; }
+    .main-navigation__item a:visited {
+      color: white; }
 
 .main {
   background-color: #ffffc8;
   padding: 0.2em 2em 1em; }
 
-label {
-  display: block; }
-
 .admin input, .admin select {
   margin-bottom: 1em;
   width: 30%; }
 
-header nav {
-  clear: both;
-  color: white;
-  background-color: #6f1717;
-  font-family: arial, sans-serif; }
-  header nav li {
-    display: inline-block;
-    padding: 1em 1.8em; }
-    header nav li a {
-      color: white; }
-      header nav li a:visited {
-        color: white; }
+.reference-navigation {
+  border-bottom: 1px solid #000;
+  padding-bottom: 1em; }
 
 pre, code, kbd, samp {
   font-family: monospace, serif;
@@ -120,12 +123,6 @@ pre, code, blockquote {
   line-height: 1.2em;
   margin-bottom: 1em; }
 
-.pln {
-  color: white !important; }
-
-img.mini-logo {
-  width: 35px; }
-
 .download {
   background: #6F1717;
   display: none;
@@ -135,21 +132,10 @@ img.mini-logo {
 .download li {
   margin-bottom: 10px; }
 
-.download a {
-  color: white; }
-
-p a, label {
-  font-weight: bold; }
-
 .effect {
   width: 33%;
   float: left;
   height: 130px; }
-
-.effect label {
-  width: 40%;
-  display: inline-block;
-  line-height: 1.7em; }
 
 .effect input[type="range"] {
   width: 40%; }
@@ -163,35 +149,34 @@ table th {
 a {
   color: #007AAA; }
 
-canvas {
-  position: absolute;
-  top: 5px;
-  z-index: -1; }
-
 span.params {
   font-weight: normal; }
+
+.method {
+  background: #FFFEED;
+  border-left: 8px solid #c3222e;
+  border-bottom: 0;
+  padding: 0.1em 1em;
+  margin: 1em 0; }
+
+.method__title {
+  color: black;
+  font-size: 1.5em;
+  margin: 0.2em 0; }
+
+.method__description {
+  margin-top: 0; }
+
+.method__example {
+  padding: 0; }
 
 section {
   border-bottom: 1px solid #6F1717;
   padding-bottom: 1em; }
   section section {
     border: 0; }
-  section[name="reference"] section section {
-    background: #FFFEED;
-    border-left: 8px solid #c3222e;
-    border-bottom: 0;
-    padding: 0.1em 1em;
-    margin: 1em 0; }
-    section[name="reference"] section section h1 {
-      color: black;
-      font-size: 1.5em;
-      margin: 0.2em 0; }
-    section[name="reference"] section section p {
-      margin-top: 0; }
-    section[name="reference"] section section pre {
-      padding: 0; }
-      section[name="reference"] section section pre .CodeMirror pre {
-        padding: 0 4px; }
+  section[name="reference"] section section pre .CodeMirror pre {
+    padding: 0 4px; }
   section[name="reference"] nav {
     width: 100%; }
     section[name="reference"] nav li {
@@ -202,24 +187,32 @@ section {
   section[name="reference"] section[name="music"] section {
     border-left-color: #007aaa; }
 
-aside {
+.highlight-box {
   background: #007aaa;
   padding: 1em;
   color: white; }
-  aside h1 {
-    font-size: 2em;
-    margin: 0; }
-  aside img {
-    float: right;
-    width: 160px;
-    margin: 0;
-    margin-top: 0.8em;
-    margin-left: 0.8em; }
-  aside pre {
-    padding: 0;
-    margin: 0; }
-  aside a, aside a:visited {
-    color: #ffffc8; }
+
+.highlight-box__heading {
+  font-size: 2em;
+  margin: 0; }
+
+.highlight-box__example {
+  padding: 0;
+  margin: 0; }
+
+.highlight-box__image {
+  float: right;
+  width: 160px;
+  margin: 0;
+  margin-top: 0.8em;
+  margin-left: 0.8em; }
+
+.highlight-box__link,
+.highlight-box__link:visited {
+  color: #ffffc8; }
+
+.method-arguments {
+  font-weight: normal; }
 
 .clearfix:after {
   content: ".";
@@ -231,12 +224,6 @@ aside {
 
 .clearfix {
   display: inline-block; }
-
-html[xmlns] .clearfix {
-  display: block; }
-
-* html .clearfix {
-  height: 1%; }
 
 .fl {
   float: left; }
