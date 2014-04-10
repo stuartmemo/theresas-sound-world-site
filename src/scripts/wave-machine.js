@@ -1,6 +1,18 @@
 // Your wave's got a little machine.
 
 (function (window, undefined) {
+    var osc = tsw.oscillator(),
+        vol = tsw.gain(0.6),
+        silly_scope = new WavyJones(tsw.context(), 'waves');
+
+    silly_scope.lineColor = '#CF313C';
+
+    tsw.connect(osc, vol, silly_scope);
+    osc.start(tsw.now());
+})();
+
+/*
+(function (window, undefined) {
     var canvas = document.getElementById('waves'),
         context = canvas.getContext('2d'),
         canvasWidth = window.innerWidth,
@@ -113,3 +125,4 @@
         requestAnimationFrame(loop);
     }
 })(window);
+*/

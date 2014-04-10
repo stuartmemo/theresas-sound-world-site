@@ -66,8 +66,11 @@ ul {
   padding: 0 1.5em 1em 0; }
 
 .header__canvas {
+  height: 200px;
+  left: 0;
   position: absolute;
   top: 5px;
+  width: 100%;
   z-index: -1; }
 
 /* Main Navigation */

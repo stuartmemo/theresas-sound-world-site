@@ -9,7 +9,7 @@ module.exports = function (grunt) {
                     'build/tsw.min.js': ['src/scripts/tsw-core.js', 'src/scripts/tsw-effects.js', 'src/scripts/tsw-music.js']
                 },
                 options: {
-                    banner: '/* <%= pkg.title %> <%= pkg.version %> (c) 2013 Stuart Memo */\n'
+                    banner: '/* <%= pkg.title %> <%= pkg.version %> (c) 2014 Stuart Memo */\n'
                 }
             }
         },
@@ -62,6 +62,7 @@ module.exports = function (grunt) {
             }
         }
     });
+
     grunt.event.on('watch', function(action, filepath, target) {
         grunt.log.writeln(target + ': ' + filepath + ' has ' + action);
     });
@@ -76,4 +77,5 @@ module.exports = function (grunt) {
     // Default tasks.
     grunt.registerTask('default', ['connect', 'watch']);
     grunt.registerTask('server', ['connect', 'watch']);
+    grunt.registerTask('build', ['sass:dist', 'uglify']);
 };
