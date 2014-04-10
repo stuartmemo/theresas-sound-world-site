@@ -18,6 +18,7 @@
     </head>
     <body>
         <div class="header__canvas" id="waves"></div>
+        <div class="header__canvas" id="waves-again"></div>
         <div class="container">
             <header class="header">
                 <a href="/"><img src="images/theresas-sound-world.png" class="header__image" height="160"/></a>
@@ -92,7 +93,7 @@ osc.play();</pre>
 
                     <p>Press the play button above again, and use this slider to change the pitch.</p>
                     <input id="slider" type="range" min="0" max="1000"/>
-                    <p>It's like an html <i>&lt;theremin&gt;</i> element.</p>
+                    <p>Your very own html <i>&lt;theremin&gt;</i> element!</p>
 
                     <h3 class="section__subtitle">We're chained</h3>
                     <p>Nodes in TSW can be also be chained like so:</p>
@@ -124,11 +125,6 @@ osc.start();</pre>
                     <p class="highlight-box__paragraph">Hope that helped a bit.</p>
                     <p class="highlight-box__paragraph">&mdash; David (New York, 1978)</p>
                 </aside>
-
-                <section class="section">
-                    <h2 class="section__title">Demos</h2>
-                    <p>You can use Theresa's Sound World to make much more useful things! Check out the <a href="/examples">examples</a> page to see what other people have been making.</p>
-                </section>
 
                 <section class="section reference" id="reference" name="reference">
                     <h2 class="section__title">Reference</h2>
@@ -553,7 +549,7 @@ tsw.midiNote('A3'); // returns 45</pre>
                     <h3 class="section__subtitle"><a href="http://stuartmemo.com/synth/">Sympathetic Synthesizer System Mk 1</a></h3>
                     <p>A synth with feelings.</p>
 
-                    <h3 class="section__subtitle"><a href="http://stuartmemo.com/beat-petite/">Beat Petite</a></h3>
+                    <h3 class="section__subtitle"><a href="http://beatpetite.com">Beat Petite</a></h3>
                     <p>A sample-free drum machine in the browser.</p>
  
                     <h3 class="section__subtitle"><a href="http://stuartmemo.com/thx-deep-note-in-javascript/">THX Deep Note</a></h3>
@@ -595,9 +591,30 @@ tsw.midiNote('A3'); // returns 45</pre>
         <script src="scripts/tsw-effects.js"></script>
         <script src="scripts/tsw-music.js"></script>
         <script src="scripts/tsw-midi.js"></script>
-        <script src="scripts/wave-machine.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script>
+             // Your wave's got a little machine.
+            'use strict';
+
+            (function (window, undefined) {
+                var osc = tsw.oscillator(),
+                    vol = tsw.gain(0.6),
+                    silly_scope = new WavyJones(tsw.context(), 'waves');
+
+                silly_scope.lineColor = '#CF313C';
+
+                tsw.connect(osc, vol, silly_scope);
+                osc.start(tsw.now());
+
+                (function changeFrequency () {
+                    osc.frequency((Math.random() * 1000) + 1);
+                    vol.gain((Math.random() * 0.9));
+                    setTimeout(function () {
+                        changeFrequency();
+                    }, 2000);
+                })();
+            })();
+
             var osc = {},
                 volume = tsw.gain(0.25); // Quarter of normal volume.
 
