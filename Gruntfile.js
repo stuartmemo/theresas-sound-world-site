@@ -1,18 +1,9 @@
+'use strict'; 
+
 module.exports = function (grunt) {
-    'use strict'; 
     // Project config.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        uglify: {
-            all: {
-                files: {
-                    'build/tsw.min.js': ['src/scripts/tsw-core.js', 'src/scripts/tsw-effects.js', 'src/scripts/tsw-music.js']
-                },
-                options: {
-                    banner: '/* <%= pkg.title %> <%= pkg.version %> (c) 2014 Stuart Memo */\n'
-                }
-            }
-        },
         sass: {
             dist: {
                 files: [{
@@ -40,7 +31,7 @@ module.exports = function (grunt) {
         watch: {
             html: {
                 files: 'src/index.html',
-                tasks: ['uglify', 'copy']
+                tasks: ['copy']
             },
             sass: {
                 files: ['src/styles/*.scss'],

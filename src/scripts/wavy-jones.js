@@ -7,7 +7,7 @@ var WavyJones = function (context, elem) {
         noDataPoints = 10,
         freqData = new Uint8Array(analyser.frequencyBinCount);
   
-    analyser.width = elem.offsetWidth + 200;
+    analyser.width = elem.offsetWidth;
     analyser.height = elem.offsetHeight;
     analyser.lineColor = 'transparent';
     analyser.lineThickness = 5;
