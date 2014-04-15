@@ -1,4 +1,4 @@
-/* Theresa's Sound World 0.0.1 (c) 2013 Stuart Memo */
+/* Theresa's Sound World 0.0.1 (c) 2014 Stuart Memo */
 /****************************************************
  * Theresa's Sound World
  * tsw.js
@@ -13,7 +13,7 @@
     'use strict';
 
     var tsw,
-        version = '0.0.1';
+        version = '0.1.0';
 
     tsw = (function () {
 
@@ -147,13 +147,13 @@
                 node[param] = function (val, targetTime, transition) {
 
                     if (typeof val === 'undefined') {
-                        if (that[param].hasOwnProperty('value')) {
-                            return that[param].value;
-                        } else {
+                        if (typeof that[param].value === 'undefined') {
                             return that[param];
+                        } else {
+                            return that[param].value;
                         }
                     } else {
-                        if (that[param].hasOwnProperty('value')) {
+                        if (typeof that[param].value !== 'undefined') {
                             if (isDefined(targetTime)) {
                                 // Set current value first so we have a schedule.
                                 transition = transition || 0;
@@ -662,20 +662,20 @@
          */
         var updateMethods = function (options) {
             this.start = function (timeToStart) {
-                if (options.sourceNode.hasOwnProperty('start')) {
-                    options.sourceNode.start(timeToStart);
+                if (typeof options.sourceNode.start === 'undefined') {
+                    options.sourceNode.noteOn(timeToStart || tsw.now());
                 } else {
-                    options.sourceNode.noteOn(timeToStart);
+                    options.sourceNode.start(timeToStart || tsw.now());
                 }
 
                 return this;
             };
 
             this.stop = function (timeToStop) {
-                if (options.sourceNode.hasOwnProperty('stop')) {
-                    options.sourceNode.stop(timeToStop);
+                if (typeof options.sourceNode.stop === 'undefined') {
+                    options.sourceNode.noteOff(timeToStop || tsw.now());
                 } else {
-                    options.sourceNode.noteOff(timeToStop);
+                    options.sourceNode.stop(timeToStop || tsw.now());
                 }
 
                 return this;
@@ -1511,7 +1511,6 @@
 
         return mmNode;
     };
-
 })(window);
 
 /*********************************
