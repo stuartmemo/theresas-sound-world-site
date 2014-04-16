@@ -609,25 +609,21 @@ tsw.midiNote('A3'); // returns 45</pre>
                 })();
             })();
 
-            var osc = {},
-                volume = tsw.gain(0.25); // Quarter of normal volume.
+            var osc; 
 
             $('#make-noise-demo').click(function () {
-                osc = tsw.oscillator('triangle');
+                var volume = tsw.gain(0.25); // Quarter of normal volume.
 
-                if (typeof osc.isPlaying === 'function') {
-                    if (osc.isPlaying()) {
-                        console.log('hiuh')
-                       osc.stop();
-                       this.innerText = 'Play';
-                       return false;
-                    }
+                if ($(this).text() === 'Stop') {
+                    osc.stop();
+                    tsw.disconnect(osc, volume, tsw.speakers);
+                    $(this).text('Play');
+                } else {
+                    osc = tsw.oscillator('triangle'),
+                    tsw.connect(osc, volume, tsw.speakers);
+                    osc.start();
+                    $(this).text('Stop');
                 }
-
-                tsw.connect(osc, volume, tsw.speakers);
-                osc.start();
-                console.log(this.innerText);
-                this.innerText = 'Stop';
             });
 
             $('#slider').change(function () {
