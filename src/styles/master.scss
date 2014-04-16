@@ -165,6 +165,10 @@ pre, code, blockquote {
     margin-bottom: 1em;
 }
 
+code {
+    color: $blue;
+}
+
 .download {
     background: #6F1717;
     display: none;
@@ -223,7 +227,6 @@ span.params {
 .method__example {
     padding: 0;
 }
-
 
 section {
     border-bottom: 1px solid #6F1717;

@@ -126,6 +126,9 @@ pre, code, blockquote {
   line-height: 1.2em;
   margin-bottom: 1em; }
 
+code {
+  color: #007aaa; }
+
 .download {
   background: #6F1717;
   display: none;
