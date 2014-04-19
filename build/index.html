@@ -44,12 +44,12 @@
                 <section class="section" id="download">
                     <h2 class="section__title">Download</h2>
                     <p class="fl no-margin col-d-5">
-                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/build/tsw.js">Development Version</a></br>
+                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/build/tsw.js">Development Version (0.1.0, 57kb)</a></br>
                         Uncompressed with comments. Like Barry White.
                     </p>
 
                     <p>
-                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/build/tsw.min.js">Production Version</a></br>
+                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/build/tsw.min.js">Production Version (0.1.0, 15kb)</a></br>
                         Minified, tiny and fast. Like Prince.
                     </p>
                 </section>
@@ -609,25 +609,21 @@ tsw.midiNote('A3'); // returns 45</pre>
                 })();
             })();
 
-            var osc = {},
+            var osc,
                 volume = tsw.gain(0.25); // Quarter of normal volume.
 
             $('#make-noise-demo').click(function () {
-                osc = tsw.oscillator('triangle');
 
-                if (typeof osc.isPlaying === 'function') {
-                    if (osc.isPlaying()) {
-                        console.log('hiuh')
-                       osc.stop();
-                       this.innerText = 'Play';
-                       return false;
-                    }
+                if ($(this).text() === 'Play') {
+                    osc = tsw.oscillator();
+                    tsw.connect(osc, volume, tsw.speakers);
+                    osc.start();
+                    $(this).text('Stop');
+                } else {
+                    osc.stop();
+                    tsw.disconnect(osc, volume);
+                    $(this).text('Play');
                 }
-
-                tsw.connect(osc, volume, tsw.speakers);
-                osc.start();
-                console.log(this.innerText);
-                this.innerText = 'Stop';
             });
 
             $('#slider').change(function () {
