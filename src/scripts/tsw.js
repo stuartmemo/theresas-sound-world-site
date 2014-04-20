@@ -310,6 +310,12 @@
                 arguments[0].output.connect(arguments[1].input);
             };
 
+            var connectTswNodeToArray = function () {
+                for (var j = 0; j < arguments[1].length; j++) {
+                    tsw.connect(arguments[0], arguments[1][j]);
+                }
+            };
+
             var connectTswNodeToNativeNode = function () {
                 arguments[0].output.connect(arguments[1]);
             };
@@ -553,8 +559,8 @@
         tsw.createMonoMaker = function () {
             var effect = {};
 
-            effect.input = tsw.createGain();
-            effect.output = tsw.createGain();
+            effect.input = tsw.gain();
+            effect.output = tsw.gain();
 
             tsw.connect(effect.input, effect.output);
 
@@ -569,12 +575,12 @@
          */
         tsw.panner = function (pan) {
             var panner = {},
-                left_gain = tsw.createGain(1),
-                right_gain = tsw.createGain(0),
-                merger = tsw.createChannelMerger(2);
+                left_gain = tsw.gain(1),
+                right_gain = tsw.gain(0),
+                merger = tsw.context().createChannelMerger(2);
 
-            panner.input = tsw.createGain();
-            panner.output = tsw.createGain();
+            panner.input = tsw.gain();
+            panner.output = tsw.gain();
             panner.value = pan;
 
             // Force max panning values.

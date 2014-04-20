@@ -251,14 +251,17 @@ tsw.context().createGain(); // Use native Web Audio API function.</pre>
 
                         <!-- tsw.gain() -->
                         <section class="method" id="gain">
-                            <h1 class="method__title">tsw.gain(<span class="method__arguments">number</span>)</h1>
+                            <h1 class="method__title">tsw.gain(<span class="method__arguments">number, time_to_change</span>)</h1>
                             <p class="method__description">Creates an gain node. The value passed in multiplies the volume of the passed input signal.<br/>
                                 Defaults to 1, which doesn't affect the signal.</p>
-                            <pre class="method__example">var sineWave = tsw.oscillator();
-    gainNode = tsw.gain(0.75);
-tsw.connect(sineWave, gainNode, tsw.speakers);
-console.log(gainNode.gain()); // Outputs 0.75.
-gainNode.gain(0.5); // Changes gain to 0.5.</pre>
+                            <pre class="method__example">var sine_wave = tsw.oscillator(),
+    gain_node = tsw.gain(0.75);
+tsw.connect(sine_wave, gain_node, tsw.speakers);
+console.log(gain_node.gain()); // Outputs 0.75.
+gain_node.gain(0.5); // Changes gain to 0.5.</pre>
+                            <p>You can also specify when the level of gain will change.</p>
+                            <pre class="method__example">gain_node.gain(0.2, tsw.now() + 5); // Change gain to 0.2, 5 seconds from now.
+gain_node.gain(0.8, tsw.now() + 7); // Change gain to 0.8, 2 seconds after that.</pre>
                         </section>
 
                         <!-- tsw.noise() -->
@@ -274,10 +277,10 @@ console.log(noise.color());
 
                         <!-- tsw.oscillator() -->
                         <section class="method" id="oscillator">
-                            <h1 class="method__title">tsw.oscillator(<span class="method__arguments">string</span>)</h1>
+                            <h1 class="method__title">tsw.oscillator(<span class="method__arguments">wave_type, frequency</span>)</h1>
                             <p class="method__description">Creates an oscillator. Takes one of four values (<i>sine, square, triangle, sawtooth</i>).</p>
-                            <pre class="method_example">var osc1 = tsw.oscillator(), // Creates sine wave.
-    osc2 = tsw.oscillator('sawtooth'); // Creates sawtooth wave.
+                            <pre class="method_example">var osc1 = tsw.oscillator('sine'), // Creates sine wave.
+    osc2 = tsw.oscillator('sawtooth', 600); // Creates sawtooth wave at 600Hz.
 tsw.connect([sine, saw], tsw.speakers); // Connect oscillators to speakers.
 osc1.start(); // Start sine wave.
 osc2.start(); // Start sawtooth wave.
