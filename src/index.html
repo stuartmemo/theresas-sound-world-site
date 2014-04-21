@@ -247,6 +247,11 @@ tsw.context().createGain(); // Use native Web Audio API function.</pre>
     frequency: 200,
     Q: 1
 });</pre>
+                            <p>Individual parameters can also be changed individually and at a scheduled time.</p>
+                            <pre>// Change the filter to a highpass filter immediately.
+filter.type('highpass');
+// Change the filter frequency to 500Hz, 4 seconds from now.
+filter.frequency(500, tsw.now() + 4);</pre>
                         </section>
 
                         <!-- tsw.gain() -->
