@@ -59,7 +59,6 @@ module.exports = function (grunt) {
     });
 
     // Load plugins.
-    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-connect');
@@ -68,5 +67,5 @@ module.exports = function (grunt) {
     // Default tasks.
     grunt.registerTask('default', ['connect', 'watch']);
     grunt.registerTask('server', ['connect', 'watch']);
-    grunt.registerTask('build', ['sass:dist', 'uglify']);
+    grunt.registerTask('build', ['sass:dist']);
 };

@@ -1,4 +1,3 @@
-/* Theresa's Sound World 0.0.1 (c) 2014 Stuart Memo */
 /****************************************************
  * Theresa's Sound World
  * tsw.js
@@ -6,8 +5,7 @@
  * http://theresassoundworld.com/
  * https://github.com/stuartmemo/theresas-sound-world 
  * Copyright 2014 Stuart Memo
- ****************************************************/
-
+  ****************************************************/
 
 (function (window, undefined) {
     'use strict';
@@ -23,6 +21,7 @@
 
         /*
          * Applies the attributes of one object to another.
+         * @method applyObject
          * @return {object} A newly merged object.
          */
         var applyObject = function (obj1, obj2) {
@@ -46,7 +45,9 @@
 
         /*
          * Is an argument an array?
+         * @method isArray
          * @param thing Argument to check if it's an array.
+         * @return {boolean} Whether thing is an array.
          */
          var isArray = function (thing) {
             return Array.isArray(thing);
@@ -62,6 +63,7 @@
 
         /*
          * Is an argument an object?
+         * @method isObject
          * @param thing Argument to check if it's an object.
          */
         var isObject = function (thing) {
@@ -70,6 +72,7 @@
 
         /*
          * Is an argument a string?
+         * @method isString
          * @param thing Argument to check if it's a string.
          */
         var isString = function (thing) {
@@ -78,6 +81,7 @@
 
         /*
          * Is an argument a number?
+         * @method isNumber
          * @param thing Argument to check if it's a number.
          */
         var isNumber = function (thing) {
@@ -86,6 +90,7 @@
 
         /*
          * Is an argument defined?
+         * @method isDefined
          * @param thing Argument to check if it's defined.
          */
         var isDefined = function (thing) {
@@ -138,14 +143,15 @@
 
         /*
          * Enable jQuery style getters & setters.
-         * @param paramToGetSet
+         * @param {object}
          */
-        var createGetSetter = function (node, arrayOfParams) {
+        var createGetSetter = function (node, array_of_params) {
             var that = this;
 
-            arrayOfParams.forEach(function (param) {
-                node[param] = function (val, targetTime, transition) {
+            array_of_params.forEach(function (param) {
+                node[param] = function (val, target_time) {
 
+                    // User hasn't passed a value to set, so just return the requested value.
                     if (typeof val === 'undefined') {
                         if (typeof that[param].value === 'undefined') {
                             return that[param];
@@ -153,16 +159,14 @@
                             return that[param].value;
                         }
                     } else {
-                        if (typeof that[param].value !== 'undefined') {
-                            if (isDefined(targetTime)) {
-                                // Set current value first so we have a schedule.
-                                transition = transition || 0;
-                                that[param].setTargetAtTime(that[param].value, tsw.now(), transition);
-                                that[param].setTargetAtTime(val, targetTime, transition);
-                            }
-                            that[param].value = val;
-                        } else {
+                        if (typeof that[param].value === 'undefined') {
                             that[param] = val;
+                        } else {
+                            if (isDefined(target_time)) {
+                                that[param].setValueAtTime(val, target_time);
+                            } else {
+                                that[param].value = val;
+                            }
                         }
                     }
                 };
@@ -191,6 +195,7 @@
         /*
          * Check if browser has Web Audio API.
          * Also, map older API methods to new ones.
+         * @function checkBrowserSupport
          * @param {function} success Success method execute.
          * @param {function} failure Failure method execute.
          */
@@ -257,6 +262,7 @@
 
         /*
          * Get the current time of the audio context().
+         * @method now
          * @return {number} Time since audio began (in seconds).
          */
         tsw.now = function () {
@@ -403,6 +409,7 @@
 
         /*
          * Disconnects a node from everything it's connected to.
+         * @method disconnect
          * @param {AudioNode} node First audio node
          * @param {AudioNode} node Second audio node
          * @param {AudioNode} node Third....etc.
@@ -432,6 +439,8 @@
         };
 
         /*
+        * Load a number of audio files via ajax
+        * @method load
         * @param {array} files
         * @param {function} callback
         */
@@ -515,6 +524,7 @@
 
         /*
          * Create a wait/delay node.
+         * @method wait
          * @param {number} delayTime Time to delay input in seconds.
          * @return {node} delay node.
          */
@@ -634,6 +644,7 @@
 
         /*
          * Stop buffer if it's currently playing.
+         * @method stop
          * @param {AudioBuffer} buffer
          * @param {number} when Time to stop in seconds.
          */
@@ -644,6 +655,7 @@
 
         /*
          * Reverse a buffer
+         * @method reverse
          * @param {AudioBuffer} buffer
          * @return {node} Return node containing reversed buffer.
          */
@@ -657,15 +669,15 @@
 
         /*
          * Update old WAA methods to more recent names.
-         *
+         * @method updateMethods
          * @param {object} Additional options.
          */
         var updateMethods = function (options) {
-            this.start = function (timeToStart) {
+            this.start = function (time_to_start) {
                 if (typeof options.sourceNode.start === 'undefined') {
-                    options.sourceNode.noteOn(timeToStart || tsw.now());
+                    options.sourceNode.noteOn(time_to_start || tsw.now());
                 } else {
-                    options.sourceNode.start(timeToStart || tsw.now());
+                    options.sourceNode.start(time_to_start || tsw.now());
                 }
 
                 return this;
@@ -682,6 +694,11 @@
             };
         };
 
+        /*
+         * Create a generic node that has input and output connections.
+         * @method createNode
+         * @param {object} options
+         */
         tsw.createNode = function (options) {
             var node = {};
 
@@ -769,16 +786,19 @@
 
         /*
          * Create gain node.
+         * @method gain
+         * @param {number} volume Amount to multiply incoming signal by.
+         * @param {number} time_to_change When to apply the volume change.
          * @return {node} Gain node.
          */
-        tsw.gain = function (volume) {
+        tsw.gain = function (volume, time_to_change) {
             var node,
-                gainNode;
+                gain_node;
 
             if (typeof this.context().createGain === 'function') {
-                gainNode = this.context().createGain();
+                gain_node = this.context().createGain();
             } else {
-                gainNode = this.context().createGainNode();
+                gain_node = this.context().createGainNode();
             }
 
             node = tsw.createNode({
@@ -786,10 +806,10 @@
             });
 
             node.params = {
-                gain: gainNode.gain
+                gain: gain_node.gain
             };
 
-            createGetSetter.call(gainNode, node, ['gain']);
+            createGetSetter.call(gain_node, node, ['gain']);
 
             if (isObject(volume)) {
                 if (volume.hasOwnProperty('gain')) {
@@ -805,15 +825,19 @@
                 volume = 1;
             }
 
-            node.gain(volume);
+            node.gain(volume, time_to_change);
 
-            tsw.connect(node.input, gainNode, node.output);
+            tsw.connect(node.input, gain_node, node.output);
 
             return node;
         };
 
         /*
          * Create buffer node.
+         * @method buffer
+         * @param {number} no_channels Number of channels
+         * @param {number} buffer_size Size of buffer
+         * @param {number} sample_rate Sample rate
          * @return {node} Buffer node.
          */
         tsw.buffer = function (no_channels, buffer_size, sample_rate) {
@@ -852,6 +876,8 @@
         
         /*
          * Create buffer source node.
+         * @method bufferPlayer
+         * @param {buffer}
          * @return BufferSource node.
          */
         tsw.bufferPlayer = function (buff) {
@@ -869,6 +895,7 @@
 
         /*
          * Create filter node.
+         * @method filter
          * @param {string} filterType Type of filter.
          * @return {node} Filter node.
          */
@@ -903,8 +930,7 @@
 
         /*
          * Create analyser node.
-         *
-         * @method createAnalyser
+         * @method analyser 
          * @return Analyser node.
          */
         tsw.analyser = function () {
@@ -912,7 +938,8 @@
         };
 
         /*
-         * Creates compressor node.
+         * Create compressor node.
+         * @method compressor
          * @param {object} settings Compressor settings.
          * @return Created compressor node.
          */
@@ -945,11 +972,14 @@
 
         /*
          * Create processor node.
+         * @method processor
+         * @param {number} bs Buffer size.
+         * @param {function} callback Callback function.
          * @return Script Processor node.
          */
         tsw.processor = function (bs, callback) {
-            var bufferSize = bs || 1024,
-                processor =  tsw.context().createScriptProcessor(bufferSize, 1, 1);
+            var buffer_size = bs || 1024,
+                processor =  tsw.context().createScriptProcessor(buffer_size, 1, 1);
 
             if (typeof callback === 'function') {
                 processor.onaudioprocess = function (e) {
@@ -962,9 +992,10 @@
 
         /*
          * Create waveshaper.
+         * @method waveShaper
          */
         tsw.waveShaper = function () {
-            var waveShaper = this.context().createWaveShaper(),
+            var wave_shaper = this.context().createWaveShaper(),
                 curve = new Float32Array(65536);
 
             for (var i = 0; i < 65536 / 2; i++) {
@@ -975,13 +1006,14 @@
                 }
             }
 
-            waveShaper.curve = curve;
+            wave_shaper.curve = curve;
 
-            return waveShaper;
+            return wave_shaper;
         };
 
         /*
          * Create envelope.
+         * @method envelope
          * @param {object} envelopeParams Envelope parameters.
          * @return Envelope filter.
          */
@@ -1014,10 +1046,9 @@
             // Should the release kick-in automatically
             settings.autoStop === undefined ? envelope.autoStop = true : envelope.autoStop = settings.autoStop;
 
-            envelope.start = function (timeToStart) {
-                // Calculate times
-                var decayTime = this.attackTime + this.decayTime,
-                    releaseTime = decayTime + this.releaseTime;
+            envelope.start = function (time_to_start) {
+                var decay_time = this.attackTime + this.decayTime,
+                    release_time = decay_time + this.releaseTime;
 
                 // Calculate levels
                 this.maxLevel = this.startLevel + this.maxLevel;
@@ -1025,12 +1056,16 @@
 
                 // Param is actual AudioParam
                 if (isAudioParam(this.param)) {
+                    time_to_start = time_to_start || tsw.now();
+
+                    // Set start level
+                    this.param.setValueAtTime(this.startLevel, time_to_start);
+
                     // Attack
-                    this.param.setValueAtTime(0, tsw.now());
-                    this.param.linearRampToValueAtTime(this.maxLevel, tsw.now() + this.attackTime);
+                    this.param.linearRampToValueAtTime(this.maxLevel, time_to_start + this.attackTime);
 
                     // Decay
-                    this.param.setTargetAtTime(this.sustainLevel, tsw.now(), this.decayTime);
+                    this.param.setTargetAtTime(this.sustainLevel, time_to_start + decay_time, 0.05);
                 }
             };
 
@@ -1049,6 +1084,7 @@
 
         /*
          * Create noise.
+         * @method noise
          * @param {string} colour Type of noise.
          * @return Noise generating node.
          */
@@ -1080,8 +1116,8 @@
                 return 'noise';
             };
 
-            node.play = function (timeToStart) {
-                noise_source.start(timeToStart);
+            node.play = function (time_to_start) {
+                noise_source.start(time_to_start);
             };
 
             return node;
@@ -1089,6 +1125,7 @@
 
         /*
          * Create LFO.
+         * @method lfo
          * @param {object} settings LFO settings.
          */
         tsw.lfo = function (settings) {
@@ -1163,6 +1200,7 @@
 
         /*
          * Get user's audio input.
+         * @method getUserAudio
          * @param {function} Callback function with streaming node passed as param;
          */
         tsw.getUserAudio = function (callback) {
@@ -1177,6 +1215,7 @@
 
         /*
          * Time manager
+         * @method timeManager
          */
         var timeManager = function () {
             (function loop () {
@@ -1195,6 +1234,8 @@
 
         /*
          * Kick everything off.
+         * @method init
+         * @return {object} tsw Main Theresa's Sound World object
          */
         tsw.init = function () {
             checkBrowserSupport(function () {

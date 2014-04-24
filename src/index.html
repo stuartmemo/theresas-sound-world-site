@@ -44,12 +44,12 @@
                 <section class="section" id="download">
                     <h2 class="section__title">Download</h2>
                     <p class="fl no-margin col-d-5">
-                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/build/tsw.js">Development Version</a></br>
+                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/build/tsw.js">Development Version (0.1.0, 57kb)</a></br>
                         Uncompressed with comments. Like Barry White.
                     </p>
 
                     <p>
-                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/build/tsw.min.js">Production Version</a></br>
+                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/build/tsw.min.js">Production Version (0.1.0, 15kb)</a></br>
                         Minified, tiny and fast. Like Prince.
                     </p>
                     <p>
@@ -134,7 +134,7 @@ osc.start();</pre>
                             <h3 class="reference__navigation-section-title">Core</h3>
                             <ul class="reference__navigation-list">
                                 <li><a href="#connect">tsw.connect()</a></li>
-                                <li><a href="#context">tsw.context</a></li>
+                                <li><a href="#context">tsw.context()</a></li>
                                 <li><a href="#buffer">tsw.buffer()</a></li>
                                 <li><a href="#compressor">tsw.compressor()</a></li>
                                 <li><a href="#wait">tsw.wait()</a></li>
@@ -204,12 +204,12 @@ tsw.connect(osc, [node1, node2, node3], tsw.speakers);</pre>
 
                         <!-- tsw.context -->
                         <section class="method" id="context">
-                            <h1 class="method__title">tsw.context</h1>
+                            <h1 class="method__title">tsw.context()</h1>
                             <p class="method__description">An AudioContext is essentially your canvas for audio. All nodes you create exist within this context. Theresa's Sound World creates this automatically for you. You can access the context directly if you want to use native Web Audio API functions, or you can even replace the default context with your own for easy intergration to an existing project.</p>
-                            <pre class="method__example">console.log(tsw.context); // Outputs current AudioContext.
-var myContext = new AudioContext(); // Create new AudioContext.
-tsw.context = myContext; // Assign context to tsw.
-tsw.context.createGain; // Use native Web Audio API function.</pre>
+                            <pre class="method__example">console.log(tsw.context()); // Outputs current AudioContext.
+var my_context = new AudioContext(); // Create new AudioContext.
+tsw.context(my_context); // Assign context to tsw.
+tsw.context().createGain(); // Use native Web Audio API function.</pre>
                             <p class="method__description">After assigning your own context, Theresa's Sound World will perform all of its operations using said context.</p>
                         </section>
 
@@ -250,18 +250,26 @@ tsw.context.createGain; // Use native Web Audio API function.</pre>
     frequency: 200,
     Q: 1
 });</pre>
+                            <p>Individual parameters can also be changed individually and at a scheduled time.</p>
+                            <pre>// Change the filter to a highpass filter immediately.
+filter.type('highpass');
+// Change the filter frequency to 500Hz, 4 seconds from now.
+filter.frequency(500, tsw.now() + 4);</pre>
                         </section>
 
                         <!-- tsw.gain() -->
                         <section class="method" id="gain">
-                            <h1 class="method__title">tsw.gain(<span class="method__arguments">number</span>)</h1>
+                            <h1 class="method__title">tsw.gain(<span class="method__arguments">number, time_to_change</span>)</h1>
                             <p class="method__description">Creates an gain node. The value passed in multiplies the volume of the passed input signal.<br/>
                                 Defaults to 1, which doesn't affect the signal.</p>
-                            <pre class="method__example">var sineWave = tsw.oscillator();
-    gainNode = tsw.gain(0.75);
-tsw.connect(sineWave, gainNode, tsw.speakers);
-console.log(gainNode.gain()); // Outputs 0.75.
-gainNode.gain(0.5); // Changes gain to 0.5.</pre>
+                            <pre class="method__example">var sine_wave = tsw.oscillator(),
+    gain_node = tsw.gain(0.75);
+tsw.connect(sine_wave, gain_node, tsw.speakers);
+console.log(gain_node.gain()); // Outputs 0.75.
+gain_node.gain(0.5); // Changes gain to 0.5.</pre>
+                            <p>You can also specify when the level of gain will change.</p>
+                            <pre class="method__example">gain_node.gain(0.2, tsw.now() + 5); // Change gain to 0.2, 5 seconds from now.
+gain_node.gain(0.8, tsw.now() + 7); // Change gain to 0.8, 2 seconds after that.</pre>
                         </section>
 
                         <!-- tsw.noise() -->
@@ -277,11 +285,11 @@ console.log(noise.color());
 
                         <!-- tsw.oscillator() -->
                         <section class="method" id="oscillator">
-                            <h1 class="method__title">tsw.oscillator(<span class="method__arguments">string</span>)</h1>
+                            <h1 class="method__title">tsw.oscillator(<span class="method__arguments">wave_type, frequency</span>)</h1>
                             <p class="method__description">Creates an oscillator. Takes one of four values (<i>sine, square, triangle, sawtooth</i>).</p>
-                            <pre class="method_example">var osc1 = tsw.oscillator(), // Creates sine wave.
-    osc2 = tsw.oscillator('sawtooth'); // Creates sawtooth wave.
-tsw.connect([sine, saw], tsw.speakers); // Connect oscillators to speakers.
+                            <pre class="method_example">var osc1 = tsw.oscillator('sine'), // Creates sine wave.
+    osc2 = tsw.oscillator('sawtooth', 600); // Creates sawtooth wave at 600Hz.
+tsw.connect([osc1, osc2], tsw.speakers); // Connect oscillators to speakers.
 osc1.start(); // Start sine wave.
 osc2.start(); // Start sawtooth wave.
 console.log(osc2.type()); // Outputs 'sawtooth'.
@@ -612,26 +620,35 @@ tsw.midiNote('A3'); // returns 45</pre>
                 })();
             })();
 
-            var osc; 
+            var osc,
+                volume = tsw.gain(0.25); // Quarter of normal volume.
 
             $('#make-noise-demo').click(function () {
-                var volume = tsw.gain(0.25); // Quarter of normal volume.
 
-                if ($(this).text() === 'Stop') {
-                    osc.stop();
-                    tsw.disconnect(osc, volume, tsw.speakers);
-                    $(this).text('Play');
-                } else {
-                    osc = tsw.oscillator('triangle'),
+                if ($(this).text() === 'Play') {
+                    osc = tsw.oscillator();
                     tsw.connect(osc, volume, tsw.speakers);
                     osc.start();
                     $(this).text('Stop');
+                } else {
+                    osc.stop();
+                    tsw.disconnect(osc, volume);
+                    $(this).text('Play');
                 }
             });
 
             $('#slider').change(function () {
                 osc.frequency($(this).val());
             });
+        </script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-32368229-3', 'theresassoundworld.com');
+            ga('send', 'pageview');
         </script>
     </body>
 </html>
