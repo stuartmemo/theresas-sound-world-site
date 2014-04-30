@@ -269,6 +269,10 @@
             return this.context().currentTime;
         };
 
+        tsw.channelSplitter = function () {
+            return tsw.context().createChannelSplitter();
+        };
+
         tsw.channelMerger = function (channels) {
             return tsw.context().createChannelMerger(channels);
         };
@@ -278,6 +282,8 @@
          * @param {AudioNodes} arguments Nodes to connect in order.
          */
         tsw.connect = function () {
+            var i,
+                number_of_arguments = arguments.length;
 
             var updateConnectedToArray = function (node1, node2) {
                 node1.connectedTo.push(node2);
@@ -285,11 +291,11 @@
             };
 
             var connectNativeNodeToNativeNode = function () {
-                arguments[0].connect(arguments[1]);
+                arguments[0].connect(arguments[1], 0, arguments[2]);
             };
 
             var connectNativeNodeToTswNode = function () {
-                arguments[0].connect(arguments[1].input);
+                arguments[0].connect(arguments[1].input, 0, arguments[2]);
             };
 
             var connectNativeNodeToArray = function () {
@@ -305,11 +311,11 @@
             };
 
             var connectTswNodeToTswNode = function () {
-                arguments[0].output.connect(arguments[1].input);
+                arguments[0].output.connect(arguments[1].input, 0, arguments[2]);
             };
 
             var connectTswNodeToNativeNode = function () {
-                arguments[0].output.connect(arguments[1]);
+                arguments[0].output.connect(arguments[1], 0, arguments[2]);
             };
 
             var connectArrayToTswNode = function () {
@@ -325,11 +331,11 @@
             };
 
             var connectObjectWithNodeToObjectWithNode = function () {
-                arguments[0].node.connect(arguments[1].node, arguments[0].channel, arguments[1].channel);
+                tsw.connect(arguments[0].node, arguments[1].node, arguments[1].channel);
             };
 
             // Iterate over each argument.
-            for (var i = 0; i < arguments.length - 1; i++) {
+            for (i = 0; i < number_of_arguments - 1; i++) {
                 var first_arg = arguments[i],
                     second_arg = arguments[i + 1];
 
@@ -401,8 +407,26 @@
 
                 // Both arguments are objects containing nodes.
                 if (isObjectWithNode(first_arg) && isObjectWithNode(second_arg)) {
-                    connectObjectWithNodeToObjectWithNode(first_arg, second_arg);
-                    continue;
+
+                    if (isNativeNode(first_arg.node) && isNativeNode(second_arg.node)) {
+                        connectNativeNodeToNativeNode(first_arg.node, second_arg.node, second_arg.channel);
+                        continue;
+                    }
+
+                    if (isTswNode(first_arg.node) && isNativeNode(second_arg.node)) {
+                        connectTswNodeToNativeNode(first_arg.node, second_arg.node, second_arg.channel);
+                        continue;
+                    }
+
+                    if (isNativeNode(first_arg.node) && isTswNode(second_arg.node)) {
+                        connectNativeNodeToTswNode(first_arg.node, second_arg.node, second_arg.channel);
+                        continue;
+                    }
+
+                    if (isTswNode(first_arg.node) && isTswNode(second_arg.node)) {
+                        connectTswNodeToTswNode(first_arg.node, second_arg.node, second_arg.channel);
+                        continue;
+                    }
                 }
             }
         };
@@ -566,20 +590,23 @@
          * @param {number} pan
          */
         tsw.panner = function (pan) {
-            var panner = {},
-                left_gain = tsw.createGain(1),
-                right_gain = tsw.createGain(0),
-                merger = tsw.createChannelMerger(2);
+            var panner_node,
+                left_gain = tsw.gain(1),
+                right_gain = tsw.gain(0),
+                merger = tsw.channelMerger(2),
+                node;
 
-            panner.input = tsw.createGain();
-            panner.output = tsw.createGain();
-            panner.value = pan;
+            panner_node = tsw.createNode({
+                nodeType: 'panner'
+            });
+
+            panner_node.value = pan;
 
             // Force max panning values.
-            if (panner.value > 1) {
-                panner.value = 1;
-            } else if (panner.value < -1) {
-                panner.value = -1;
+            if (panner_node.value > 1) {
+                panner_node.value = 1;
+            } else if (panner_node.value < -1) {
+                panner_node.value = -1;
             }
 
             // 100% === 2
@@ -593,15 +620,14 @@
             // Left gain = (1 / 100) * 40 = 0.4
             // Right gain = 1 - 0.4 = 0.6
 
-            left_gain.gain.value = 1 - (0.01 * ((1 + panner.value) / 2) * 100);
-            right_gain.gain.value = 1 - left_gain.gain.value;
+            left_gain.gain(1 - (0.01 * ((1 + panner_node.value) / 2) * 100));
+            right_gain.gain(1 - left_gain.gain());
 
-            tsw.connect(panner.input, [left_gain, right_gain]);
+            tsw.connect(panner_node.input, [left_gain, right_gain]);
 
             tsw.connect(
                 {
-                    node: left_gain,
-                    channel: 0
+                    node: left_gain
                 },
                 {
                     node:  merger,
@@ -611,8 +637,7 @@
 
             tsw.connect(
                 {
-                    node: right_gain,
-                    channel: 0
+                    node: right_gain
                 },
                 {
                     node:  merger,
@@ -620,9 +645,9 @@
                 }
             );
 
-            tsw.connect(merger, panner.output);
+            tsw.connect(merger, panner_node.output);
 
-            return panner;
+            return panner_node;
         };
 
         /*
@@ -779,7 +804,7 @@
                 return osc;
             };
 
-            tsw.connect(osc, node.output);
+            this.connect(osc, node.output);
 
             return node;
         };
@@ -827,7 +852,7 @@
 
             node.gain(volume, time_to_change);
 
-            tsw.connect(node.input, gain_node, node.output);
+            this.connect(node.input, gain_node, node.output);
 
             return node;
         };
@@ -923,7 +948,7 @@
             node.frequency(options.frequency || 1000);
             node.Q(options.Q || 0);
 
-            tsw.connect(node.input, filter, node.output);
+            this.connect(node.input, filter, node.output);
 
             return node;
         };
@@ -965,7 +990,7 @@
             settings = applyObject(defaults, settings);
             applySettings(compressor, settings);
 
-            tsw.connect(node.input, compressor, node.output);
+            this.connect(node.input, compressor, node.output);
 
             return node;
         };
@@ -1116,9 +1141,7 @@
                 return 'noise';
             };
 
-            node.play = function (time_to_start) {
-                noise_source.start(time_to_start);
-            };
+            tsw.connect(noise_source, node.output);
 
             return node;
         };
