@@ -133,24 +133,25 @@ osc.start();</pre>
                         <div class="reference__navigation-section">
                             <h3 class="reference__navigation-section-title">Core</h3>
                             <ul class="reference__navigation-list">
-                                <li><a href="#connect">tsw.connect()</a></li>
-                                <li><a href="#context">tsw.context()</a></li>
                                 <li><a href="#buffer">tsw.buffer()</a></li>
                                 <li><a href="#compressor">tsw.compressor()</a></li>
-                                <li><a href="#wait">tsw.wait()</a></li>
+                                <li><a href="#connect">tsw.connect()</a></li>
+                                <li><a href="#context">tsw.context()</a></li>
+                                <li><a href="#disconnect">tsw.disconnect()</a></li>
                                 <li><a href="#filter">tsw.filter()</a></li>
                                 <li><a href="#gain">tsw.gain()</a></li>
-                                <li><a href="#noise">tsw.noise()</a></li>
                                 <li><a href="#get-user-audio">tsw.getUserAudio()</a></li>
                                 <li><a href="#is-browser-supported">tsw.isBrowserSupported</a></li>
-                                <li><a href="#oscillator">tsw.oscillator()</a></li>
-                                <li><a href="#disconnect">tsw.disconnect()</a></li>
                                 <li><a href="#load">tsw.load()</a></li>
+                                <li><a href="#panner">tsw.panner()</a></li>
+                                <li><a href="#noise">tsw.noise()</a></li>
                                 <li><a href="#now">tsw.now()</a></li>
+                                <li><a href="#oscillator">tsw.oscillator()</a></li>
                                 <li><a href="#play">tsw.play()</a></li>
                                 <li><a href="#reverse">tsw.reverse()</a></li>
                                 <li><a href="#speakers">tsw.speakers</a></li>
                                 <li><a href="#stop">tsw.stop()</a></li>
+                                <li><a href="#wait">tsw.wait()</a></li>
                             </ul>
                         </div>
                         <div>
@@ -187,6 +188,33 @@ osc.start();</pre>
                     <section class="reference-subsection" name="core">
                         <h2 class="reference-subsection__title">Core</h2>
 
+                        <!-- tsw.buffer() -->
+                        <section class="method" id="buffer">
+                            <h1 class="method__title">tsw.buffer()</h1>
+                            <p class="method__description">
+                                Creates an <a href="#">audio buffer</a>. If you want to play a sound from a file you have to <a href="#load">load</a> it into memory first.
+                                An audio buffer is how you store audio in memory. Create a buffer and assign your audio data to it.
+                            </p>
+                            <pre class="method__example">var my_awful_singing = tsw.buffer(files.singing);
+// see tsw.load() for how to load files.singing.</pre>
+                        </section>
+
+                        <!-- tsw.compressor() -->
+                        <section class="method" id="compressor">
+                            <h1 class="method__title">tsw.compressor(<span class="method__arguments">settings</span>)</h1>
+                            <p class="method__description">
+                                Creates a compressor node. Takes an object with the following parameters.
+                                <i>threshold, knee, ratio, attack, release.</i>
+                            </p>
+                            <pre class="method__example">var compressor = tsw.compressor({
+    threshold: -24,     // dbs (min: -100, max: 0)
+    knee: 30,           // dbs (min: 0, max: 40)
+    ratio: 12,          // ratio (min: 1, max: 20)
+    attack: 0.003,      // seconds (min: 0, max: 1)
+    release: 0.25       // seconds (min: 0, max: 1)
+});</pre>
+                        </section>
+
                         <!-- tsw.connect() -->
                         <section class="method" id="connect">
                             <h1 class="method__title">tsw.connect(<span class="method__arguments">node1, node2, arrayOfNodes</span>)</h1>
@@ -213,31 +241,13 @@ tsw.context().createGain(); // Use native Web Audio API function.</pre>
                             <p class="method__description">After assigning your own context, Theresa's Sound World will perform all of its operations using said context.</p>
                         </section>
 
-                        <!-- tsw.buffer() -->
-                        <section class="method" id="buffer">
-                            <h1 class="method__title">tsw.buffer()</h1>
-                            <p class="method__description">
-                                Creates an <a href="#">audio buffer</a>. If you want to play a sound from a file you have to <a href="#load">load</a> it into memory first.
-                                An audio buffer is how you store audio in memory. Create a buffer and assign your audio data to it.
-                            </p>
-                            <pre class="method__example">var my_awful_singing = tsw.buffer(files.singing);
-// see tsw.load() for how to load files.singing.</pre>
-                        </section>
-
-                        <!-- tsw.compressor() -->
-                        <section class="method" id="compressor">
-                            <h1 class="method__title">tsw.compressor(<span class="method__arguments">settings</span>)</h1>
-                            <p class="method__description">
-                                Creates a compressor node. Takes an object with the following parameters.
-                                <i>threshold, knee, ratio, attack, release.</i>
-                            </p>
-                            <pre class="method__example">var compressor = tsw.compressor({
-    threshold: -24,     // dbs (min: -100, max: 0)
-    knee: 30,           // dbs (min: 0, max: 40)
-    ratio: 12,          // ratio (min: 1, max: 20)
-    attack: 0.003,      // seconds (min: 0, max: 1)
-    release: 0.25       // seconds (min: 0, max: 1)
-});</pre>
+                        <!-- tsw.disconnect() -->
+                        <section class="method" id="disconnect">
+                            <h1 class="method__title">tsw.disconnect(<span class="method__arguments">node1, node2, ...node99</span>)</h1>
+                            <p class="method__description">Disconnects any number of nodes from all nodes attached to it.</p>
+                            <pre class="method__example">tsw.connect(osc, gainNode, tsw.speakers); // Connect nodes.
+tsw.disconnect(gainNode); // Disconnect gainNode.
+// osc is no longer connected to speakers.</pre>
                         </section>
 
                         <!-- tsw.filter() -->
@@ -270,39 +280,6 @@ gain_node.gain(0.5); // Changes gain to 0.5.</pre>
                             <p>You can also specify when the level of gain will change.</p>
                             <pre class="method__example">gain_node.gain(0.2, tsw.now() + 5); // Change gain to 0.2, 5 seconds from now.
 gain_node.gain(0.8, tsw.now() + 7); // Change gain to 0.8, 2 seconds after that.</pre>
-                        </section>
-
-                        <!-- tsw.noise() -->
-                        <section class="method" id="noise">
-                            <h1 class="method__title">tsw.noise()</h1>
-                            <p class="method__description">Creates a source node of white noise.</p>
-                            <pre class="method__example">var noise = tsw.noise();
-tsw.connect(noise, tsw.speakers);
-noise.start();
-console.log(noise.color());
-// Outputs colour of noise. Only white supported at the moment.</pre>
-                        </section>
-
-                        <!-- tsw.oscillator() -->
-                        <section class="method" id="oscillator">
-                            <h1 class="method__title">tsw.oscillator(<span class="method__arguments">wave_type, frequency</span>)</h1>
-                            <p class="method__description">Creates an oscillator. Takes one of four values (<i>sine, square, triangle, sawtooth</i>).</p>
-                            <pre class="method_example">var osc1 = tsw.oscillator('sine'), // Creates sine wave.
-    osc2 = tsw.oscillator('sawtooth', 600); // Creates sawtooth wave at 600Hz.
-tsw.connect([osc1, osc2], tsw.speakers); // Connect oscillators to speakers.
-osc1.start(); // Start sine wave.
-osc2.start(); // Start sawtooth wave.
-console.log(osc2.type()); // Outputs 'sawtooth'.
-osc2.type('triangle'); // Oscillator now produces a triangle wave.</pre>
-                        </section>
-
-                        <!-- tsw.disconnect() -->
-                        <section class="method" id="disconnect">
-                            <h1 class="method__title">tsw.disconnect(<span class="method__arguments">node1, node2, ...node99</span>)</h1>
-                            <p class="method__description">Disconnects any number of nodes from all nodes attached to it.</p>
-                            <pre class="method__example">tsw.connect(osc, gainNode, tsw.speakers); // Connect nodes.
-tsw.disconnect(gainNode); // Disconnect gainNode.
-// osc is no longer connected to speakers.</pre>
                         </section>
 
                         <!-- tsw.getUserAudio() -->
@@ -349,11 +326,48 @@ tsw.disconnect(gainNode); // Disconnect gainNode.
 );</pre>
                         </section>
 
+                        <!-- tsw.noise() -->
+                        <section class="method" id="noise">
+                            <h1 class="method__title">tsw.noise()</h1>
+                            <p class="method__description">Creates a source node of white noise.</p>
+                            <pre class="method__example">var noise = tsw.noise();
+tsw.connect(noise, tsw.speakers);
+noise.start();
+console.log(noise.color());
+// Outputs colour of noise. Only white supported at the moment.</pre>
+                        </section>
+
                         <!-- tsw.now() -->
                         <section class="method" id="now">
                             <h1 class="method__title">tsw.now()</h1>
                             <p class="method__description">Returns the time in seconds since the audio context was activated.</p>
                             <pre class="method__example">console.log(tsw.now()); // logs 6.844081632653062 (or whatever) seconds.</pre>
+                        </section>
+
+                        <!-- tsw.oscillator() -->
+                        <section class="method" id="oscillator">
+                            <h1 class="method__title">tsw.oscillator(<span class="method__arguments">wave_type, frequency</span>)</h1>
+                            <p class="method__description">Creates an oscillator. Takes one of four values (<i>sine, square, triangle, sawtooth</i>).</p>
+                            <pre class="method_example">var osc1 = tsw.oscillator('sine'), // Creates sine wave.
+    osc2 = tsw.oscillator('sawtooth', 600); // Creates sawtooth wave at 600Hz.
+tsw.connect([osc1, osc2], tsw.speakers); // Connect oscillators to speakers.
+osc1.start(); // Start sine wave.
+osc2.start(); // Start sawtooth wave.
+console.log(osc2.type()); // Outputs 'sawtooth'.
+osc2.type('triangle'); // Oscillator now produces a triangle wave.</pre>
+                        </section>
+
+                        <!-- tsw.panner() -->
+                        <section class="method" id="panner">
+                            <h1 class="method__title">tsw.panner(<span class="method__arguments">number</span>)</h1>
+                            <p class="method__description">Speads an incoming audio signal over the left and right channels depending on the value specified.</p>
+                            <pre class="method__example">var oscillator = tsw.oscillator(),
+    panner = tsw.panner(-1); // Pan completely to the left.
+    panner = tsw.panner(1); // Pan completely to the right.
+    panner = tsw.panner(0.2); // Pan slightly to the right.
+    panner = tsw.panner(0); // Pan to the center.
+tsw.connect(oscillator, panner, tsw.speakers);
+);</pre>
                         </section>
 
                         <!-- tsw.play() -->
@@ -599,9 +613,8 @@ tsw.midiNote('A3'); // returns 45</pre>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script>
              // Your wave's got a little machine.
-            'use strict';
-
             (function (window, undefined) {
+                'use strict';
                 var osc = tsw.oscillator(),
                     vol = tsw.gain(0.6),
                     silly_scope = new WavyJones(tsw.context(), 'waves');
