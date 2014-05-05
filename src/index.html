@@ -77,8 +77,8 @@
                     <p>If you see "0.0.1" in your browser's JS console, then super. You're using the latest version and are ready to go.</p>
 
                     <h3 class="section__subtitle">Make some noise</h3>
-                    <p>Let's create a triangle wave oscillator.</p>
-                    <pre>var osc = tsw.oscillator('triangle'),
+                    <p>Let's create a triangle wave oscillating at 300Hz.</p>
+                    <pre>var osc = tsw.oscillator(300, 'triangle'),
     volume = tsw.gain(0.5); // Half volume.
 tsw.connect(osc, volume, tsw.speakers);
 osc.start();</pre>
@@ -142,6 +142,7 @@ osc.start();</pre>
                                 <li><a href="#gain">tsw.gain()</a></li>
                                 <li><a href="#get-user-audio">tsw.getUserAudio()</a></li>
                                 <li><a href="#is-browser-supported">tsw.isBrowserSupported</a></li>
+                                <li><a href="#lfo">tsw.lfo()</a></li>
                                 <li><a href="#load">tsw.load()</a></li>
                                 <li><a href="#panner">tsw.panner()</a></li>
                                 <li><a href="#noise">tsw.noise()</a></li>
@@ -302,6 +303,18 @@ gain_node.gain(0.8, tsw.now() + 7); // Change gain to 0.8, 2 seconds after that.
 }</pre>
                         </section>
 
+                        <!-- tsw.lfo() -->
+                        <section class="method" id="lfo">
+                            <h1 class="method__title">tsw.lfo(<span class="method__arguments">frequency</span>)</h1>
+                            <p class="method__description">Creates an <a href="http://en.wikipedia.org/wiki/Low-frequency_oscillation">LFO</a> node to modulate an audio parameter of another node.</p>
+                            <pre class="method__example">var osc = tsw.oscillator(),
+    lfo = tsw.lfo(),
+    vol = tsw.gain();
+tsw.connect(osc, vol, tsw.speakers);
+osc.start();
+lfo.modulate(vol.params.gain); // modulate the gain parameter of the vol node.</pre>
+                        </section>
+
                         <!-- tsw.load() -->
                         <section class="method" id="load">
                             <h1 class="method__title">tsw.load(<span class="method__arguments">object, function</span>)</h1>
@@ -348,8 +361,8 @@ console.log(noise.color());
                         <section class="method" id="oscillator">
                             <h1 class="method__title">tsw.oscillator(<span class="method__arguments">wave_type, frequency</span>)</h1>
                             <p class="method__description">Creates an oscillator. Takes one of four values (<i>sine, square, triangle, sawtooth</i>).</p>
-                            <pre class="method_example">var osc1 = tsw.oscillator('sine'), // Creates sine wave.
-    osc2 = tsw.oscillator('sawtooth', 600); // Creates sawtooth wave at 600Hz.
+                            <pre class="method_example">var osc1 = tsw.oscillator(), // Creates a 440Hz sine wave.
+    osc2 = tsw.oscillator(600, 'sawtooth'); // Creates a 600Hz sawtooth wave.
 tsw.connect([osc1, osc2], tsw.speakers); // Connect oscillators to speakers.
 osc1.start(); // Start sine wave.
 osc2.start(); // Start sawtooth wave.
