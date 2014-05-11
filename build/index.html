@@ -18,7 +18,6 @@
     </head>
     <body>
         <div class="header__canvas" id="waves"></div>
-        <div class="header__canvas" id="waves-again"></div>
         <div class="container">
             <header class="header">
                 <a href="/"><img src="images/theresas-sound-world.png" class="header__image" height="160"/></a>
@@ -44,12 +43,12 @@
                 <section class="section" id="download">
                     <h2 class="section__title">Download</h2>
                     <p class="fl no-margin col-d-5">
-                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/build/tsw.js">Development Version (0.1.1, 57kb)</a></br>
+                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/build/tsw.js">Development Version (0.1.2, 57kb)</a></br>
                         Uncompressed with comments. Like Barry White.
                     </p>
 
-                    <p>
-                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/build/tsw.min.js">Production Version (0.1.1, 15kb)</a></br>
+                    <p class="fl no-margin col-d-4">
+                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/build/tsw.min.js">Production Version (0.1.2, 15kb)</a></br>
                         Minified, tiny and fast. Like Prince.
                     </p>
                     <p>
@@ -74,11 +73,11 @@
 </html></textarea>
                     </div>
 
-                    <p>If you see "0.0.1" in your browser's JS console, then super. You're using the latest version and are ready to go.</p>
+                    <p>If you see "0.1.2" in your browser's JS console, then super. You're using the latest version and are ready to go.</p>
 
                     <h3 class="section__subtitle">Make some noise</h3>
-                    <p>Let's create a triangle wave oscillator.</p>
-                    <pre>var osc = tsw.oscillator('triangle'),
+                    <p>Let's create a triangle wave oscillating at 300Hz.</p>
+                    <pre>var osc = tsw.oscillator(300, 'triangle'),
     volume = tsw.gain(0.5); // Half volume.
 tsw.connect(osc, volume, tsw.speakers);
 osc.start();</pre>
@@ -142,6 +141,7 @@ osc.start();</pre>
                                 <li><a href="#gain">tsw.gain()</a></li>
                                 <li><a href="#get-user-audio">tsw.getUserAudio()</a></li>
                                 <li><a href="#is-browser-supported">tsw.isBrowserSupported</a></li>
+                                <li><a href="#lfo">tsw.lfo()</a></li>
                                 <li><a href="#load">tsw.load()</a></li>
                                 <li><a href="#panner">tsw.panner()</a></li>
                                 <li><a href="#noise">tsw.noise()</a></li>
@@ -302,6 +302,18 @@ gain_node.gain(0.8, tsw.now() + 7); // Change gain to 0.8, 2 seconds after that.
 }</pre>
                         </section>
 
+                        <!-- tsw.lfo() -->
+                        <section class="method" id="lfo">
+                            <h1 class="method__title">tsw.lfo(<span class="method__arguments">frequency</span>)</h1>
+                            <p class="method__description">Creates an <a href="http://en.wikipedia.org/wiki/Low-frequency_oscillation">LFO</a> node to modulate an audio parameter of another node.</p>
+                            <pre class="method__example">var osc = tsw.oscillator(),
+    lfo = tsw.lfo(),
+    vol = tsw.gain();
+tsw.connect(osc, vol, tsw.speakers);
+osc.start();
+lfo.modulate(vol.params.gain); // modulate the gain parameter of the vol node.</pre>
+                        </section>
+
                         <!-- tsw.load() -->
                         <section class="method" id="load">
                             <h1 class="method__title">tsw.load(<span class="method__arguments">object, function</span>)</h1>
@@ -348,8 +360,8 @@ console.log(noise.color());
                         <section class="method" id="oscillator">
                             <h1 class="method__title">tsw.oscillator(<span class="method__arguments">wave_type, frequency</span>)</h1>
                             <p class="method__description">Creates an oscillator. Takes one of four values (<i>sine, square, triangle, sawtooth</i>).</p>
-                            <pre class="method_example">var osc1 = tsw.oscillator('sine'), // Creates sine wave.
-    osc2 = tsw.oscillator('sawtooth', 600); // Creates sawtooth wave at 600Hz.
+                            <pre class="method_example">var osc1 = tsw.oscillator(), // Creates a 440Hz sine wave.
+    osc2 = tsw.oscillator(600, 'sawtooth'); // Creates a 600Hz sawtooth wave.
 tsw.connect([osc1, osc2], tsw.speakers); // Connect oscillators to speakers.
 osc1.start(); // Start sine wave.
 osc2.start(); // Start sawtooth wave.
@@ -360,7 +372,7 @@ osc2.type('triangle'); // Oscillator now produces a triangle wave.</pre>
                         <!-- tsw.panner() -->
                         <section class="method" id="panner">
                             <h1 class="method__title">tsw.panner(<span class="method__arguments">number</span>)</h1>
-                            <p class="method__description">Speads an incoming audio signal over the left and right channels depending on the value specified.</p>
+                            <p class="method__description">Spreads an incoming audio signal over the left and right channels depending on the value specified.</p>
                             <pre class="method__example">var oscillator = tsw.oscillator(),
     panner = tsw.panner(-1); // Pan completely to the left.
     panner = tsw.panner(1); // Pan completely to the right.
