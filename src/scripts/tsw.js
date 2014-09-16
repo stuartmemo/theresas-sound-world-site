@@ -11,7 +11,7 @@
     'use strict';
 
     var tsw,
-        version = '0.1.2';
+        version = '0.1.7';
 
     tsw = (function () {
 
@@ -950,6 +950,18 @@
         };
 
         /*
+         * Audio decoder method.
+         * @method decode
+         * @param {arraybuffer}
+         * @param {function} Success callback.
+         * @param {function} Failure callback.
+         * @return null
+         */
+        tsw.decode = function (arrayBuffer, success, failure) {
+            this.context().decodeAudioData(arrayBuffer, success, failure);            
+        };
+
+        /*
          * Create filter node.
          * @method filter
          * @param {string} filterType Type of filter.
@@ -1211,15 +1223,16 @@
          * Get user's audio input.
          * @method getUserAudio
          * @param {function} Callback function with streaming node passed as param;
+         * @param {function} Error callback. Called when there's an error getting user audio.
          */
-        tsw.getUserAudio = function (callback) {
+        tsw.getUserAudio = function (callback, errorCallback) {
             var audioStream = function (stream) {
                 var streamNode = tsw.context().createMediaStreamSource(stream);
 
                 callback(streamNode);
             };
 
-            navigator.webkitGetUserMedia({audio: true}, audioStream);
+            navigator.webkitGetUserMedia({audio: true}, audioStream, errorCallback);
         };
 
         /*
@@ -1906,4 +1919,40 @@
             return midiToNote(thing_to_convert);
         }
     };
+})(window);
+
+/***********************************
+ * Theresas's Sound World - Analysis
+ * tsw-analysis.js
+ * Dependencies: tsw-core.js
+ * Copyright 2014 Stuart Memo
+ **********************************/
+
+(function (window, undefined) {
+    'use strict';
+
+    var getDuration = function (timeInSeconds) {
+        var minutes = Math.floor(timeInSeconds / 60);
+
+        return {
+            minutes: minutes,
+            seconds: timeInSeconds - (minutes * 60),
+            totalSeconds: timeInSeconds
+        };
+    };
+
+    tsw.analyser = function () {
+        var analyser = tsw.context().createAnalyser();
+
+        return analyser;
+    };
+
+    tsw.info = function (file) {
+        return {
+            duration: getDuration(file.duration),
+            numberOfChannels: file.numberOfChannels,
+            sampleRate: file.sampleRate
+        };
+    };
+
 })(window);
