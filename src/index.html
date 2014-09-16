@@ -358,15 +358,30 @@ console.log(noise.color());
 
                         <!-- tsw.oscillator() -->
                         <section class="method" id="oscillator">
-                            <h1 class="method__title">tsw.oscillator(<span class="method__arguments">wave_type, frequency</span>)</h1>
+                            <h1 class="method__title">tsw.oscillator(<span class="method__arguments">frequency, wave_type</span>)</h1>
                             <p class="method__description">Creates an oscillator. Takes one of four values (<i>sine, square, triangle, sawtooth</i>).</p>
-                            <pre class="method_example">var osc1 = tsw.oscillator(), // Creates a 440Hz sine wave.
+                            <pre class="method__example">var osc1 = tsw.oscillator(), // Creates a 440Hz sine wave.
     osc2 = tsw.oscillator(600, 'sawtooth'); // Creates a 600Hz sawtooth wave.
 tsw.connect([osc1, osc2], tsw.speakers); // Connect oscillators to speakers.
 osc1.start(); // Start sine wave.
 osc2.start(); // Start sawtooth wave.
 console.log(osc2.type()); // Outputs 'sawtooth'.
 osc2.type('triangle'); // Oscillator now produces a triangle wave.</pre>
+
+                            <h3>Available methods</h3>
+                            <dl>
+                                <dt class="method__title--sub-method">frequency(<span class="method__arguments">number</span>)</dt>
+                                <dd class="method__description">
+                                    The frequency of the oscillator in Hertz.
+                                    <pre class="method__example">var osc = tsw.oscillator();
+osc.frequency(300); // Set the frequency to 300Hz.
+console.log(osc.frequency()); // Logs "300" out to the console.</pre>
+                                </dd>
+                                <dt class="method__title--sub-method">start(<span class="method__arguments">optional number</span>)</dt>
+                                <dd class="method__description">When to start the oscillator.</dd>
+                                <dt class="method__title--sub-method">stop(<span class="method__arguments">optional number</span>)</dt>
+                                <dd class="method__description">When to stop the oscillator.</dd>
+                            </dl>
                         </section>
 
                         <!-- tsw.panner() -->
@@ -628,7 +643,7 @@ tsw.midiNote('A3'); // returns 45</pre>
             (function (window, undefined) {
                 'use strict';
                 var osc = tsw.oscillator(),
-                    vol = tsw.gain(0.6),
+                    vol = tsw.gain(0.2),
                     silly_scope = new WavyJones(tsw.context(), 'waves');
 
                 silly_scope.lineColor = '#CF313C';
@@ -645,25 +660,25 @@ tsw.midiNote('A3'); // returns 45</pre>
                 })();
             })();
 
-            var osc,
+            var sine_wave,
                 volume = tsw.gain(0.25); // Quarter of normal volume.
 
             $('#make-noise-demo').click(function () {
 
                 if ($(this).text() === 'Play') {
-                    osc = tsw.oscillator();
-                    tsw.connect(osc, volume, tsw.speakers);
-                    osc.start();
+                    sine_wave = tsw.oscillator();
+                    tsw.connect(sine_wave, volume, tsw.speakers);
+                    sine_wave.start();
                     $(this).text('Stop');
                 } else {
-                    osc.stop();
-                    tsw.disconnect(osc, volume);
+                    sine_wave.stop();
+                    tsw.disconnect(sine_wave, volume);
                     $(this).text('Play');
                 }
             });
 
             $('#slider').change(function () {
-                osc.frequency($(this).val());
+                sine_wave.frequency($(this).val());
             });
         </script>
         <script>

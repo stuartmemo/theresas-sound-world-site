@@ -19,11 +19,10 @@ module.exports = function (grunt) {
             main: {
                 files: [
                     {
+                        cwd: 'src',
                         expand: true,
-                        src: 'src/index.html',
-                        dest: 'build/',
-                        flatten: true,
-                        filter: 'isFile'
+                        dest: 'dist',
+                        src: ['**/*'],
                     }
                 ]
             }
@@ -67,5 +66,5 @@ module.exports = function (grunt) {
     // Default tasks.
     grunt.registerTask('default', ['connect', 'watch']);
     grunt.registerTask('server', ['connect', 'watch']);
-    grunt.registerTask('build', ['sass:dist']);
+    grunt.registerTask('build', ['copy', 'sass:dist']);
 };
