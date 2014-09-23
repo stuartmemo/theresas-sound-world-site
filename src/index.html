@@ -11,6 +11,7 @@
         <link rel="shortcut icon" type="image/ico" href="images/favicon.ico"/>
         <script src="//use.typekit.net/iij2wcl.js"></script>
         <script>try{Typekit.load();}catch(e){}</script>
+        <script src="scripts/jquery.min.js"></script>
         <script src="scripts/codemirror.js"></script>
         <script src="scripts/xml.js"></script>
         <script src="scripts/htmlmixed.js"></script>
@@ -137,6 +138,7 @@ osc.start();</pre>
                                 <li><a href="#connect">tsw.connect()</a></li>
                                 <li><a href="#context">tsw.context()</a></li>
                                 <li><a href="#disconnect">tsw.disconnect()</a></li>
+                                <li><a href="#envelope">tsw.envelope()</a></li>
                                 <li><a href="#filter">tsw.filter()</a></li>
                                 <li><a href="#gain">tsw.gain()</a></li>
                                 <li><a href="#get-user-audio">tsw.getUserAudio()</a></li>
@@ -248,6 +250,76 @@ tsw.context().createGain(); // Use native Web Audio API function.</pre>
                             <pre class="method__example">tsw.connect(osc, gainNode, tsw.speakers); // Connect nodes.
 tsw.disconnect(gainNode); // Disconnect gainNode.
 // osc is no longer connected to speakers.</pre>
+                        </section>
+
+                        <!-- tsw.envelope() -->
+                        <section class="method" id="envelope">
+                            <h1 class="method__title">tsw.envelope(<span class="method__arguments">settings</span>)</h1>
+                            <p class="method__description">Creates an envelope which can control any audio node parameter.</p>
+                            <p><span class="example-show-link" data-example-id="envelope-example">Show example</span></p>
+<div class="hidden" id="envelope-example">
+<div data-height="684" data-theme-id="8705" data-slug-hash="AFpdm" data-default-tab="js" data-user="stuartmemo" id="envelope-example" class="codepen"><pre><code>/**
+ * How to use envelopes with Theresa&#x27;s Sound World.
+ * http://theresassoundworld.com
+ */
+
+$(&#x27;#play&#x27;).click(function () {
+    
+  var osc = tsw.oscillator(),
+      vol = tsw.gain(0),
+      env = tsw.envelope({
+        attack: 1, // Duration of the attack phase.
+        decay: 1, // Duration of the decay phase.
+        sustain: 0.4, // Level to sustain at.
+        release: 2, // DUration of the release phase.
+        param: vol.params.gain, // Parameter to control.
+        startLevel: 0
+      });
+  
+  tsw.connect(osc, vol, tsw.speakers);
+  
+  // Start the oscillator half a second from now.
+  osc.start(tsw.now() + 0.5);
+  
+  // Start the envelope attack portion in half a second from now.
+  env.start(tsw.now() + 0.5);
+  
+  // Start the release portion of the envelope in 2 seconds from now.
+  env.release(tsw.now() + 2);
+  
+  // Stop the oscillator in 10 seconds from now.
+  osc.stop(tsw.now() + 10);
+  
+  drawGraph(vol);
+});
+
+// This stuff is just drawing the graph.
+// Graph only works in Chrome due to Firefox web audio bug.
+function drawGraph (volumeNode) {
+  var graph = document.querySelector(&#x27;#graph&#x27;),
+      graphHeight = graph.height, // haha graphite.
+      graphWidth = graph.width,
+      ctx = graph.getContext(&#x27;2d&#x27;),
+      i = 0,
+      interval = 100,
+      totalTimeToGraph = 50,
+      maxGain = 1;
+  
+  ctx.moveTo(0, graphHeight); // start graph at bottom left.
+  
+  var interval = setInterval(function () {
+    var x = (graph.width / totalTimeToGraph) * i,
+        y = graph.height - (graph.height * volumeNode.params.gain.value);
+    
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    i++;
+  }, 100);
+
+}</code></pre>
+<p>See the Pen <a href='http://codepen.io/stuartmemo/pen/AFpdm/'>TSW - Envelope Example</a> by Stuart Memo (<a href='http://codepen.io/stuartmemo'>@stuartmemo</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+</div><script async src="//codepen.io/assets/embed/ei.js"></script>
+</div>
                         </section>
 
                         <!-- tsw.filter() -->
@@ -609,6 +681,19 @@ tsw.midiNote('A3'); // returns 45</pre>
             </div>
         </div>
         <script>
+            $(function () {
+                $('.example-show-link').click(function () {
+                    var exampleElement = $('#' + ($(this).attr('data-example-id')));
+
+                    exampleElement.toggle();
+
+                    if (exampleElement.is(':visible')) {
+                        $(this).text('Hide example');
+                    } else {
+                        $(this).text('Show example');
+                    }
+                }); 
+            });
             (function (window, undefined) {
                 var codes = document.querySelectorAll('pre'),
                     number_of_code_snippets = codes.length;

@@ -39,12 +39,13 @@ p {
     margin: 0.8em 0;
 }
 
-a, a:visited {
+a, a:visited, .example-show-link {
     color: $blue;
     text-decoration: none;
 
     &:hover {
         text-decoration: underline;
+        cursor: pointer;
     }
 }
 
@@ -353,4 +354,8 @@ section {
 .col-d-5 {
     width: 50%;
     margin-right: 1em;
+}
+
+.hidden {
+    display: none;
 }

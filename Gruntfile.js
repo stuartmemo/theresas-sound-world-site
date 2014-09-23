@@ -19,6 +19,12 @@ module.exports = function (grunt) {
             main: {
                 files: [
                     {
+                        cwd: 'app/bower_components/jquery/dist',
+                        expand: true,
+                        dest: 'src/scripts',
+                        src: 'jquery.min.js'
+                    },
+                    {
                         cwd: 'src',
                         expand: true,
                         dest: 'dist',
