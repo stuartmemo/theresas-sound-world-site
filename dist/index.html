@@ -454,6 +454,70 @@ console.log(osc.frequency()); // Logs "300" out to the console.</pre>
                                 <dt class="method__title--sub-method">stop(<span class="method__arguments">optional number</span>)</dt>
                                 <dd class="method__description">When to stop the oscillator.</dd>
                             </dl>
+                            <p><span class="example-show-link" data-example-id="oscillator-example">Show example</span></p>
+<div class="hidden" id="oscillator-example">
+<div data-height="491" data-theme-id="8705" data-slug-hash="ajDhG" data-default-tab="js" data-user="stuartmemo" class='codepen'><pre><code>/**
+ * Creating Oscillators with Theresa&#x27;s Sound World.
+ */
+
+var createBasicOscillator = function () {
+  // Create a basic oscillator.
+  var sineOsc = tsw.oscillator();
+
+  // Connect it to the speakers.
+  tsw.connect(sineOsc, tsw.speakers);
+
+  // Start the oscillator immediately.
+  sineOsc.start();
+
+  // Stop the oscillator 2 seconds later.
+  sineOsc.stop(tsw.now() + 2);
+};
+
+
+var createSquareWaveOscillator = function () {
+  // Create a square wave oscillator, at a frequency of 200Hz.
+  var squareOsc = tsw.oscillator(200, &#x27;square&#x27;); 
+
+  tsw.connect(squareOsc, tsw.speakers);
+  
+  // Start the oscillator 1 second from now.
+  squareOsc.start(tsw.now() + 1);
+  squareOsc.stop(tsw.now() + 2.5);
+};
+
+var createOscillatorThenChangeParameters = function () {
+  var triangleOsc = tsw.oscillator(220, &#x27;triangle&#x27;);
+  
+  tsw.connect(triangleOsc, tsw.speakers);
+  
+  triangleOsc.frequency(300);
+  triangleOsc.type(&#x27;sawtooth&#x27;);
+  
+  triangleOsc.start();
+  triangleOsc.stop(tsw.now() + 1); 
+};
+
+var createMultipleOscillators = function () {
+  var sineOsc = tsw.oscillator(220),
+      sawtoothOsc = tsw.oscillator(360, &#x27;sawtooth&#x27;),
+      squareOsc = tsw.oscillator(520, &#x27;square&#x27;);
+  
+  tsw.connect([sineOsc, sawtoothOsc, squareOsc], tsw.speakers); 
+  
+  sineOsc.start();
+  sawtoothOsc.start();
+  squareOsc.start();
+  
+  sineOsc.stop(tsw.now() + 2);
+  sawtoothOsc.stop(tsw.now() + 3);
+  squareOsc.stop(tsw.now() + 4);
+}
+
+</code></pre>
+<p>See the Pen <a href='http://codepen.io/stuartmemo/pen/ajDhG/'>Creating Oscillators with TSW</a> by Stuart Memo (<a href='http://codepen.io/stuartmemo'>@stuartmemo</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+</div><script async src="//codepen.io/assets/embed/ei.js"></script>
+</div>
                         </section>
 
                         <!-- tsw.panner() -->
