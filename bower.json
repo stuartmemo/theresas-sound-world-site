@@ -1,0 +1,22 @@
+{
+  "name": "theresas-sound-world-site",
+  "version": "0.0.1",
+  "homepage": "https://github.com/stuartmemo/theresas-sound-world-site",
+  "authors": [
+    "Stuart Memo <stuartmemo@gmail.com>"
+  ],
+  "description": "Documentation site for Theresa's Sound World.",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1"
+  }
+}
