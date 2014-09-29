@@ -21,7 +21,7 @@
         <div class="header__canvas" id="waves"></div>
         <div class="container">
             <header class="header">
-                <a href="/"><img src="images/theresas-sound-world.png" class="header__image" height="160"/></a>
+                <a href="/"><img src="images/theresas-sound-world.png" class="header__image" height="160" alt="" /></a>
                 <h1 class="header__about">Theresa's Sound World is a way of processing audio and generating sound using JavaScript</h1>
                 <nav class="main-navigation">
                     <ul>
@@ -44,12 +44,12 @@
                 <section class="section" id="download">
                     <h2 class="section__title">Download</h2>
                     <p class="fl no-margin col-d-5">
-                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/build/tsw.js">Development Version (0.1.10, 63kb)</a></br>
+                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/dist/tsw.js">Development Version (0.1.11, 63kb)</a></br>
                         Uncompressed with comments. Like Barry White.
                     </p>
 
                     <p class="fl no-margin col-d-4">
-                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/build/tsw.min.js">Production Version (0.1.10, 16kb)</a></br>
+                        <a class="section__link" href="https://raw.githubusercontent.com/stuartmemo/theresas-sound-world/master/dist/tsw.min.js">Production Version (0.1.11, 16kb)</a></br>
                         Minified, tiny and fast. Like Prince.
                     </p>
                     <p>
@@ -60,7 +60,7 @@
                 <section class="section" id="getting-started">
                     <h2 class="section__title">Getting Started</h2>
                     <h3 class="section__subtitle">Create your Sound World</h3>
-                    <p>To get started, download and include <a href="/download">tsw.js</a> in your HTML. From this point on all you need to do is use the variable "tsw" to make audio magic.</p>
+                    <p>To get started, download and include <a href="#download">tsw.js</a> in your HTML. From this point on all you need to do is use the variable "tsw" to make audio magic.</p>
                     <div class="codemirror">
                         <textarea><!doctype html>
 <html>
@@ -791,7 +791,7 @@ tsw.midiNote('A3'); // returns 45</pre>
              // Your wave's got a little machine.
             (function (window, undefined) {
                 'use strict';
-                var osc = tsw.oscillator(),
+                var osc = tsw.osc(),
                     vol = tsw.gain(0.2),
                     silly_scope = new WavyJones(tsw.context(), 'waves');
 
