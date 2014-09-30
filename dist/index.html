@@ -78,7 +78,7 @@
 
                     <h3 class="section__subtitle">Make some noise</h3>
                     <p>Let's create a triangle wave oscillating at 300Hz.</p>
-                    <pre>var osc = tsw.oscillator(300, 'triangle'),
+                    <pre>var osc = tsw.osc(300, 'triangle'),
     volume = tsw.gain(0.5); // Half volume.
 tsw.connect(osc, volume, tsw.speakers);
 osc.start();</pre>
@@ -221,7 +221,7 @@ osc.start();</pre>
                         <section class="method" id="connect">
                             <h1 class="method__title">tsw.connect(<span class="method__arguments">node1, node2, arrayOfNodes</span>)</h1>
                             <p class="method__description">Connects two or more audio nodes together.</p>
-                            <pre class="method__example">var osc = tsw.oscillator(),
+                            <pre class="method__example">var osc = tsw.osc(),
     volume = tsw.gain(0.8);
 tsw.connect(osc, volume, tsw.speakers);</pre>
                             <p class="method__description">Numerous nodes can connect to and from other nodes by using an array.</p>
@@ -257,69 +257,10 @@ tsw.disconnect(gainNode); // Disconnect gainNode.
                             <h1 class="method__title">tsw.envelope(<span class="method__arguments">settings</span>)</h1>
                             <p class="method__description">Creates an envelope which can control any audio node parameter.</p>
                             <p><span class="example-show-link" data-example-id="envelope-example">Show example</span></p>
-<div class="hidden" id="envelope-example">
-<div data-height="684" data-theme-id="8705" data-slug-hash="AFpdm" data-default-tab="js" data-user="stuartmemo" id="envelope-example" class="codepen"><pre><code>/**
- * How to use envelopes with Theresa&#x27;s Sound World.
- * http://theresassoundworld.com
- */
-
-$(&#x27;#play&#x27;).click(function () {
-    
-  var osc = tsw.oscillator(),
-      vol = tsw.gain(0),
-      env = tsw.envelope({
-        attack: 1, // Duration of the attack phase.
-        decay: 1, // Duration of the decay phase.
-        sustain: 0.4, // Level to sustain at.
-        release: 2, // DUration of the release phase.
-        param: vol.params.gain, // Parameter to control.
-        startLevel: 0
-      });
-  
-  tsw.connect(osc, vol, tsw.speakers);
-  
-  // Start the oscillator half a second from now.
-  osc.start(tsw.now() + 0.5);
-  
-  // Start the envelope attack portion in half a second from now.
-  env.start(tsw.now() + 0.5);
-  
-  // Start the release portion of the envelope in 2 seconds from now.
-  env.release(tsw.now() + 2);
-  
-  // Stop the oscillator in 10 seconds from now.
-  osc.stop(tsw.now() + 10);
-  
-  drawGraph(vol);
-});
-
-// This stuff is just drawing the graph.
-// Graph only works in Chrome due to Firefox web audio bug.
-function drawGraph (volumeNode) {
-  var graph = document.querySelector(&#x27;#graph&#x27;),
-      graphHeight = graph.height, // haha graphite.
-      graphWidth = graph.width,
-      ctx = graph.getContext(&#x27;2d&#x27;),
-      i = 0,
-      interval = 100,
-      totalTimeToGraph = 50,
-      maxGain = 1;
-  
-  ctx.moveTo(0, graphHeight); // start graph at bottom left.
-  
-  var interval = setInterval(function () {
-    var x = (graph.width / totalTimeToGraph) * i,
-        y = graph.height - (graph.height * volumeNode.params.gain.value);
-    
-    ctx.lineTo(x, y);
-    ctx.stroke();
-    i++;
-  }, 100);
-
-}</code></pre>
-<p>See the Pen <a href='http://codepen.io/stuartmemo/pen/AFpdm/'>TSW - Envelope Example</a> by Stuart Memo (<a href='http://codepen.io/stuartmemo'>@stuartmemo</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
-</div><script async src="//codepen.io/assets/embed/ei.js"></script>
-</div>
+                            <div class="hidden" id="envelope-example">
+                                <div data-height="684" data-theme-id="8705" data-slug-hash="AFpdm" data-default-tab="js" data-user="stuartmemo" id="envelope-example" class="codepen"></div>
+                                <script async src="//codepen.io/assets/embed/ei.js"></script>
+                            </div>
                         </section>
 
                         <!-- tsw.filter() -->
@@ -344,7 +285,7 @@ filter.frequency(500, tsw.now() + 4);</pre>
                             <h1 class="method__title">tsw.gain(<span class="method__arguments">number, time_to_change</span>)</h1>
                             <p class="method__description">Creates an gain node. The value passed in multiplies the volume of the passed input signal.<br/>
                                 Defaults to 1, which doesn't affect the signal.</p>
-                            <pre class="method__example">var sine_wave = tsw.oscillator(),
+                            <pre class="method__example">var sine_wave = tsw.osc(),
     gain_node = tsw.gain(0.75);
 tsw.connect(sine_wave, gain_node, tsw.speakers);
 console.log(gain_node.gain()); // Outputs 0.75.
@@ -425,7 +366,11 @@ console.log(noise.color());
                         <section class="method" id="now">
                             <h1 class="method__title">tsw.now()</h1>
                             <p class="method__description">Returns the time in seconds since the audio context was activated.</p>
-                            <pre class="method__example">console.log(tsw.now()); // logs 6.844081632653062 (or whatever) seconds.</pre>
+                            <p><span class="example-show-link" data-example-id="now-example">Show example</span></p>
+                            <div class="hidden" id="now-example">
+                                <div data-height="268" data-theme-id="8705" data-slug-hash="dFDHz" data-default-tab="js" data-user="stuartmemo" class='codepen'></div>
+                                <script async src="//codepen.io/assets/embed/ei.js"></script>
+                            </div>
                         </section>
 
                         <!-- tsw.oscillator() -->
@@ -455,76 +400,17 @@ console.log(osc.frequency()); // Logs "300" out to the console.</pre>
                                 <dd class="method__description">When to stop the oscillator.</dd>
                             </dl>
                             <p><span class="example-show-link" data-example-id="oscillator-example">Show example</span></p>
-<div class="hidden" id="oscillator-example">
-<div data-height="491" data-theme-id="8705" data-slug-hash="ajDhG" data-default-tab="js" data-user="stuartmemo" class='codepen'><pre><code>/**
- * Creating Oscillators with Theresa&#x27;s Sound World.
- */
-
-var createBasicOscillator = function () {
-  // Create a basic oscillator.
-  var sineOsc = tsw.oscillator();
-
-  // Connect it to the speakers.
-  tsw.connect(sineOsc, tsw.speakers);
-
-  // Start the oscillator immediately.
-  sineOsc.start();
-
-  // Stop the oscillator 2 seconds later.
-  sineOsc.stop(tsw.now() + 2);
-};
-
-
-var createSquareWaveOscillator = function () {
-  // Create a square wave oscillator, at a frequency of 200Hz.
-  var squareOsc = tsw.oscillator(200, &#x27;square&#x27;); 
-
-  tsw.connect(squareOsc, tsw.speakers);
-  
-  // Start the oscillator 1 second from now.
-  squareOsc.start(tsw.now() + 1);
-  squareOsc.stop(tsw.now() + 2.5);
-};
-
-var createOscillatorThenChangeParameters = function () {
-  var triangleOsc = tsw.oscillator(220, &#x27;triangle&#x27;);
-  
-  tsw.connect(triangleOsc, tsw.speakers);
-  
-  triangleOsc.frequency(300);
-  triangleOsc.type(&#x27;sawtooth&#x27;);
-  
-  triangleOsc.start();
-  triangleOsc.stop(tsw.now() + 1); 
-};
-
-var createMultipleOscillators = function () {
-  var sineOsc = tsw.oscillator(220),
-      sawtoothOsc = tsw.oscillator(360, &#x27;sawtooth&#x27;),
-      squareOsc = tsw.oscillator(520, &#x27;square&#x27;);
-  
-  tsw.connect([sineOsc, sawtoothOsc, squareOsc], tsw.speakers); 
-  
-  sineOsc.start();
-  sawtoothOsc.start();
-  squareOsc.start();
-  
-  sineOsc.stop(tsw.now() + 2);
-  sawtoothOsc.stop(tsw.now() + 3);
-  squareOsc.stop(tsw.now() + 4);
-}
-
-</code></pre>
-<p>See the Pen <a href='http://codepen.io/stuartmemo/pen/ajDhG/'>Creating Oscillators with TSW</a> by Stuart Memo (<a href='http://codepen.io/stuartmemo'>@stuartmemo</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
-</div><script async src="//codepen.io/assets/embed/ei.js"></script>
-</div>
+                            <div class="hidden" id="oscillator-example">
+                                <div data-height="491" data-theme-id="8705" data-slug-hash="ajDhG" data-default-tab="js" data-user="stuartmemo" class='codepen'></div>
+                                <script async src="//codepen.io/assets/embed/ei.js"></script>
+                            </div>
                         </section>
 
                         <!-- tsw.panner() -->
                         <section class="method" id="panner">
                             <h1 class="method__title">tsw.panner(<span class="method__arguments">number</span>)</h1>
                             <p class="method__description">Spreads an incoming audio signal over the left and right channels depending on the value specified.</p>
-                            <pre class="method__example">var oscillator = tsw.oscillator(),
+                            <pre class="method__example">var oscillator = tsw.osc(),
     panner = tsw.panner(-1); // Pan completely to the left.
     panner = tsw.panner(1); // Pan completely to the right.
     panner = tsw.panner(0.2); // Pan slightly to the right.
@@ -578,7 +464,7 @@ saw.stop(tsw.now() + 5); // Stop oscillator after 5 seconds.</pre>
                         <section class="method" id="wait">
                             <h1 class="method__title">tsw.wait()</h1>
                             <p class="method__description">Creates a node that will delay the incoming signal.</p>
-                            <pre class="method__example">var osc = tsw.oscillator(),
+                            <pre class="method__example">var osc = tsw.osc(),
     wait = tsw.wait(5);
 tsw.connect(osc, wait, tsw.speakers);
 // Start oscillator immediately, but won't be heard for 5 seconds.
@@ -655,7 +541,11 @@ tsw.play(madGuitarRiff)</pre>
                         <section class="method" id="chord">
                             <h1 class="method__title">tsw.chord(string)</h1>
                             <p class="method__description">Returns an array of notes in any given chord.</p>
-                            <pre class="method__example">tsw.chord('A3', 'major'); // returns ['A', 'C#', 'E', 'A']</pre>
+                            <p><span class="example-show-link" data-example-id="chord-example">Show example</span></p>
+                            <div class="hidden" id="chord-example">
+                                <div data-height="268" data-theme-id="8705" data-slug-hash="dvJzl" data-default-tab="js" data-user="stuartmemo" class='codepen'></div>
+                                <script async src="//codepen.io/assets/embed/ei.js"></script>
+                            </div>
                         </section>
 
                         <!-- tsw.flat() -->
@@ -670,7 +560,11 @@ tsw.flat('D2'); // Returns 'C#2'</pre>
                         <section class="method" id="frequency">
                             <h1 class="method__title">tsw.frequency(string)</h1>
                             <p class="method__description">Returns the frequency in Hz of a musical note passed by name.</p>
-                            <pre class="method__example">tsw.frequency('A4'); // returns 440</pre>
+                            <p><span class="example-show-link" data-example-id="frequency-example">Show example</span></p>
+                            <div class="hidden" id="frequency-example">
+                                <div data-height="287" data-theme-id="8705" data-slug-hash="oDftd" data-default-tab="js" data-user="stuartmemo" class='codepen'></div>
+                                <script async src="//codepen.io/assets/embed/ei.js"></script>
+                            </div>
                         </section>
 
                         <!-- tsw.note() -->
@@ -815,7 +709,7 @@ tsw.midiNote('A3'); // returns 45</pre>
             $('#make-noise-demo').click(function () {
 
                 if ($(this).text() === 'Play') {
-                    sine_wave = tsw.oscillator();
+                    sine_wave = tsw.osc();
                     tsw.connect(sine_wave, volume, tsw.speakers);
                     sine_wave.start();
                     $(this).text('Stop');
