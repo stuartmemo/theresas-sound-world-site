@@ -17,6 +17,7 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "~2.1.1"
+    "jquery": "~2.1.1",
+    "tsw": "~0.1.15"
   }
 }

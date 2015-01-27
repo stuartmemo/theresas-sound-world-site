@@ -28,7 +28,7 @@ p {
   margin: 0.8em 0; }
 
 a, a:visited, .example-show-link {
-  color: #007aaa;
+  color: #007AAA;
   text-decoration: none; }
   a:hover, a:visited:hover, .example-show-link:hover {
     text-decoration: underline;
@@ -84,7 +84,7 @@ ul {
 .main-navigation {
   clear: both;
   color: white;
-  background-color: #6f1717;
+  background-color: #6F1717;
   font-family: arial, sans-serif; }
 
 .main-navigation__item {
@@ -134,7 +134,7 @@ pre, code, blockquote {
   margin-bottom: 1em; }
 
 code {
-  color: #007aaa; }
+  color: #007AAA; }
 
 .download {
   background: #6F1717;
@@ -212,10 +212,10 @@ section {
   section[name="reference"] section[name="effects"] section {
     border-left-color: #358B38; }
   section[name="reference"] section[name="music"] section {
-    border-left-color: #007aaa; }
+    border-left-color: #007AAA; }
 
 .highlight-box {
-  background: #007aaa;
+  background: #007AAA;
   padding: 1em;
   color: white; }
 
@@ -268,3 +268,5 @@ section {
 
 .hidden {
   display: none; }
+
+/*# sourceMappingURL=master.css.map */
