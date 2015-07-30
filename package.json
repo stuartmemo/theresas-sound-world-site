@@ -4,6 +4,7 @@
   "description": "Website and documentation for Theresa's Sound World",
   "version": "0.0.1",
   "homepage": "http://theresassoundworld.com",
+  "license": "MIT",
   "author": {
     "name": "Stuart Memo",
     "url": "http://stuartmemo.com"
