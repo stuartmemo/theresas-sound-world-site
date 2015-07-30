@@ -346,20 +346,16 @@ lfo.modulate(vol.params.gain); // modulate the gain parameter of the vol node.</
                             <p class="method__description">Loads one or more audio files into memory and executes a callback function once complete.</p>
                             <pre class="method__example">tsw.load(
     {
-        talking: 'talking-sample.mp3',
-        singing: 'my-lovely-singing.mp3'
-    },
-    {
-        path: '/path/to/files/'
-    },
-    function (response, status, xhr) {
-        if (status === 'success') {
-            // Files have loaded successfully
-            tsw.play(response.talking);
-        } else {
-            // There's been an error
-            console.log('We have a technical: ' + xhr.statusText);
+        files: {
+            talking: 'talking-sample.mp3',
+            singing: 'my-lovely-singing.mp3'
         }
+    },
+    function (files) {
+        // Files have loaded successfully
+        var bufferBox = tsw.buffer(files.talking);
+        tsw.connect(bufferBox, tsw.speakers);
+        bufferBox.play();
     }
 );</pre>
                         </section>
@@ -438,8 +434,10 @@ tsw.connect(oscillator, panner, tsw.speakers);
                             <p class="method__description">Plays an audio buffer after a specified number of seconds. If nothing is passed, audio will play immediately.</p>
                             <pre class="method__example">tsw.load(
     {
-        talking: 'talking.mp3',
-        singing: 'singing.mp3'
+        files: {
+            talking: 'talking.mp3',
+            singing: 'singing.mp3'
+        }
     },
     function (files) {
         tsw.play(files.talking, tsw.now() + 5); // Start playing after 5 seconds.
