@@ -1,4 +1,4 @@
-'use strict'; 
+'use strict';
 
 module.exports = function (grunt) {
     // Project config.
@@ -52,13 +52,13 @@ module.exports = function (grunt) {
                 options: {
                     livereload: true
                 },
-                files: ['src/**/*']
+                files: ['dist/**/*']
             }
         },
         connect: {
             server: {
                 options: {
-                    base: 'src',
+                    base: 'dist',
                     port: 8000,
                     keepalive: false
                 }

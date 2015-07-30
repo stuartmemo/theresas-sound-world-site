@@ -104,7 +104,7 @@ osc.start();</pre>
                     <h1 class="highlight-box__heading">An important message from David Bowie...</h1>
                     <img class="highlight-box__image" src="images/bowie.jpg"/>
                     <p class="highlight-box__paragraph">
-                        Hi. David here. When I first started using the Web Audio API, it was essential for me to understand the concept of connecting nodes together to process audio. 
+                        Hi. David here. When I first started using the Web Audio API, it was essential for me to understand the concept of connecting nodes together to process audio.
                         process audio.
                     </p>
                     <p class="highlight-box__paragraph">
@@ -134,6 +134,7 @@ osc.start();</pre>
                             <h3 class="reference__navigation-section-title">Core</h3>
                             <ul class="reference__navigation-list">
                                 <li><a href="#buffer">tsw.buffer()</a></li>
+                                <li><a href="#buffer-box">tsw.bufferBox()</a></li>
                                 <li><a href="#compressor">tsw.compressor()</a></li>
                                 <li><a href="#connect">tsw.connect()</a></li>
                                 <li><a href="#context">tsw.context()</a></li>
@@ -175,7 +176,7 @@ osc.start();</pre>
                                 <li><a href="#note">tsw.note()</a></li>
                                 <li><a href="#scale">tsw.scale()</a></li>
                                 <li><a href="#sharp">tsw.sharp()</a></li>
-                            </ul> 
+                            </ul>
                         </div>
                         <div>
                             <h3 class="reference__navigation-section-title">MIDI</h3>
@@ -199,6 +200,18 @@ osc.start();</pre>
                             </p>
                             <pre class="method__example">var my_awful_singing = tsw.buffer(files.singing);
 // see tsw.load() for how to load files.singing.</pre>
+                        </section>
+
+                        <!-- tsw.bufferBox() -->
+                        <section class="method" id="buffer-box">
+                            <h1 class="method__title">tsw.bufferBox()</h1>
+                            <p class="method__description">
+                                Creates a Buffer Box. A Buffer Box is a a little box that holds audio buffers in order to control them like like a little buffer record player.
+                            </p>
+                            <pre class="method__example">var bufferBox = tsw.bufferBox(myBuffer);
+tsw.connect(bufferBox, tsw.speakers);
+bufferBox.play();
+// start the buffer in the Buffer Box playing immediately.</pre>
                         </section>
 
                         <!-- tsw.compressor() -->
@@ -519,7 +532,7 @@ tsw.play(madGuitarRiff)</pre>
                             <pre class="method__example">var dr_phaser_crane = tsw.phaser({
     rate: 8,
     depth: 0.5,
-    feedback: 0.8 
+    feedback: 0.8
 });</pre>
                         </section>
 
@@ -622,7 +635,7 @@ tsw.midiNote('A3'); // returns 45</pre>
                 </section>
 
                 <section id="showcase">
-                    <h2 class="section__title">Examples</h2> 
+                    <h2 class="section__title">Examples</h2>
                     <p>Here are a selection of things that have been made using Theresa's Sound World.</p>
 
                     <h3 class="section__subtitle"><a href="http://stuartmemo.com/synth/">Sympathetic Synthesizer System Mk 1</a></h3>
@@ -630,7 +643,7 @@ tsw.midiNote('A3'); // returns 45</pre>
 
                     <h3 class="section__subtitle"><a href="http://beatpetite.com">Beat Petite</a></h3>
                     <p>A sample-free drum machine in the browser.</p>
- 
+
                     <h3 class="section__subtitle"><a href="http://stuartmemo.com/thx-deep-note-in-javascript/">THX Deep Note</a></h3>
                     <p>A recreation of the famous THX sound.</p>
                 </section>
@@ -650,7 +663,7 @@ tsw.midiNote('A3'); // returns 45</pre>
                     } else {
                         $(this).text('Show example');
                     }
-                }); 
+                });
             });
             (function (window, undefined) {
                 var codes = document.querySelectorAll('pre'),
